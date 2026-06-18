@@ -11,14 +11,16 @@ export default function HotelNotesTemplate() {
   const [coHour, setCoHour] = useState<number>(11)
   const [coMinute, setCoMinute] = useState<number>(0)
   const [coPeriod, setCoPeriod] = useState<'AM' | 'PM'>('AM')
+  const [customNotes, setCustomNotes] = useState<string>('')
 
   const toggle = (value: string) => {
     setSelected((s) => (s.includes(value) ? s.filter((x) => x !== value) : [...s, value]))
   }
 
   const assembledText = useMemo(() => {
-    if (selected.length === 0) return ''
-    return selected.map((s) => {
+    if (selected.length === 0 && !customNotes) return ''
+    
+    const selectedItems = selected.map((s) => {
       if (s === 'CI @') {
         const formattedHour = ciHour.toString().padStart(2, '0')
         const formattedMinute = ciMinute.toString().padStart(2, '0')
@@ -30,8 +32,15 @@ export default function HotelNotesTemplate() {
         return `CO @ ${formattedHour}:${formattedMinute} ${coPeriod}`
       }
       return s
-    }).join('\n')
-  }, [selected, ciHour, ciMinute, ciPeriod, coHour, coMinute, coPeriod])
+    })
+    
+    const parts = [...selectedItems]
+    if (customNotes.trim()) {
+      parts.push(customNotes.trim())
+    }
+    
+    return parts.join('\n')
+  }, [selected, ciHour, ciMinute, ciPeriod, coHour, coMinute, coPeriod, customNotes])
 
   return (
     <div style={{ display: 'flex', gap: 24 }}>
@@ -128,6 +137,17 @@ export default function HotelNotesTemplate() {
               )}
             </div>
           ))}
+        </div>
+
+        <div style={{ marginTop: 24 }}>
+          <h4 style={{ marginTop: 0, marginBottom: 8 }}>Custom Notes</h4>
+          <textarea
+            value={customNotes}
+            onChange={(e) => setCustomNotes(e.target.value)}
+            placeholder="Add any custom notes here..."
+            rows={4}
+            style={{ width: '100%', padding: 8, borderRadius: 6, resize: 'vertical', border: '1px solid #ccc' }}
+          />
         </div>
       </aside>
 
