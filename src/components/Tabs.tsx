@@ -1,5 +1,3 @@
-import React from 'react'
-
 type TabItem = { id: string; label: string }
 
 export default function Tabs({

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import './App.css'
 import Tabs from './components/Tabs'
 import HotelNotesTemplate from './pages/HotelNotesTemplate'

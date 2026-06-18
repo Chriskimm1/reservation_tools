@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import CopyButton from '../components/CopyButton'
 
 const OPTIONS = ['cxl 48', 'CI @', 'CO @', 'no eta provided', 'no etd provided']

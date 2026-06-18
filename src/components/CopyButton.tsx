@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 export default function CopyButton({ textToCopy }: { textToCopy: string }) {
   const [status, setStatus] = useState<'idle' | 'copied' | 'empty'>('idle')
