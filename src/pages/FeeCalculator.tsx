@@ -25,29 +25,29 @@ export default function FeeCalculator() {
   }, [stayCost, nights])
 
   return (
-    <div style={{ maxWidth: 600 }}>
+    <div style={{ maxWidth: 500 }}>
       <h3>Fee Calculator</h3>
       
-      <div style={{ display: 'flex', gap: 16, marginBottom: 24 }}>
-        <label style={{ flex: 1 }}>
+      <div style={{ marginBottom: 24, display: 'flex', gap: 16 }}>
+        <label style={{ flex: 1, minWidth: 0 }}>
           Stay Cost (Before Tax)
           <input
             type="number"
             value={stayCost as any}
             onChange={(e) => setStayCost(e.target.value === '' ? '' : Number(e.target.value))}
-            style={{ display: 'block', width: '100%', marginTop: 6, padding: 8 }}
+            style={{ display: 'block', width: '100%', marginTop: 6, padding: 8, boxSizing: 'border-box' }}
             placeholder="0.00"
           />
         </label>
 
-        <label style={{ flex: 1 }}>
+        <label style={{ flex: 1, minWidth: 0 }}>
           Number of Nights
           <input
             type="number"
             min="0"
             value={nights as any}
             onChange={(e) => setNights(e.target.value === '' ? '' : Number(e.target.value))}
-            style={{ display: 'block', width: '100%', marginTop: 6, padding: 8 }}
+            style={{ display: 'block', width: '100%', marginTop: 6, padding: 8, boxSizing: 'border-box' }}
             placeholder="0"
           />
         </label>
