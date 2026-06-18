@@ -1,10 +1,11 @@
 import { useMemo, useState } from 'react'
 import CopyButton from '../components/CopyButton'
 
-const OPTIONS = ['cxl 48', 'CI @', 'CO @', 'no eta provided', 'no etd provided']
+const OPTIONS = ['CXL','NONCXL', 'CI @', 'CO @', 'no eta provided', 'no etd provided']
 
 export default function HotelNotesTemplate() {
   const [selected, setSelected] = useState<string[]>([])
+  const [cxlHours, setCxlHours] = useState<number>(48)
   const [ciHour, setCiHour] = useState<number>(3)
   const [ciMinute, setCiMinute] = useState<number>(0)
   const [ciPeriod, setCiPeriod] = useState<'AM' | 'PM'>('PM')
@@ -21,6 +22,9 @@ export default function HotelNotesTemplate() {
     if (selected.length === 0 && !customNotes) return ''
     
     const selectedItems = selected.map((s) => {
+      if (s === 'CXL') {
+        return `CXL ${cxlHours} HR`
+      }
       if (s === 'CI @') {
         const formattedHour = ciHour.toString().padStart(2, '0')
         const formattedMinute = ciMinute.toString().padStart(2, '0')
@@ -40,10 +44,10 @@ export default function HotelNotesTemplate() {
     }
     
     return parts.join('\n')
-  }, [selected, ciHour, ciMinute, ciPeriod, coHour, coMinute, coPeriod, customNotes])
+  }, [selected, ciHour, ciMinute, ciPeriod, coHour, coMinute, coPeriod, customNotes, cxlHours])
 
   return (
-    <div style={{ display: 'flex', gap: 24 }}>
+    <div style={{ display: 'flex', gap: 32 }}>
       <aside style={{ width: 280 }}>
         <h3>Options</h3>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -66,11 +70,19 @@ export default function HotelNotesTemplate() {
                   onChange={() => toggle(opt)}
                 />
                 <span style={{ textTransform: 'uppercase' }}>{opt}</span>
-              </label>
-
-              {opt === 'CI @' && selected.includes('CI @') && (
-                <div style={{ marginTop: 8, marginLeft: 24, padding: 8, border: '1px solid #ccc', borderRadius: 6 }}>
-                  <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                {opt === 'CXL' && selected.includes('CXL') && (
+                  <select
+                    value={cxlHours}
+                    onChange={(e) => setCxlHours(Number(e.target.value))}
+                    style={{ padding: 4, marginLeft: 4 }}
+                  >
+                    <option value={24}>24</option>
+                    <option value={48}>48</option>
+                    <option value={72}>72</option>
+                  </select>
+                )}
+                {opt === 'CI @' && selected.includes('CI @') && (
+                  <div style={{ display: 'flex', gap: 4, alignItems: 'center', marginLeft: 4 }}>
                     <input
                       type="number"
                       min="1"
@@ -99,12 +111,9 @@ export default function HotelNotesTemplate() {
                       <option value="PM">PM</option>
                     </select>
                   </div>
-                </div>
-              )}
-
-              {opt === 'CO @' && selected.includes('CO @') && (
-                <div style={{ marginTop: 8, marginLeft: 24, padding: 8, border: '1px solid #ccc', borderRadius: 6 }}>
-                  <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                )}
+                {opt === 'CO @' && selected.includes('CO @') && (
+                  <div style={{ display: 'flex', gap: 4, alignItems: 'center', marginLeft: 4 }}>
                     <input
                       type="number"
                       min="1"
@@ -133,8 +142,8 @@ export default function HotelNotesTemplate() {
                       <option value="PM">PM</option>
                     </select>
                   </div>
-                </div>
-              )}
+                )}
+              </label>
             </div>
           ))}
         </div>
