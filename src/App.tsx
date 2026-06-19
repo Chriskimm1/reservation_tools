@@ -3,6 +3,7 @@ import './App.css'
 import Tabs from './components/Tabs'
 import HotelNotesTemplate from './pages/HotelNotesTemplate'
 import FeeCalculator from './pages/FeeCalculator'
+import Back2Back from './pages/Back2Back'
 
 const COLORS = {
   background: '#1e1e1e',
@@ -14,7 +15,7 @@ const COLORS = {
 }
 
 export default function App() {
-  const [tab, setTab] = useState<'hotel' | 'fee'>('hotel')
+  const [tab, setTab] = useState<'hotel' | 'fee' | 'back2back'>('hotel')
 
   return (
     <div 
@@ -30,14 +31,15 @@ export default function App() {
           tabs={[
             { id: 'hotel', label: 'Hotel Notes Template' },
             { id: 'fee', label: 'Fee Calculator' },
+            { id: 'back2back', label: 'Back2Back' },
           ]}
           active={tab}
-          onChange={(id) => setTab(id as 'hotel' | 'fee')}
+          onChange={(id) => setTab(id as 'hotel' | 'fee' | 'back2back')}
         />
       </header>
 
       <main style={{ padding: 16 }}>
-        {tab === 'hotel' ? <HotelNotesTemplate /> : <FeeCalculator />}
+        {tab === 'hotel' ? <HotelNotesTemplate /> : tab === 'fee' ? <FeeCalculator /> : <Back2Back />}
       </main>
     </div>
   )
