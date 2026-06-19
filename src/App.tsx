@@ -40,6 +40,7 @@ export default function App() {
             { id: 'fee', label: 'Fee Calculator' },
             { id: 'back2back', label: 'Back2Back' },
           ]}
+          
           active={tab}
           onChange={(id) => setTab(id as 'hotel' | 'fee' | 'back2back')}
         />
