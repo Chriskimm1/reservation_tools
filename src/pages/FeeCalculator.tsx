@@ -12,14 +12,14 @@ const COLORS = {
 const INPUT_STYLE: React.CSSProperties = {
   display: 'block',
   width: '100%',
-  marginTop: 6,
-  padding: 8,
+  marginTop: 8,
+  padding: 12,
   boxSizing: 'border-box',
   backgroundColor: COLORS.surface,
   border: `1px solid ${COLORS.border}`,
   borderRadius: 4,
   color: COLORS.textBright,
-  fontSize: 14,
+  fontSize: 16,
 }
 
 export default function FeeCalculator() {
@@ -47,12 +47,12 @@ export default function FeeCalculator() {
   }, [stayCost, nights])
 
   return (
-    <div style={{ maxWidth: 500 }}>
-      <h3 style={{ color: COLORS.textBright, marginTop: 0 }}>Fee Calculator</h3>
+    <div style={{ minHeight: '70vh' }}>
+      <h3 style={{ color: COLORS.textBright, marginTop: 0, marginBottom: 32, fontSize: 28 }}>Fee Calculator</h3>
       
-      <div style={{ marginBottom: 24, display: 'flex' }}>
-        <label style={{ flexGrow: 1, minWidth: 0, marginRight: 16 }}>
-          <span style={{ color: COLORS.text, fontSize: 14 }}>Stay Cost (Before Tax)</span>
+      <div style={{ marginBottom: 40, display: 'flex' }}>
+        <label style={{ flexGrow: 1, minWidth: 0, marginRight: 20 }}>
+          <span style={{ color: COLORS.text, fontSize: 16, fontWeight: 600, display: 'block', marginBottom: 8 }}>Stay Cost (Before Tax)</span>
           <input
             type="number"
             value={stayCost as any}
@@ -63,7 +63,7 @@ export default function FeeCalculator() {
         </label>
 
         <label style={{ flexGrow: 1, minWidth: 0 }}>
-          <span style={{ color: COLORS.text, fontSize: 14 }}>Number of Nights</span>
+          <span style={{ color: COLORS.text, fontSize: 16, fontWeight: 600, display: 'block', marginBottom: 8 }}>Number of Nights</span>
           <input
             type="number"
             min="0"
@@ -77,45 +77,46 @@ export default function FeeCalculator() {
 
       <div style={{ 
         border: `1px solid ${COLORS.border}`, 
-        borderRadius: 6, 
-        padding: 16, 
-        backgroundColor: COLORS.surface 
+        borderRadius: 8, 
+        padding: 32, 
+        backgroundColor: COLORS.surface,
+        maxWidth: 700
       }}>
-        <h4 style={{ marginTop: 0, marginBottom: 16, color: COLORS.textBright }}>Summary</h4>
+        <h4 style={{ marginTop: 0, marginBottom: 24, color: COLORS.textBright, fontSize: 20 }}>Summary</h4>
         
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12 }}>
-            <span style={{ color: COLORS.text }}>Stay Cost:</span>
-            <span style={{ color: COLORS.textBright }}>${typeof stayCost === 'number' ? stayCost.toFixed(2) : '0.00'}</span>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
+            <span style={{ color: COLORS.text, fontSize: 16 }}>Stay Cost:</span>
+            <span style={{ color: COLORS.textBright, fontSize: 16, fontWeight: 500 }}>${typeof stayCost === 'number' ? stayCost.toFixed(2) : '0.00'}</span>
           </div>
 
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12 }}>
-            <span style={{ color: COLORS.text }}>Resort Fee ({typeof nights === 'number' ? nights : 0} nights × ${RESORT_FEE_PER_NIGHT}):</span>
-            <span style={{ color: COLORS.textBright }}>${calculations.resortFeeTotal.toFixed(2)}</span>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
+            <span style={{ color: COLORS.text, fontSize: 16 }}>Resort Fee ({typeof nights === 'number' ? nights : 0} nights × ${RESORT_FEE_PER_NIGHT}):</span>
+            <span style={{ color: COLORS.textBright, fontSize: 16, fontWeight: 500 }}>${calculations.resortFeeTotal.toFixed(2)}</span>
           </div>
 
           <div style={{ 
             borderTop: `1px solid ${COLORS.border}`, 
-            paddingTop: 12, 
+            paddingTop: 16, 
             display: 'flex', 
             justifyContent: 'space-between',
-            marginBottom: 12 
+            marginBottom: 16 
           }}>
-            <span style={{ color: COLORS.text }}>Subtotal:</span>
-            <span style={{ color: COLORS.textBright }}>${calculations.subtotal.toFixed(2)}</span>
+            <span style={{ color: COLORS.text, fontSize: 16 }}>Subtotal:</span>
+            <span style={{ color: COLORS.textBright, fontSize: 16, fontWeight: 500 }}>${calculations.subtotal.toFixed(2)}</span>
           </div>
 
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12 }}>
-            <span style={{ color: COLORS.text }}>Tax (13.38%):</span>
-            <span style={{ color: COLORS.textBright }}>${calculations.taxAmount.toFixed(2)}</span>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
+            <span style={{ color: COLORS.text, fontSize: 16 }}>Tax (13.38%):</span>
+            <span style={{ color: COLORS.textBright, fontSize: 16, fontWeight: 500 }}>${calculations.taxAmount.toFixed(2)}</span>
           </div>
 
           <div style={{ 
             borderTop: `2px solid ${COLORS.accent}`, 
-            paddingTop: 12, 
+            paddingTop: 20, 
             display: 'flex', 
             justifyContent: 'space-between', 
-            fontSize: 18, 
+            fontSize: 22, 
             fontWeight: 'bold' 
           }}>
             <span style={{ color: COLORS.textBright }}>Grand Total:</span>

@@ -23,10 +23,17 @@ export default function App() {
       style={{ 
         minHeight: '100vh', 
         backgroundColor: COLORS.background, 
-        color: COLORS.text 
+        color: COLORS.text,
+        maxWidth: 1400,
+        margin: '0 auto'
       }}
     >
-      <header style={{ padding: 16, backgroundColor: COLORS.surface, borderBottom: `1px solid ${COLORS.border}` }}>
+      <header style={{ 
+        padding: '24px 40px', 
+        backgroundColor: COLORS.surface, 
+        borderBottom: `1px solid ${COLORS.border}`,
+        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)'
+      }}>
         <Tabs
           tabs={[
             { id: 'hotel', label: 'Hotel Notes Template' },
@@ -38,7 +45,7 @@ export default function App() {
         />
       </header>
 
-      <main style={{ padding: 16 }}>
+      <main style={{ padding: '40px' }}>
         {tab === 'hotel' ? <HotelNotesTemplate /> : tab === 'fee' ? <FeeCalculator /> : <Back2Back />}
       </main>
     </div>

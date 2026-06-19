@@ -23,22 +23,23 @@ const LABEL_STYLE = {
   paddingTop: 6, 
   lineHeight: 1.2, 
   whiteSpace: 'nowrap' as const,
-  color: COLORS.text
+  color: COLORS.text,
+  fontSize: 15
 }
 
 const INPUT_CONTAINER_STYLE = { 
-  width: 240, 
-  padding: 6, 
+  width: 260, 
+  padding: 8, 
   boxSizing: 'border-box' as const,
   backgroundColor: COLORS.surface,
   color: COLORS.textBright,
   border: `1px solid ${COLORS.border}`,
   borderRadius: 4,
-  fontSize: 14
+  fontSize: 15
 }
 
 // IE-compatible spacing helper
-const ROW_STYLE = { display: 'flex', alignItems: 'flex-start', marginBottom: 16 }
+const ROW_STYLE = { display: 'flex', alignItems: 'flex-start', marginBottom: 18 }
 const LABEL_MARGIN_STYLE = { marginRight: 16 }
 
 export default function Back2Back() {
@@ -64,12 +65,12 @@ res 2 : ${res2}`
       backgroundColor: COLORS.background 
     }}>
       <aside style={{ 
-        width: 420, 
-        paddingRight: 32, 
+        width: 480, 
+        paddingRight: 40, 
         borderRight: `1px solid ${COLORS.border}`,
-        marginRight: 32 
+        marginRight: 40 
       }}>
-        <h3 style={{ color: COLORS.textBright, marginBottom: 24 }}>Back to Back Reservations</h3>
+        <h3 style={{ color: COLORS.textBright, marginBottom: 32, fontSize: 28, marginTop: 0 }}>Back to Back Reservations</h3>
         
         <div>
           {/* 1st Confirmation Number */}
@@ -99,25 +100,26 @@ res 2 : ${res2}`
       </aside>
 
       <section style={{ flexGrow: 1 }}>
-        <h3 style={{ color: COLORS.textBright }}>Generated Text</h3>
+        <h3 style={{ color: COLORS.textBright, marginTop: 0, marginBottom: 20, fontSize: 28 }}>Generated Text</h3>
         <textarea
           readOnly
           value={generatedText}
-          rows={6}
+          rows={10}
           style={{ 
             width: '100%', 
-            padding: 8, 
+            padding: 16, 
             borderRadius: 6, 
             resize: 'vertical', 
             border: `1px solid ${COLORS.border}`,
             fontFamily: 'monospace',
-            fontSize: 14,
-            lineHeight: 1.5,
+            fontSize: 15,
+            lineHeight: 1.6,
             backgroundColor: COLORS.surface,
-            color: COLORS.textBright
+            color: COLORS.textBright,
+            boxSizing: 'border-box' as const
           }}
         />
-        <div style={{ marginTop: 8 }}>
+        <div style={{ marginTop: 20 }}>
           <CopyButton textToCopy={generatedText} />
         </div>
       </section>

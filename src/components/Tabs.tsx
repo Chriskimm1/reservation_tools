@@ -27,14 +27,16 @@ export default function Tabs({
           onClick={() => onChange(t.id)}
           className={`tab-btn ${active === t.id ? 'active' : ''}`}
           style={{
-            padding: '8px 12px',
+            padding: '12px 24px',
             borderRadius: 6,
             border: `1px solid ${active === t.id ? COLORS.accent : COLORS.border}`,
             cursor: 'pointer',
             background: active === t.id ? COLORS.accent : COLORS.surface,
             color: active === t.id ? COLORS.textBright : COLORS.text,
-            marginRight: index < tabs.length - 1 ? 8 : 0,
+            marginRight: index < tabs.length - 1 ? 12 : 0,
             transition: 'all 0.2s ease',
+            fontSize: 15,
+            fontWeight: active === t.id ? 600 : 400,
           }}
           onMouseOver={(e) => {
             if (active !== t.id) {

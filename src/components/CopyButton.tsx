@@ -42,21 +42,27 @@ export default function CopyButton({ textToCopy }: { textToCopy: string }) {
       <button 
         onClick={doCopy} 
         style={{ 
-          padding: '8px 16px', 
-          borderRadius: 4, 
+          padding: '12px 28px', 
+          borderRadius: 6, 
           backgroundColor: COLORS.accent,
           color: COLORS.textBright,
           border: `1px solid ${COLORS.accent}`,
           cursor: 'pointer',
-          fontWeight: 500,
+          fontWeight: 600,
+          fontSize: 15,
           transition: 'all 0.2s ease',
-          marginRight: 8,
+          marginRight: 12,
+          boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
         }}
         onMouseOver={(e) => {
           e.currentTarget.style.backgroundColor = COLORS.accentHover
+          e.currentTarget.style.transform = 'translateY(-1px)'
+          e.currentTarget.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.3)'
         }}
         onMouseOut={(e) => {
           e.currentTarget.style.backgroundColor = COLORS.accent
+          e.currentTarget.style.transform = 'translateY(0)'
+          e.currentTarget.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.2)'
         }}
       >
         Copy
@@ -65,10 +71,11 @@ export default function CopyButton({ textToCopy }: { textToCopy: string }) {
         style={{ 
           minWidth: 120, 
           color: status === 'copied' ? COLORS.success : status === 'empty' ? COLORS.error : COLORS.text,
-          fontSize: 14,
+          fontSize: 15,
+          fontWeight: 500,
         }}
       >
-        {status === 'copied' ? 'Copied ✓' : status === 'empty' ? 'Nothing to copy' : ''}
+        {status === 'copied' ? '✓ Copied!' : status === 'empty' ? 'Nothing to copy' : ''}
       </span>
     </div>
   )

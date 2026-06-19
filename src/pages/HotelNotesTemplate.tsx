@@ -23,13 +23,14 @@ const COLORS = {
 
 // Shared label styles
 const LABEL_STYLE = { 
-  width: 120, 
+  width: 140, 
   textAlign: 'right' as const, 
   fontWeight: 'bold', 
   paddingTop: 6, 
   lineHeight: 1.2, 
   whiteSpace: 'nowrap' as const,
-  color: COLORS.text
+  color: COLORS.text,
+  fontSize: 15
 }
 
 const CHECKBOX_LABEL_STYLE = { 
@@ -40,19 +41,20 @@ const CHECKBOX_LABEL_STYLE = {
 }
 
 const INPUT_CONTAINER_STYLE = { 
-  width: 240, 
-  padding: 6, 
+  width: 260, 
+  padding: 8, 
   boxSizing: 'border-box' as const,
   backgroundColor: COLORS.surface,
   color: COLORS.textBright,
   border: `1px solid ${COLORS.border}`,
-  borderRadius: 4
+  borderRadius: 4,
+  fontSize: 15
 }
 
 // IE-compatible spacing helper
-const ROW_STYLE = { display: 'flex', alignItems: 'flex-start', marginBottom: 12 }
-const LABEL_MARGIN_STYLE = { marginRight: 12 }
-const CHECKBOX_CHILD_MARGIN_STYLE = { marginRight: 6 }
+const ROW_STYLE = { display: 'flex', alignItems: 'flex-start', marginBottom: 18 }
+const LABEL_MARGIN_STYLE = { marginRight: 16 }
+const CHECKBOX_CHILD_MARGIN_STYLE = { marginRight: 8 }
 
 // Helper functions
 const formatTime = (hour: number, minute: number, period: 'AM' | 'PM'): string => {
@@ -141,9 +143,9 @@ export default function HotelNotesTemplate() {
   }, [arrivalMonth, arrivalDay, hasEta, etaHour, etaMinute, etaPeriod, hasEtd, etdHour, etdMinute, etdPeriod, roomType, numberOfNights, nightPrices, cxlPolicy, incidental, customNotes])
 
   return (
-    <div style={{ display: 'flex', backgroundColor: COLORS.background, minHeight: '100vh', padding: 24 }}>
-      <aside style={{ width: 400, marginRight: 32 }}>
-        <h3 style={{ color: COLORS.textBright, marginTop: 0 }}>Options</h3>
+    <div style={{ display: 'flex', backgroundColor: COLORS.background, minHeight: '70vh' }}>
+      <aside style={{ width: 480, marginRight: 40, paddingRight: 40, borderRight: `1px solid ${COLORS.border}` }}>
+        <h3 style={{ color: COLORS.textBright, marginTop: 0, marginBottom: 32, fontSize: 28 }}>Options</h3>
         
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           {/* Arrival Date */}
@@ -398,25 +400,26 @@ export default function HotelNotesTemplate() {
       </aside>
 
       <section style={{ flexGrow: 1 }}>
-        <h3 style={{ color: COLORS.textBright }}>Generated Text</h3>
+        <h3 style={{ color: COLORS.textBright, marginTop: 0, marginBottom: 20, fontSize: 28 }}>Generated Text</h3>
         <textarea
           readOnly
           value={assembledText}
-          rows={6}
+          rows={10}
           style={{ 
             width: '100%', 
-            padding: 8, 
+            padding: 16, 
             borderRadius: 6, 
             resize: 'vertical', 
             border: `1px solid ${COLORS.border}`,
             fontFamily: 'monospace',
-            fontSize: 14,
-            lineHeight: 1.5,
+            fontSize: 15,
+            lineHeight: 1.6,
             backgroundColor: COLORS.surface,
-            color: COLORS.textBright
+            color: COLORS.textBright,
+            boxSizing: 'border-box' as const
           }}
         />
-        <div style={{ marginTop: 8 }}>
+        <div style={{ marginTop: 20 }}>
           <CopyButton textToCopy={assembledText} />
         </div>
       </section>
