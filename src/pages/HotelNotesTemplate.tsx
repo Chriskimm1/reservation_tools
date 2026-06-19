@@ -7,6 +7,20 @@ const CANCELLATION_OPTIONS = ['48 hr', '72 hr', '2w', '30d'] as const
 const INCIDENTAL_OPTIONS = ['150', '500'] as const
 const TIME_MINUTES = [0, 15, 30, 45] as const
 
+// Dark theme colors
+const COLORS = {
+  background: '#1e1e1e',
+  surface: '#252526',
+  surfaceHover: '#2d2d30',
+  border: '#3e3e42',
+  borderFocus: '#007acc',
+  text: '#cccccc',
+  textBright: '#ffffff',
+  textMuted: '#858585',
+  accent: '#0e639c',
+  accentHover: '#1177bb'
+}
+
 // Shared label styles
 const LABEL_STYLE = { 
   width: 120, 
@@ -14,18 +28,31 @@ const LABEL_STYLE = {
   fontWeight: 'bold', 
   paddingTop: 6, 
   lineHeight: 1.2, 
-  whiteSpace: 'nowrap' as const 
+  whiteSpace: 'nowrap' as const,
+  color: COLORS.text
 }
 
 const CHECKBOX_LABEL_STYLE = { 
   ...LABEL_STYLE, 
   display: 'flex', 
   alignItems: 'center', 
-  justifyContent: 'flex-end', 
-  gap: 6 
+  justifyContent: 'flex-end'
 }
 
-const INPUT_CONTAINER_STYLE = { width: 240, padding: 6, boxSizing: 'border-box' as const }
+const INPUT_CONTAINER_STYLE = { 
+  width: 240, 
+  padding: 6, 
+  boxSizing: 'border-box' as const,
+  backgroundColor: COLORS.surface,
+  color: COLORS.textBright,
+  border: `1px solid ${COLORS.border}`,
+  borderRadius: 4
+}
+
+// IE-compatible spacing helper
+const ROW_STYLE = { display: 'flex', alignItems: 'flex-start', marginBottom: 12 }
+const LABEL_MARGIN_STYLE = { marginRight: 12 }
+const CHECKBOX_CHILD_MARGIN_STYLE = { marginRight: 6 }
 
 // Helper functions
 const formatTime = (hour: number, minute: number, period: 'AM' | 'PM'): string => {
@@ -96,17 +123,17 @@ export default function HotelNotesTemplate() {
   }
 
   const assembledText = useMemo(() => {
-    const dateStr = arrivalMonth && arrivalDay ? `${arrivalMonth}/${arrivalDay}` : '{date}'
-    const etaStr = hasEta ? formatTime(etaHour, etaMinute, etaPeriod) : 'not provided'
-    const etdStr = hasEtd ? formatTime(etdHour, etdMinute, etdPeriod) : 'not provided'
-    const roomStr = roomType || '{room type}'
-    const nightsStr = numberOfNights || '{nights}'
-    const incidentalStr = incidental || '{incidental}'
+    const dateStr = arrivalMonth && arrivalDay ? `${arrivalMonth}/${arrivalDay}` : '[DATE]'
+    const etaStr = hasEta ? formatTime(etaHour, etaMinute, etaPeriod) : '[NOT PROVIDED]'
+    const etdStr = hasEtd ? formatTime(etdHour, etdMinute, etdPeriod) : '[NOT PROVIDED]'
+    const roomStr = roomType || '[ROOM TYPE]'
+    const nightsStr = numberOfNights || '[NIGHTS]'
+    const incidentalStr = incidental || '[AMOUNT]'
     
     const filledPrices = nightPrices.filter(p => p.trim() !== '')
     const priceStr = filledPrices.length > 0 
       ? `[${groupConsecutivePrices(filledPrices).join(', ')}]`
-      : '[{price}]'
+      : '[PRICE]'
     
     const mainText = `ARR ${dateStr}, ${roomStr}, ${nightsStr} nts, ${priceStr}, cxl ${cxlPolicy} or forfeit last nt, incidental $${incidentalStr} p/n, $55 RF p/n, valid ID and CC @ c/i, ETA:${etaStr}, ETD:${etdStr}.`
     
@@ -114,40 +141,55 @@ export default function HotelNotesTemplate() {
   }, [arrivalMonth, arrivalDay, hasEta, etaHour, etaMinute, etaPeriod, hasEtd, etdHour, etdMinute, etdPeriod, roomType, numberOfNights, nightPrices, cxlPolicy, incidental, customNotes])
 
   return (
-    <div style={{ display: 'flex', gap: 32 }}>
-      <aside style={{ width: 400 }}>
-        <h3>Options</h3>
+    <div style={{ display: 'flex', backgroundColor: COLORS.background, minHeight: '100vh', padding: 24 }}>
+      <aside style={{ width: 400, marginRight: 32 }}>
+        <h3 style={{ color: COLORS.textBright, marginTop: 0 }}>Options</h3>
         
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
           {/* Arrival Date */}
-          <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-            <div style={LABEL_STYLE}>Arrival Date:</div>
-            <div style={{ display: 'flex', gap: 8, alignItems: 'center', width: 240 }}>
+          <div style={ROW_STYLE}>
+            <div style={{ ...LABEL_STYLE, ...LABEL_MARGIN_STYLE }}>Arrival Date:</div>
+            <div style={{ display: 'flex', alignItems: 'center', width: 240 }}>
               <input
                 type="text"
                 placeholder="MM"
                 value={arrivalMonth}
                 onChange={(e) => setArrivalMonth(e.target.value)}
-                style={{ width: 50, padding: 6 }}
+                style={{ 
+                  width: 50, 
+                  padding: 6, 
+                  marginRight: 8,
+                  backgroundColor: COLORS.surface,
+                  color: COLORS.textBright,
+                  border: `1px solid ${COLORS.border}`,
+                  borderRadius: 4
+                }}
               />
-              <span>/</span>
+              <span style={{ marginRight: 8, color: COLORS.text }}>/</span>
               <input
                 type="text"
                 placeholder="DD"
                 value={arrivalDay}
                 onChange={(e) => setArrivalDay(e.target.value)}
-                style={{ width: 50, padding: 6 }}
+                style={{ 
+                  width: 50, 
+                  padding: 6,
+                  backgroundColor: COLORS.surface,
+                  color: COLORS.textBright,
+                  border: `1px solid ${COLORS.border}`,
+                  borderRadius: 4
+                }}
               />
             </div>
           </div>
 
           {/* ETA */}
-          <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-            <div style={CHECKBOX_LABEL_STYLE}>
-              <input type="checkbox" checked={hasEta} onChange={(e) => setHasEta(e.target.checked)} />
+          <div style={ROW_STYLE}>
+            <div style={{ ...CHECKBOX_LABEL_STYLE, ...LABEL_MARGIN_STYLE }}>
+              <input type="checkbox" checked={hasEta} onChange={(e) => setHasEta(e.target.checked)} style={CHECKBOX_CHILD_MARGIN_STYLE} />
               <span>ETA:</span>
             </div>
-            <div style={{ display: 'flex', gap: 8, alignItems: 'center', width: 240 }}>
+            <div style={{ display: 'flex', alignItems: 'center', width: 240 }}>
               {hasEta && (
                 <>
                   <input
@@ -156,15 +198,44 @@ export default function HotelNotesTemplate() {
                     max="12"
                     value={etaHour}
                     onChange={(e) => setEtaHour(Math.max(1, Math.min(12, Number(e.target.value))))}
-                    style={{ width: 50, padding: 4 }}
+                    style={{ 
+                      width: 50, 
+                      padding: 4, 
+                      marginRight: 8,
+                      backgroundColor: COLORS.surface,
+                      color: COLORS.textBright,
+                      border: `1px solid ${COLORS.border}`,
+                      borderRadius: 4
+                    }}
                   />
-                  <span>:</span>
-                  <select value={etaMinute} onChange={(e) => setEtaMinute(Number(e.target.value))} style={{ padding: 4 }}>
+                  <span style={{ marginRight: 8, color: COLORS.text }}>:</span>
+                  <select 
+                    value={etaMinute} 
+                    onChange={(e) => setEtaMinute(Number(e.target.value))} 
+                    style={{ 
+                      padding: 4, 
+                      marginRight: 8,
+                      backgroundColor: COLORS.surface,
+                      color: COLORS.textBright,
+                      border: `1px solid ${COLORS.border}`,
+                      borderRadius: 4
+                    }}
+                  >
                     {TIME_MINUTES.map(min => (
                       <option key={min} value={min}>{min.toString().padStart(2, '0')}</option>
                     ))}
                   </select>
-                  <select value={etaPeriod} onChange={(e) => setEtaPeriod(e.target.value as 'AM' | 'PM')} style={{ padding: 4 }}>
+                  <select 
+                    value={etaPeriod} 
+                    onChange={(e) => setEtaPeriod(e.target.value as 'AM' | 'PM')} 
+                    style={{ 
+                      padding: 4,
+                      backgroundColor: COLORS.surface,
+                      color: COLORS.textBright,
+                      border: `1px solid ${COLORS.border}`,
+                      borderRadius: 4
+                    }}
+                  >
                     <option value="AM">AM</option>
                     <option value="PM">PM</option>
                   </select>
@@ -174,12 +245,12 @@ export default function HotelNotesTemplate() {
           </div>
 
           {/* ETD */}
-          <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-            <div style={CHECKBOX_LABEL_STYLE}>
-              <input type="checkbox" checked={hasEtd} onChange={(e) => setHasEtd(e.target.checked)} />
+          <div style={ROW_STYLE}>
+            <div style={{ ...CHECKBOX_LABEL_STYLE, ...LABEL_MARGIN_STYLE }}>
+              <input type="checkbox" checked={hasEtd} onChange={(e) => setHasEtd(e.target.checked)} style={CHECKBOX_CHILD_MARGIN_STYLE} />
               <span>ETD:</span>
             </div>
-            <div style={{ display: 'flex', gap: 8, alignItems: 'center', width: 240 }}>
+            <div style={{ display: 'flex', alignItems: 'center', width: 240 }}>
               {hasEtd && (
                 <>
                   <input
@@ -188,15 +259,44 @@ export default function HotelNotesTemplate() {
                     max="12"
                     value={etdHour}
                     onChange={(e) => setEtdHour(Math.max(1, Math.min(12, Number(e.target.value))))}
-                    style={{ width: 50, padding: 4 }}
+                    style={{ 
+                      width: 50, 
+                      padding: 4, 
+                      marginRight: 8,
+                      backgroundColor: COLORS.surface,
+                      color: COLORS.textBright,
+                      border: `1px solid ${COLORS.border}`,
+                      borderRadius: 4
+                    }}
                   />
-                  <span>:</span>
-                  <select value={etdMinute} onChange={(e) => setEtdMinute(Number(e.target.value))} style={{ padding: 4 }}>
+                  <span style={{ marginRight: 8, color: COLORS.text }}>:</span>
+                  <select 
+                    value={etdMinute} 
+                    onChange={(e) => setEtdMinute(Number(e.target.value))} 
+                    style={{ 
+                      padding: 4, 
+                      marginRight: 8,
+                      backgroundColor: COLORS.surface,
+                      color: COLORS.textBright,
+                      border: `1px solid ${COLORS.border}`,
+                      borderRadius: 4
+                    }}
+                  >
                     {TIME_MINUTES.map(min => (
                       <option key={min} value={min}>{min.toString().padStart(2, '0')}</option>
                     ))}
                   </select>
-                  <select value={etdPeriod} onChange={(e) => setEtdPeriod(e.target.value as 'AM' | 'PM')} style={{ padding: 4 }}>
+                  <select 
+                    value={etdPeriod} 
+                    onChange={(e) => setEtdPeriod(e.target.value as 'AM' | 'PM')} 
+                    style={{ 
+                      padding: 4,
+                      backgroundColor: COLORS.surface,
+                      color: COLORS.textBright,
+                      border: `1px solid ${COLORS.border}`,
+                      borderRadius: 4
+                    }}
+                  >
                     <option value="AM">AM</option>
                     <option value="PM">PM</option>
                   </select>
@@ -206,8 +306,8 @@ export default function HotelNotesTemplate() {
           </div>
 
           {/* Room Type */}
-          <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-            <div style={LABEL_STYLE}>Room Type:</div>
+          <div style={ROW_STYLE}>
+            <div style={{ ...LABEL_STYLE, ...LABEL_MARGIN_STYLE }}>Room Type:</div>
             <select value={roomType} onChange={(e) => setRoomType(e.target.value)} style={INPUT_CONTAINER_STYLE}>
               <option value="">Select room type</option>
               {ROOM_TYPES.map(type => (
@@ -217,8 +317,8 @@ export default function HotelNotesTemplate() {
           </div>
 
           {/* Number of Nights */}
-          <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-            <div style={LABEL_STYLE}>Nights:</div>
+          <div style={ROW_STYLE}>
+            <div style={{ ...LABEL_STYLE, ...LABEL_MARGIN_STYLE }}>Nights:</div>
             <input
               type="number"
               min="1"
@@ -230,9 +330,9 @@ export default function HotelNotesTemplate() {
           </div>
 
           {/* Pricing */}
-          <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-            <div style={LABEL_STYLE}>Price per Night:</div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, width: 240 }}>
+          <div style={ROW_STYLE}>
+            <div style={{ ...LABEL_STYLE, ...LABEL_MARGIN_STYLE }}>Price per Night:</div>
+            <div style={{ display: 'flex', flexDirection: 'column', width: 240 }}>
               {nightPrices.map((price, index) => (
                 <input
                   key={index}
@@ -240,15 +340,24 @@ export default function HotelNotesTemplate() {
                   value={price}
                   onChange={(e) => handlePriceChange(index, e.target.value)}
                   placeholder={`Night ${index + 1}`}
-                  style={{ padding: 6, width: '100%', boxSizing: 'border-box' }}
+                  style={{ 
+                    padding: 6, 
+                    width: '100%', 
+                    boxSizing: 'border-box', 
+                    marginBottom: index < nightPrices.length - 1 ? 6 : 0,
+                    backgroundColor: COLORS.surface,
+                    color: COLORS.textBright,
+                    border: `1px solid ${COLORS.border}`,
+                    borderRadius: 4
+                  }}
                 />
               ))}
             </div>
           </div>
 
           {/* Cancellation Policy */}
-          <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-            <div style={LABEL_STYLE}>Cancellation:</div>
+          <div style={ROW_STYLE}>
+            <div style={{ ...LABEL_STYLE, ...LABEL_MARGIN_STYLE }}>Cancellation:</div>
             <select value={cxlPolicy} onChange={(e) => setCxlPolicy(e.target.value)} style={INPUT_CONTAINER_STYLE}>
               {CANCELLATION_OPTIONS.map(opt => (
                 <option key={opt} value={opt}>{opt}</option>
@@ -257,8 +366,8 @@ export default function HotelNotesTemplate() {
           </div>
 
           {/* Incidental */}
-          <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-            <div style={LABEL_STYLE}>Incidental:</div>
+          <div style={ROW_STYLE}>
+            <div style={{ ...LABEL_STYLE, ...LABEL_MARGIN_STYLE }}>Incidental:</div>
             <select value={incidental} onChange={(e) => setIncidental(e.target.value)} style={INPUT_CONTAINER_STYLE}>
               {INCIDENTAL_OPTIONS.map(opt => (
                 <option key={opt} value={opt}>${opt}</option>
@@ -268,25 +377,44 @@ export default function HotelNotesTemplate() {
 
           {/* Custom Notes */}
           <div style={{ marginTop: 12 }}>
-            <label style={{ display: 'block', marginBottom: 6, fontWeight: 'bold' }}>Custom Notes:</label>
+            <label style={{ display: 'block', marginBottom: 6, fontWeight: 'bold', color: COLORS.text }}>Custom Notes:</label>
             <textarea
               value={customNotes}
               onChange={(e) => setCustomNotes(e.target.value)}
               placeholder="Add any custom notes here..."
               rows={4}
-              style={{ width: '100%', padding: 8, borderRadius: 6, resize: 'vertical', border: '1px solid #ccc' }}
+              style={{ 
+                width: '100%', 
+                padding: 8, 
+                borderRadius: 6, 
+                resize: 'vertical', 
+                border: `1px solid ${COLORS.border}`,
+                backgroundColor: COLORS.surface,
+                color: COLORS.textBright
+              }}
             />
           </div>
         </div>
       </aside>
 
-      <section style={{ flex: 1 }}>
-        <h3>Generated Text</h3>
+      <section style={{ flexGrow: 1 }}>
+        <h3 style={{ color: COLORS.textBright }}>Generated Text</h3>
         <textarea
           readOnly
           value={assembledText}
           rows={6}
-          style={{ width: '100%', padding: 8, borderRadius: 6, resize: 'vertical', border: '1px solid #ccc' }}
+          style={{ 
+            width: '100%', 
+            padding: 8, 
+            borderRadius: 6, 
+            resize: 'vertical', 
+            border: `1px solid ${COLORS.border}`,
+            fontFamily: 'monospace',
+            fontSize: 14,
+            lineHeight: 1.5,
+            backgroundColor: COLORS.surface,
+            color: COLORS.textBright
+          }}
         />
         <div style={{ marginTop: 8 }}>
           <CopyButton textToCopy={assembledText} />
