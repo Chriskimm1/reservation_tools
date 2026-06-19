@@ -11,7 +11,7 @@ const COLORS = {
   border: '#3e3e42',
   text: '#cccccc',
   textBright: '#ffffff',
-  accent: '#007acc',
+  accent: '#007acc', 
 }
 
 export default function App() {
