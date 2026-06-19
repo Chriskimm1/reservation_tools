@@ -1,172 +1,292 @@
 import { useMemo, useState } from 'react'
 import CopyButton from '../components/CopyButton'
 
-const OPTIONS = ['CXL','NONCXL', 'CI @', 'CO @', 'no eta provided', 'no etd provided']
+// Constants
+const ROOM_TYPES = ['RKD', 'RDD', 'PARL', 'SALN', 'EK', 'EQ', 'EPARL', 'ESALN'] as const
+const CANCELLATION_OPTIONS = ['48 hr', '72 hr', '2w', '30d'] as const
+const INCIDENTAL_OPTIONS = ['150', '500'] as const
+const TIME_MINUTES = [0, 15, 30, 45] as const
+
+// Shared label styles
+const LABEL_STYLE = { 
+  width: 120, 
+  textAlign: 'right' as const, 
+  fontWeight: 'bold', 
+  paddingTop: 6, 
+  lineHeight: 1.2, 
+  whiteSpace: 'nowrap' as const 
+}
+
+const CHECKBOX_LABEL_STYLE = { 
+  ...LABEL_STYLE, 
+  display: 'flex', 
+  alignItems: 'center', 
+  justifyContent: 'flex-end', 
+  gap: 6 
+}
+
+const INPUT_CONTAINER_STYLE = { width: 240, padding: 6, boxSizing: 'border-box' as const }
+
+// Helper functions
+const formatTime = (hour: number, minute: number, period: 'AM' | 'PM'): string => {
+  return `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')} ${period}`
+}
+
+const groupConsecutivePrices = (prices: string[]): string[] => {
+  const groupedPrices: string[] = []
+  let i = 0
+  
+  while (i < prices.length) {
+    const currentPrice = prices[i]
+    let count = 1
+    
+    while (i + count < prices.length && prices[i + count] === currentPrice) {
+      count++
+    }
+    
+    groupedPrices.push(count > 1 ? `$${currentPrice} x ${count}` : `$${currentPrice}`)
+    i += count
+  }
+  
+  return groupedPrices
+}
 
 export default function HotelNotesTemplate() {
-  const [selected, setSelected] = useState<string[]>([])
-  const [cxlHours, setCxlHours] = useState<number>(48)
-  const [ciHour, setCiHour] = useState<number>(3)
-  const [ciMinute, setCiMinute] = useState<number>(0)
-  const [ciPeriod, setCiPeriod] = useState<'AM' | 'PM'>('PM')
-  const [coHour, setCoHour] = useState<number>(11)
-  const [coMinute, setCoMinute] = useState<number>(0)
-  const [coPeriod, setCoPeriod] = useState<'AM' | 'PM'>('AM')
-  const [customNotes, setCustomNotes] = useState<string>('')
+  const [arrivalMonth, setArrivalMonth] = useState('')
+  const [arrivalDay, setArrivalDay] = useState('')
+  
+  const [hasEta, setHasEta] = useState(false)
+  const [etaHour, setEtaHour] = useState(3)
+  const [etaMinute, setEtaMinute] = useState(0)
+  const [etaPeriod, setEtaPeriod] = useState<'AM' | 'PM'>('PM')
+  
+  const [hasEtd, setHasEtd] = useState(false)
+  const [etdHour, setEtdHour] = useState(11)
+  const [etdMinute, setEtdMinute] = useState(0)
+  const [etdPeriod, setEtdPeriod] = useState<'AM' | 'PM'>('AM')
+  
+  const [roomType, setRoomType] = useState('')
+  const [numberOfNights, setNumberOfNights] = useState('1')
+  const [nightPrices, setNightPrices] = useState<string[]>([''])
+  
+  const [cxlPolicy, setCxlPolicy] = useState('72 hr')
+  const [incidental, setIncidental] = useState('150')
+  const [customNotes, setCustomNotes] = useState('')
 
-  const toggle = (value: string) => {
-    setSelected((s) => (s.includes(value) ? s.filter((x) => x !== value) : [...s, value]))
+  const handleNumberOfNightsChange = (value: string) => {
+    setNumberOfNights(value)
+    const nights = parseInt(value) || 1
+    const newPrices = [...nightPrices]
+    
+    if (nights > newPrices.length) {
+      while (newPrices.length < nights) {
+        newPrices.push('')
+      }
+    } else {
+      newPrices.length = nights
+    }
+    
+    setNightPrices(newPrices)
+  }
+
+  const handlePriceChange = (index: number, value: string) => {
+    const newPrices = [...nightPrices]
+    newPrices[index] = value
+    setNightPrices(newPrices)
   }
 
   const assembledText = useMemo(() => {
-    if (selected.length === 0 && !customNotes) return ''
+    const dateStr = arrivalMonth && arrivalDay ? `${arrivalMonth}/${arrivalDay}` : '{date}'
+    const etaStr = hasEta ? formatTime(etaHour, etaMinute, etaPeriod) : 'not provided'
+    const etdStr = hasEtd ? formatTime(etdHour, etdMinute, etdPeriod) : 'not provided'
+    const roomStr = roomType || '{room type}'
+    const nightsStr = numberOfNights || '{nights}'
+    const incidentalStr = incidental || '{incidental}'
     
-    const selectedItems = selected.map((s) => {
-      if (s === 'CXL') {
-        return `CXL ${cxlHours} HR`
-      }
-      if (s === 'CI @') {
-        const formattedHour = ciHour.toString().padStart(2, '0')
-        const formattedMinute = ciMinute.toString().padStart(2, '0')
-        return `CI @ ${formattedHour}:${formattedMinute} ${ciPeriod}`
-      }
-      if (s === 'CO @') {
-        const formattedHour = coHour.toString().padStart(2, '0')
-        const formattedMinute = coMinute.toString().padStart(2, '0')
-        return `CO @ ${formattedHour}:${formattedMinute} ${coPeriod}`
-      }
-      return s
-    })
+    const filledPrices = nightPrices.filter(p => p.trim() !== '')
+    const priceStr = filledPrices.length > 0 
+      ? `[${groupConsecutivePrices(filledPrices).join(', ')}]`
+      : '[{price}]'
     
-    const parts = [...selectedItems]
-    if (customNotes.trim()) {
-      parts.push(customNotes.trim())
-    }
+    const mainText = `ARR ${dateStr}, ${roomStr}, ${nightsStr} nts, ${priceStr}, cxl ${cxlPolicy} or forfeit last nt, incidental $${incidentalStr} p/n, $55 RF p/n, valid ID and CC @ c/i, ETA:${etaStr}, ETD:${etdStr}.`
     
-    return parts.join('\n')
-  }, [selected, ciHour, ciMinute, ciPeriod, coHour, coMinute, coPeriod, customNotes, cxlHours])
+    return customNotes.trim() ? `${mainText}\n\n${customNotes.trim()}` : mainText
+  }, [arrivalMonth, arrivalDay, hasEta, etaHour, etaMinute, etaPeriod, hasEtd, etdHour, etdMinute, etdPeriod, roomType, numberOfNights, nightPrices, cxlPolicy, incidental, customNotes])
 
   return (
     <div style={{ display: 'flex', gap: 32 }}>
-      <aside style={{ width: 280 }}>
+      <aside style={{ width: 400 }}>
         <h3>Options</h3>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          {OPTIONS.filter((opt) => {
-            // Hide "no eta provided" if "CI @" is selected
-            if (opt === 'no eta provided' && selected.includes('CI @')) {
-              return false
-            }
-            // Hide "no etd provided" if "CO @" is selected
-            if (opt === 'no etd provided' && selected.includes('CO @')) {
-              return false
-            }
-            return true
-          }).map((opt) => (
-            <div key={opt}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <input
-                  type="checkbox"
-                  checked={selected.includes(opt)}
-                  onChange={() => toggle(opt)}
-                />
-                <span style={{ textTransform: 'uppercase' }}>{opt}</span>
-                {opt === 'CXL' && selected.includes('CXL') && (
-                  <select
-                    value={cxlHours}
-                    onChange={(e) => setCxlHours(Number(e.target.value))}
-                    style={{ padding: 4, marginLeft: 4 }}
-                  >
-                    <option value={24}>24</option>
-                    <option value={48}>48</option>
-                    <option value={72}>72</option>
-                  </select>
-                )}
-                {opt === 'CI @' && selected.includes('CI @') && (
-                  <div style={{ display: 'flex', gap: 4, alignItems: 'center', marginLeft: 4 }}>
-                    <input
-                      type="number"
-                      min="1"
-                      max="12"
-                      value={ciHour}
-                      onChange={(e) => setCiHour(Math.max(1, Math.min(12, Number(e.target.value))))}
-                      style={{ width: 50, padding: 4 }}
-                    />
-                    <span>:</span>
-                    <select
-                      value={ciMinute}
-                      onChange={(e) => setCiMinute(Number(e.target.value))}
-                      style={{ padding: 4 }}
-                    >
-                      <option value={0}>00</option>
-                      <option value={15}>15</option>
-                      <option value={30}>30</option>
-                      <option value={45}>45</option>
-                    </select>
-                    <select
-                      value={ciPeriod}
-                      onChange={(e) => setCiPeriod(e.target.value as 'AM' | 'PM')}
-                      style={{ padding: 4 }}
-                    >
-                      <option value="AM">AM</option>
-                      <option value="PM">PM</option>
-                    </select>
-                  </div>
-                )}
-                {opt === 'CO @' && selected.includes('CO @') && (
-                  <div style={{ display: 'flex', gap: 4, alignItems: 'center', marginLeft: 4 }}>
-                    <input
-                      type="number"
-                      min="1"
-                      max="12"
-                      value={coHour}
-                      onChange={(e) => setCoHour(Math.max(1, Math.min(12, Number(e.target.value))))}
-                      style={{ width: 50, padding: 4 }}
-                    />
-                    <span>:</span>
-                    <select
-                      value={coMinute}
-                      onChange={(e) => setCoMinute(Number(e.target.value))}
-                      style={{ padding: 4 }}
-                    >
-                      <option value={0}>00</option>
-                      <option value={15}>15</option>
-                      <option value={30}>30</option>
-                      <option value={45}>45</option>
-                    </select>
-                    <select
-                      value={coPeriod}
-                      onChange={(e) => setCoPeriod(e.target.value as 'AM' | 'PM')}
-                      style={{ padding: 4 }}
-                    >
-                      <option value="AM">AM</option>
-                      <option value="PM">PM</option>
-                    </select>
-                  </div>
-                )}
-              </label>
+        
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          {/* Arrival Date */}
+          <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+            <div style={LABEL_STYLE}>Arrival Date:</div>
+            <div style={{ display: 'flex', gap: 8, alignItems: 'center', width: 240 }}>
+              <input
+                type="text"
+                placeholder="MM"
+                value={arrivalMonth}
+                onChange={(e) => setArrivalMonth(e.target.value)}
+                style={{ width: 50, padding: 6 }}
+              />
+              <span>/</span>
+              <input
+                type="text"
+                placeholder="DD"
+                value={arrivalDay}
+                onChange={(e) => setArrivalDay(e.target.value)}
+                style={{ width: 50, padding: 6 }}
+              />
             </div>
-          ))}
-        </div>
+          </div>
 
-        <div style={{ marginTop: 24 }}>
-          <h4 style={{ marginTop: 0, marginBottom: 8 }}>Custom Notes</h4>
-          <textarea
-            value={customNotes}
-            onChange={(e) => setCustomNotes(e.target.value)}
-            placeholder="Add any custom notes here..."
-            rows={4}
-            style={{ width: '100%', padding: 8, borderRadius: 6, resize: 'vertical', border: '1px solid #ccc' }}
-          />
+          {/* ETA */}
+          <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+            <div style={CHECKBOX_LABEL_STYLE}>
+              <input type="checkbox" checked={hasEta} onChange={(e) => setHasEta(e.target.checked)} />
+              <span>ETA:</span>
+            </div>
+            <div style={{ display: 'flex', gap: 8, alignItems: 'center', width: 240 }}>
+              {hasEta && (
+                <>
+                  <input
+                    type="number"
+                    min="1"
+                    max="12"
+                    value={etaHour}
+                    onChange={(e) => setEtaHour(Math.max(1, Math.min(12, Number(e.target.value))))}
+                    style={{ width: 50, padding: 4 }}
+                  />
+                  <span>:</span>
+                  <select value={etaMinute} onChange={(e) => setEtaMinute(Number(e.target.value))} style={{ padding: 4 }}>
+                    {TIME_MINUTES.map(min => (
+                      <option key={min} value={min}>{min.toString().padStart(2, '0')}</option>
+                    ))}
+                  </select>
+                  <select value={etaPeriod} onChange={(e) => setEtaPeriod(e.target.value as 'AM' | 'PM')} style={{ padding: 4 }}>
+                    <option value="AM">AM</option>
+                    <option value="PM">PM</option>
+                  </select>
+                </>
+              )}
+            </div>
+          </div>
+
+          {/* ETD */}
+          <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+            <div style={CHECKBOX_LABEL_STYLE}>
+              <input type="checkbox" checked={hasEtd} onChange={(e) => setHasEtd(e.target.checked)} />
+              <span>ETD:</span>
+            </div>
+            <div style={{ display: 'flex', gap: 8, alignItems: 'center', width: 240 }}>
+              {hasEtd && (
+                <>
+                  <input
+                    type="number"
+                    min="1"
+                    max="12"
+                    value={etdHour}
+                    onChange={(e) => setEtdHour(Math.max(1, Math.min(12, Number(e.target.value))))}
+                    style={{ width: 50, padding: 4 }}
+                  />
+                  <span>:</span>
+                  <select value={etdMinute} onChange={(e) => setEtdMinute(Number(e.target.value))} style={{ padding: 4 }}>
+                    {TIME_MINUTES.map(min => (
+                      <option key={min} value={min}>{min.toString().padStart(2, '0')}</option>
+                    ))}
+                  </select>
+                  <select value={etdPeriod} onChange={(e) => setEtdPeriod(e.target.value as 'AM' | 'PM')} style={{ padding: 4 }}>
+                    <option value="AM">AM</option>
+                    <option value="PM">PM</option>
+                  </select>
+                </>
+              )}
+            </div>
+          </div>
+
+          {/* Room Type */}
+          <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+            <div style={LABEL_STYLE}>Room Type:</div>
+            <select value={roomType} onChange={(e) => setRoomType(e.target.value)} style={INPUT_CONTAINER_STYLE}>
+              <option value="">Select room type</option>
+              {ROOM_TYPES.map(type => (
+                <option key={type} value={type}>{type}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Number of Nights */}
+          <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+            <div style={LABEL_STYLE}>Nights:</div>
+            <input
+              type="number"
+              min="1"
+              value={numberOfNights}
+              onChange={(e) => handleNumberOfNightsChange(e.target.value)}
+              placeholder="e.g. 3"
+              style={INPUT_CONTAINER_STYLE}
+            />
+          </div>
+
+          {/* Pricing */}
+          <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+            <div style={LABEL_STYLE}>Price per Night:</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, width: 240 }}>
+              {nightPrices.map((price, index) => (
+                <input
+                  key={index}
+                  type="text"
+                  value={price}
+                  onChange={(e) => handlePriceChange(index, e.target.value)}
+                  placeholder={`Night ${index + 1}`}
+                  style={{ padding: 6, width: '100%', boxSizing: 'border-box' }}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Cancellation Policy */}
+          <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+            <div style={LABEL_STYLE}>Cancellation:</div>
+            <select value={cxlPolicy} onChange={(e) => setCxlPolicy(e.target.value)} style={INPUT_CONTAINER_STYLE}>
+              {CANCELLATION_OPTIONS.map(opt => (
+                <option key={opt} value={opt}>{opt}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Incidental */}
+          <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+            <div style={LABEL_STYLE}>Incidental:</div>
+            <select value={incidental} onChange={(e) => setIncidental(e.target.value)} style={INPUT_CONTAINER_STYLE}>
+              {INCIDENTAL_OPTIONS.map(opt => (
+                <option key={opt} value={opt}>${opt}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Custom Notes */}
+          <div style={{ marginTop: 12 }}>
+            <label style={{ display: 'block', marginBottom: 6, fontWeight: 'bold' }}>Custom Notes:</label>
+            <textarea
+              value={customNotes}
+              onChange={(e) => setCustomNotes(e.target.value)}
+              placeholder="Add any custom notes here..."
+              rows={4}
+              style={{ width: '100%', padding: 8, borderRadius: 6, resize: 'vertical', border: '1px solid #ccc' }}
+            />
+          </div>
         </div>
       </aside>
 
       <section style={{ flex: 1 }}>
-        <h3>Selected Text</h3>
+        <h3>Generated Text</h3>
         <textarea
           readOnly
           value={assembledText}
           rows={6}
-          style={{ width: '100%', padding: 8, borderRadius: 6, resize: 'vertical' }}
+          style={{ width: '100%', padding: 8, borderRadius: 6, resize: 'vertical', border: '1px solid #ccc' }}
         />
         <div style={{ marginTop: 8 }}>
           <CopyButton textToCopy={assembledText} />
