@@ -126,8 +126,8 @@ export default function HotelNotesTemplate() {
 
   const assembledText = useMemo(() => {
     const dateStr = arrivalMonth && arrivalDay ? `${arrivalMonth}/${arrivalDay}` : '[DATE]'
-    const etaStr = hasEta ? formatTime(etaHour, etaMinute, etaPeriod) : '[NOT PROVIDED]'
-    const etdStr = hasEtd ? formatTime(etdHour, etdMinute, etdPeriod) : '[NOT PROVIDED]'
+    const etaStr = hasEta ? formatTime(etaHour, etaMinute, etaPeriod) : 'n/a'
+    const etdStr = hasEtd ? formatTime(etdHour, etdMinute, etdPeriod) : 'n/a'
     const roomStr = roomType || '[ROOM TYPE]'
     const nightsStr = numberOfNights || '[NIGHTS]'
     const incidentalStr = incidental || '[AMOUNT]'
