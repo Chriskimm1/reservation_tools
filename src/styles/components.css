@@ -107,7 +107,7 @@
 }
 
 .field-textarea--mono {
-  font-family: 'SF Mono', Monaco, 'Cascadia Code', Consolas, 'Courier New', monospace;
+  font-family: var(--mono);
   font-size: 14px;
 }
 
@@ -368,7 +368,7 @@
 .static-entry__value {
   font-weight: 600;
   color: var(--color-text-bright);
-  font-family: monospace;
+  font-family: var(--mono);
 }
 
 .language-line-number {
@@ -376,7 +376,7 @@
   font-weight: 600;
   color: var(--color-accent);
   margin: 0;
-  font-family: monospace;
+  font-family: var(--mono);
 }
 
 /* ═══════════════════════════════════════════════════════════
