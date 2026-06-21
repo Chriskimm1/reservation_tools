@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 // ── Types ────────────────────────────────────────────────────
 interface GuideCard {
@@ -326,11 +326,31 @@ Click OK`,
 
 // ── Component ────────────────────────────────────────────────
 export default function Opera() {
-  const [search, setSearch] = useState('')
-  const [selectedGuide, setSelectedGuide] = useState<string>('')
-  const [expandedCard, setExpandedCard] = useState<string | null>(null)
-  const [activeTab, setActiveTab] = useState<Record<string, 'guide' | 'notification'>>({})
+  const [search, setSearch] = useState(() => localStorage.getItem('opera_search') || '')
+  const [selectedGuide, setSelectedGuide] = useState<string>(() => localStorage.getItem('opera_selectedGuide') || '')
+  const [expandedCard, setExpandedCard] = useState<string | null>(() => localStorage.getItem('opera_expandedCard') || null)
+  const [activeTab, setActiveTab] = useState<Record<string, 'guide' | 'notification'>>(() => {
+    const saved = localStorage.getItem('opera_activeTab')
+    return saved ? JSON.parse(saved) : {}
+  })
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+
+  // Save to localStorage
+  useEffect(() => {
+    localStorage.setItem('opera_search', search)
+  }, [search])
+
+  useEffect(() => {
+    localStorage.setItem('opera_selectedGuide', selectedGuide)
+  }, [selectedGuide])
+
+  useEffect(() => {
+    localStorage.setItem('opera_expandedCard', expandedCard || '')
+  }, [expandedCard])
+
+  useEffect(() => {
+    localStorage.setItem('opera_activeTab', JSON.stringify(activeTab))
+  }, [activeTab])
 
   const filteredGuides = GUIDES.filter(guide => {
     const searchLower = search.toLowerCase()

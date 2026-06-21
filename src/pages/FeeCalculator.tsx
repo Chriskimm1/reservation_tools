@@ -1,12 +1,20 @@
-import { useState, useMemo, useRef } from 'react'
+import { useState, useMemo, useRef, useEffect } from 'react'
 
 const RESORT_FEE_PER_NIGHT = 55
 const TAX_RATE = 0.1338
 
 export default function FeeCalculator() {
-  const [nightCosts, setNightCosts] = useState<number[]>([])
-  const [inputValue, setInputValue]   = useState('')
+  const [nightCosts, setNightCosts] = useState<number[]>(() => {
+    const saved = localStorage.getItem('feeCalc_nightCosts')
+    return saved ? JSON.parse(saved) : []
+  })
+  const [inputValue, setInputValue] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
+
+  // Save to localStorage whenever nightCosts changes
+  useEffect(() => {
+    localStorage.setItem('feeCalc_nightCosts', JSON.stringify(nightCosts))
+  }, [nightCosts])
 
   const addCost = () => {
     const val = parseFloat(inputValue)
@@ -19,6 +27,12 @@ export default function FeeCalculator() {
 
   const removeCost = (index: number) => {
     setNightCosts(prev => prev.filter((_, i) => i !== index))
+  }
+
+  const resetAll = () => {
+    setNightCosts([])
+    setInputValue('')
+    localStorage.removeItem('feeCalc_nightCosts')
   }
 
   const calc = useMemo(() => {
@@ -64,11 +78,36 @@ export default function FeeCalculator() {
 
         {nightCosts.length > 0 && (
           <>
-            <p className="field-hint" style={{ marginTop: 16 }}>
-              <strong style={{ color: 'var(--color-text)' }}>
-                {nightCosts.length} night{nightCosts.length !== 1 ? 's' : ''} added
-              </strong>
-            </p>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 16 }}>
+              <p className="field-hint" style={{ margin: 0 }}>
+                <strong style={{ color: 'var(--color-text)' }}>
+                  {nightCosts.length} night{nightCosts.length !== 1 ? 's' : ''} added
+                </strong>
+              </p>
+              <button 
+                onClick={resetAll}
+                style={{
+                  background: 'none',
+                  border: '1px solid var(--color-border)',
+                  borderRadius: '4px',
+                  padding: '6px 12px',
+                  fontSize: '13px',
+                  color: 'var(--color-text)',
+                  cursor: 'pointer',
+                  transition: 'all 0.15s',
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.borderColor = 'var(--color-error)'
+                  e.currentTarget.style.color = 'var(--color-error)'
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.borderColor = 'var(--color-border)'
+                  e.currentTarget.style.color = 'var(--color-text)'
+                }}
+              >
+                Clear All
+              </button>
+            </div>
             <div className="chips">
               {nightCosts.map((cost, i) => (
                 <span key={i} className="chip">

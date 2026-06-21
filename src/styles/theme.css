@@ -25,23 +25,23 @@
 }
 
 /* ── Light ────────────────────────────────────────────────────
-   Clean white surfaces, slate text, same blue accent.
-   Think: Stripe, Notion, Linear light.
+   Clean, modern light theme with indigo accent.
+   Think: Apple, Stripe, Notion, Linear light.
    ──────────────────────────────────────────────────────────── */
 [data-theme="light"] {
-  --color-bg:           #f1f5f9;   /* slate-100 — page bg          */
+  --color-bg:           #f8fafc;   /* slate-50 — softer page bg    */
   --color-surface:      #ffffff;   /* pure white cards             */
-  --color-surface-hover:#e8edf5;   /* hover on surface elements    */
-  --color-border:       #cbd5e1;   /* slate-300 — crisp border     */
-  --color-border-focus: #3b82f6;   /* blue-500                     */
+  --color-surface-hover:#f1f5f9;   /* slate-100 hover              */
+  --color-border:       #e2e8f0;   /* slate-200 — softer border    */
+  --color-border-focus: #6366f1;   /* indigo-500                   */
   --color-text:         #475569;   /* slate-600 — body text        */
   --color-text-bright:  #0f172a;   /* slate-900 — headings/values  */
   --color-text-muted:   #94a3b8;   /* slate-400 — hints/secondary  */
-  --color-accent:       #3b82f6;   /* blue-500 — same as dark      */
-  --color-accent-hover: #2563eb;   /* blue-600                     */
-  --color-chip-bg:      #dbeafe;   /* blue-100                     */
-  --color-chip-text:    #1e40af;   /* blue-800                     */
-  --color-chip-x:       #3b82f6;   /* blue-500                     */
-  --color-success:      #059669;   /* emerald-600                  */
-  --color-error:        #dc2626;   /* red-600                      */
+  --color-accent:       #6366f1;   /* indigo-500 — modern purple   */
+  --color-accent-hover: #4f46e5;   /* indigo-600                   */
+  --color-chip-bg:      #6366f1;   /* indigo-500 — filled chips    */
+  --color-chip-text:    #ffffff;   /* white text on indigo         */
+  --color-chip-x:       #ffffff;   /* white x on indigo            */
+  --color-success:      #10b981;   /* emerald-500                  */
+  --color-error:        #ef4444;   /* red-500                      */
 }

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 
 // ── Types ────────────────────────────────────────────────────
 interface DirectoryEntry {
@@ -43,9 +43,22 @@ const ALL_ENTRIES = [...DUAL_LOCATION_ENTRIES, ...GENERAL_ENTRIES]
 
 // ── Component ────────────────────────────────────────────────
 export default function Directory() {
-  const [search, setSearch] = useState('')
-  const [sortBy, setSortBy] = useState<'department' | 'wynn' | 'encore' | 'general'>('department')
-  const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc')
+  const [search, setSearch] = useState(() => localStorage.getItem('directory_search') || '')
+  const [sortBy, setSortBy] = useState<'department' | 'wynn' | 'encore' | 'general'>(() => (localStorage.getItem('directory_sortBy') as any) || 'department')
+  const [sortDir, setSortDir] = useState<'asc' | 'desc'>(() => (localStorage.getItem('directory_sortDir') as 'asc' | 'desc') || 'asc')
+
+  // Save to localStorage
+  useEffect(() => {
+    localStorage.setItem('directory_search', search)
+  }, [search])
+
+  useEffect(() => {
+    localStorage.setItem('directory_sortBy', sortBy)
+  }, [sortBy])
+
+  useEffect(() => {
+    localStorage.setItem('directory_sortDir', sortDir)
+  }, [sortDir])
 
   const filteredAndSorted = useMemo(() => {
     let results = ALL_ENTRIES.filter(entry => {

@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react'
+import { useMemo, useRef, useState, useEffect } from 'react'
 import CopyButton from '../components/CopyButton'
 
 // ── Constants ────────────────────────────────────────────────
@@ -31,31 +31,95 @@ const groupConsecutivePrices = (prices: string[]): string[] => {
 // ── Component ────────────────────────────────────────────────
 export default function HotelNotesTemplate() {
   // Arrival date
-  const [arrivalMonth, setArrivalMonth] = useState('')
-  const [arrivalDay, setArrivalDay] = useState('')
+  const [arrivalMonth, setArrivalMonth] = useState(() => localStorage.getItem('hotelNotes_arrivalMonth') || '')
+  const [arrivalDay, setArrivalDay] = useState(() => localStorage.getItem('hotelNotes_arrivalDay') || '')
 
   // ETA
-  const [hasEta, setHasEta] = useState(false)
-  const [etaHour, setEtaHour] = useState(3)
-  const [etaMin, setEtaMin] = useState(0)
-  const [etaPeriod, setEtaPeriod] = useState<'AM' | 'PM'>('PM')
+  const [hasEta, setHasEta] = useState(() => localStorage.getItem('hotelNotes_hasEta') === 'true')
+  const [etaHour, setEtaHour] = useState(() => Number(localStorage.getItem('hotelNotes_etaHour')) || 3)
+  const [etaMin, setEtaMin] = useState(() => Number(localStorage.getItem('hotelNotes_etaMin')) || 0)
+  const [etaPeriod, setEtaPeriod] = useState<'AM' | 'PM'>(() => (localStorage.getItem('hotelNotes_etaPeriod') as 'AM' | 'PM') || 'PM')
 
   // ETD
-  const [hasEtd, setHasEtd] = useState(false)
-  const [etdHour, setEtdHour] = useState(11)
-  const [etdMin, setEtdMin] = useState(0)
-  const [etdPeriod, setEtdPeriod] = useState<'AM' | 'PM'>('AM')
+  const [hasEtd, setHasEtd] = useState(() => localStorage.getItem('hotelNotes_hasEtd') === 'true')
+  const [etdHour, setEtdHour] = useState(() => Number(localStorage.getItem('hotelNotes_etdHour')) || 11)
+  const [etdMin, setEtdMin] = useState(() => Number(localStorage.getItem('hotelNotes_etdMin')) || 0)
+  const [etdPeriod, setEtdPeriod] = useState<'AM' | 'PM'>(() => (localStorage.getItem('hotelNotes_etdPeriod') as 'AM' | 'PM') || 'AM')
 
   // Room and costs
-  const [roomType, setRoomType] = useState('')
-  const [nightCosts, setNightCosts] = useState<number[]>([])
+  const [roomType, setRoomType] = useState(() => localStorage.getItem('hotelNotes_roomType') || '')
+  const [nightCosts, setNightCosts] = useState<number[]>(() => {
+    const saved = localStorage.getItem('hotelNotes_nightCosts')
+    return saved ? JSON.parse(saved) : []
+  })
   const [costInput, setCostInput] = useState('')
   const costInputRef = useRef<HTMLInputElement>(null)
 
   // Policies and notes
-  const [cxlPolicy, setCxlPolicy] = useState('72 hr')
-  const [incidental, setIncidental] = useState('150')
-  const [customNotes, setCustomNotes] = useState('')
+  const [cxlPolicy, setCxlPolicy] = useState(() => localStorage.getItem('hotelNotes_cxlPolicy') || '72 hr')
+  const [incidental, setIncidental] = useState(() => localStorage.getItem('hotelNotes_incidental') || '150')
+  const [customNotes, setCustomNotes] = useState(() => localStorage.getItem('hotelNotes_customNotes') || '')
+
+  // Save to localStorage whenever values change
+  useEffect(() => {
+    localStorage.setItem('hotelNotes_arrivalMonth', arrivalMonth)
+  }, [arrivalMonth])
+
+  useEffect(() => {
+    localStorage.setItem('hotelNotes_arrivalDay', arrivalDay)
+  }, [arrivalDay])
+
+  useEffect(() => {
+    localStorage.setItem('hotelNotes_hasEta', String(hasEta))
+  }, [hasEta])
+
+  useEffect(() => {
+    localStorage.setItem('hotelNotes_etaHour', String(etaHour))
+  }, [etaHour])
+
+  useEffect(() => {
+    localStorage.setItem('hotelNotes_etaMin', String(etaMin))
+  }, [etaMin])
+
+  useEffect(() => {
+    localStorage.setItem('hotelNotes_etaPeriod', etaPeriod)
+  }, [etaPeriod])
+
+  useEffect(() => {
+    localStorage.setItem('hotelNotes_hasEtd', String(hasEtd))
+  }, [hasEtd])
+
+  useEffect(() => {
+    localStorage.setItem('hotelNotes_etdHour', String(etdHour))
+  }, [etdHour])
+
+  useEffect(() => {
+    localStorage.setItem('hotelNotes_etdMin', String(etdMin))
+  }, [etdMin])
+
+  useEffect(() => {
+    localStorage.setItem('hotelNotes_etdPeriod', etdPeriod)
+  }, [etdPeriod])
+
+  useEffect(() => {
+    localStorage.setItem('hotelNotes_roomType', roomType)
+  }, [roomType])
+
+  useEffect(() => {
+    localStorage.setItem('hotelNotes_nightCosts', JSON.stringify(nightCosts))
+  }, [nightCosts])
+
+  useEffect(() => {
+    localStorage.setItem('hotelNotes_cxlPolicy', cxlPolicy)
+  }, [cxlPolicy])
+
+  useEffect(() => {
+    localStorage.setItem('hotelNotes_incidental', incidental)
+  }, [incidental])
+
+  useEffect(() => {
+    localStorage.setItem('hotelNotes_customNotes', customNotes)
+  }, [customNotes])
 
   const addCost = () => {
     const val = parseFloat(costInput)
@@ -68,6 +132,43 @@ export default function HotelNotesTemplate() {
 
   const removeCost = (index: number) => {
     setNightCosts(prev => prev.filter((_, i) => i !== index))
+  }
+
+  const resetAll = () => {
+    // Clear all state
+    setArrivalMonth('')
+    setArrivalDay('')
+    setHasEta(false)
+    setEtaHour(3)
+    setEtaMin(0)
+    setEtaPeriod('PM')
+    setHasEtd(false)
+    setEtdHour(11)
+    setEtdMin(0)
+    setEtdPeriod('AM')
+    setRoomType('')
+    setNightCosts([])
+    setCostInput('')
+    setCxlPolicy('72 hr')
+    setIncidental('150')
+    setCustomNotes('')
+
+    // Clear localStorage
+    localStorage.removeItem('hotelNotes_arrivalMonth')
+    localStorage.removeItem('hotelNotes_arrivalDay')
+    localStorage.removeItem('hotelNotes_hasEta')
+    localStorage.removeItem('hotelNotes_etaHour')
+    localStorage.removeItem('hotelNotes_etaMin')
+    localStorage.removeItem('hotelNotes_etaPeriod')
+    localStorage.removeItem('hotelNotes_hasEtd')
+    localStorage.removeItem('hotelNotes_etdHour')
+    localStorage.removeItem('hotelNotes_etdMin')
+    localStorage.removeItem('hotelNotes_etdPeriod')
+    localStorage.removeItem('hotelNotes_roomType')
+    localStorage.removeItem('hotelNotes_nightCosts')
+    localStorage.removeItem('hotelNotes_cxlPolicy')
+    localStorage.removeItem('hotelNotes_incidental')
+    localStorage.removeItem('hotelNotes_customNotes')
   }
 
   const assembledText = useMemo(() => {
@@ -110,7 +211,32 @@ export default function HotelNotesTemplate() {
 
       {/* ── LEFT: form ── */}
       <aside className="page-sidebar">
-        <h2 className="page-heading">Options</h2>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 32 }}>
+          <h2 className="page-heading" style={{ margin: 0 }}>Options</h2>
+          <button 
+            onClick={resetAll}
+            style={{
+              background: 'none',
+              border: '1px solid var(--color-border)',
+              borderRadius: '4px',
+              padding: '6px 12px',
+              fontSize: '13px',
+              color: 'var(--color-text)',
+              cursor: 'pointer',
+              transition: 'all 0.15s',
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.borderColor = 'var(--color-error)'
+              e.currentTarget.style.color = 'var(--color-error)'
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.borderColor = 'var(--color-border)'
+              e.currentTarget.style.color = 'var(--color-text)'
+            }}
+          >
+            Clear All
+          </button>
+        </div>
 
         {/* Arrival Date */}
         <div className="form-row">
