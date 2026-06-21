@@ -215,10 +215,13 @@ export default function HotelNotesTemplate() {
       {/* ── RIGHT: output ── */}
       <section className="page-content">
         <h2 className="page-heading">Generated Text</h2>
-        <textarea readOnly value={assembledText} rows={10}
-          className="field-textarea field-textarea--mono" />
-        <div style={{ marginTop: 20 }}>
-          <CopyButton textToCopy={assembledText} />
+        <div style={{ maxWidth: 600 }}>
+          <textarea readOnly value={assembledText} rows={10}
+            className="field-textarea field-textarea--mono"
+            style={{ width: '100%' }} />
+          <div style={{ marginTop: 12, display: 'flex', justifyContent: 'flex-start' }}>
+            <CopyButton textToCopy={assembledText} />
+          </div>
         </div>
       </section>
 

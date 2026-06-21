@@ -12,8 +12,8 @@
 .page-sidebar {
   width: 480px;
   flex-shrink: 0;
-  padding-right: 40px;
-  margin-right: 40px;
+  padding-right: 60px;
+  margin-right: 60px;
 }
 .page-content {
   flex-grow: 1;

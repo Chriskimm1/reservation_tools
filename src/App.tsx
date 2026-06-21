@@ -4,13 +4,15 @@ import Tabs from './components/Tabs'
 import HotelNotesTemplate from './pages/HotelNotesTemplate'
 import FeeCalculator from './pages/FeeCalculator'
 import Directory from './pages/Directory'
+import Opera from './pages/Opera'
 
-type TabId = 'hotel' | 'fee' | 'directory'
+type TabId = 'hotel' | 'fee' | 'directory' | 'opera'
 
 const TABS = [
   { id: 'hotel',     label: 'Hotel Notes'    },
   { id: 'fee',       label: 'Fee Calculator' },
   { id: 'directory', label: 'Directory'      },
+  { id: 'opera',     label: 'Opera'          },
 ]
 
 export default function App() {
@@ -45,6 +47,7 @@ export default function App() {
           {tab === 'hotel'     && <HotelNotesTemplate />}
           {tab === 'fee'       && <FeeCalculator />}
           {tab === 'directory' && <Directory />}
+          {tab === 'opera'     && <Opera />}
         </main>
 
       </div>
