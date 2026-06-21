@@ -214,7 +214,7 @@ function StaticEntry({ label, value }: { label: string; value: string }) {
       padding: '8px 0',
       borderBottom: '1px solid var(--color-border)',
     }}>
-      <span style={{ fontWeight: 500, color: 'var(--color-text)' }}>{label}:</span>
+      <span style={{ fontWeight: 500, color: 'var(--color-text)' }}>{label}</span>
       <span style={{ fontWeight: 600, color: 'var(--color-text-bright)', fontFamily: 'monospace' }}>
         {value}
       </span>
