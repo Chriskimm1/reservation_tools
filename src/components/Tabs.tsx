@@ -1,24 +1,24 @@
+// filepath: /Users/chriskim/projects/reservation_tools/src/components/Tabs.tsx
 type TabItem = { id: string; label: string }
-
-const COLORS = {
-  background: '#1e1e1e',
-  surface: '#252526',
-  border: '#3e3e42',
-  text: '#cccccc',
-  textBright: '#ffffff',
-  accent: '#007acc',
-  accentHover: '#005a9e',
-}
 
 export default function Tabs({
   tabs,
   active,
   onChange,
+  isDark,
 }: {
   tabs: TabItem[]
   active: string
   onChange: (id: string) => void
+  isDark: boolean
 }) {
+  const COLORS = {
+    surface: isDark ? '#252526' : '#f5f5f5',
+    border: isDark ? '#3e3e42' : '#e0e0e0',
+    text: isDark ? '#cccccc' : '#333333',
+    accent: isDark ? '#007acc' : '#0078d4',
+  }
+
   return (
     <nav className="tabs" style={{ display: 'flex' }}>
       {tabs.map((t, index) => (
@@ -32,7 +32,7 @@ export default function Tabs({
             border: `1px solid ${active === t.id ? COLORS.accent : COLORS.border}`,
             cursor: 'pointer',
             background: active === t.id ? COLORS.accent : COLORS.surface,
-            color: active === t.id ? COLORS.textBright : COLORS.text,
+            color: active === t.id ? '#ffffff' : COLORS.text,
             marginRight: index < tabs.length - 1 ? 12 : 0,
             transition: 'all 0.2s ease',
             fontSize: 15,
@@ -40,13 +40,11 @@ export default function Tabs({
           }}
           onMouseOver={(e) => {
             if (active !== t.id) {
-              e.currentTarget.style.backgroundColor = COLORS.background
               e.currentTarget.style.borderColor = COLORS.accent
             }
           }}
           onMouseOut={(e) => {
             if (active !== t.id) {
-              e.currentTarget.style.backgroundColor = COLORS.surface
               e.currentTarget.style.borderColor = COLORS.border
             }
           }}

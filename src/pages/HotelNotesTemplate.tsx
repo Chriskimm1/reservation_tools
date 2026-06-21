@@ -8,7 +8,7 @@ const INCIDENTAL_OPTIONS = ['150', '500'] as const
 const TIME_MINUTES = [0, 15, 30, 45] as const
 
 // Dark theme colors
-const COLORS = {
+const getDarkColors = () => ({
   background: '#1e1e1e',
   surface: '#252526',
   surfaceHover: '#2d2d30',
@@ -19,42 +19,20 @@ const COLORS = {
   textMuted: '#858585',
   accent: '#0e639c',
   accentHover: '#1177bb'
-}
+})
 
-// Shared label styles
-const LABEL_STYLE = { 
-  width: 140, 
-  textAlign: 'right' as const, 
-  fontWeight: 'bold', 
-  paddingTop: 6, 
-  lineHeight: 1.2, 
-  whiteSpace: 'nowrap' as const,
-  color: COLORS.text,
-  fontSize: 15
-}
-
-const CHECKBOX_LABEL_STYLE = { 
-  ...LABEL_STYLE, 
-  display: 'flex', 
-  alignItems: 'center', 
-  justifyContent: 'flex-end'
-}
-
-const INPUT_CONTAINER_STYLE = { 
-  width: 260, 
-  padding: 8, 
-  boxSizing: 'border-box' as const,
-  backgroundColor: COLORS.surface,
-  color: COLORS.textBright,
-  border: `1px solid ${COLORS.border}`,
-  borderRadius: 4,
-  fontSize: 15
-}
-
-// IE-compatible spacing helper
-const ROW_STYLE = { display: 'flex', alignItems: 'flex-start', marginBottom: 18 }
-const LABEL_MARGIN_STYLE = { marginRight: 16 }
-const CHECKBOX_CHILD_MARGIN_STYLE = { marginRight: 8 }
+const getLightColors = () => ({
+  background: '#ffffff',
+  surface: '#f5f5f5',
+  surfaceHover: '#e8e8e8',
+  border: '#e0e0e0',
+  borderFocus: '#0078d4',
+  text: '#333333',
+  textBright: '#000000',
+  textMuted: '#666666',
+  accent: '#0078d4',
+  accentHover: '#106ebe'
+})
 
 // Helper functions
 const formatTime = (hour: number, minute: number, period: 'AM' | 'PM'): string => {
@@ -80,7 +58,44 @@ const groupConsecutivePrices = (prices: string[]): string[] => {
   return groupedPrices
 }
 
-export default function HotelNotesTemplate() {
+export default function HotelNotesTemplate({ isDark }: { isDark: boolean }) {
+  const COLORS = isDark ? getDarkColors() : getLightColors()
+  
+  // Shared label styles
+  const LABEL_STYLE = { 
+    width: 140, 
+    textAlign: 'right' as const, 
+    fontWeight: 'bold', 
+    paddingTop: 6, 
+    lineHeight: 1.2, 
+    whiteSpace: 'nowrap' as const,
+    color: COLORS.text,
+    fontSize: 15
+  }
+
+  const CHECKBOX_LABEL_STYLE = { 
+    ...LABEL_STYLE, 
+    display: 'flex', 
+    alignItems: 'center', 
+    justifyContent: 'flex-end'
+  }
+
+  const INPUT_CONTAINER_STYLE = { 
+    width: 260, 
+    padding: 8, 
+    boxSizing: 'border-box' as const,
+    backgroundColor: COLORS.surface,
+    color: COLORS.textBright,
+    border: `1px solid ${COLORS.border}`,
+    borderRadius: 4,
+    fontSize: 15
+  }
+
+  // IE-compatible spacing helper
+  const ROW_STYLE = { display: 'flex', alignItems: 'flex-start', marginBottom: 18 }
+  const LABEL_MARGIN_STYLE = { marginRight: 16 }
+  const CHECKBOX_CHILD_MARGIN_STYLE = { marginRight: 8 }
+  
   const [arrivalMonth, setArrivalMonth] = useState('')
   const [arrivalDay, setArrivalDay] = useState('')
   
@@ -420,7 +435,7 @@ export default function HotelNotesTemplate() {
           }}
         />
         <div style={{ marginTop: 20 }}>
-          <CopyButton textToCopy={assembledText} />
+          <CopyButton textToCopy={assembledText} isDark={isDark} />
         </div>
       </section>
     </div>

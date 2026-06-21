@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const COLORS = {
+const getDarkColors = () => ({
   background: '#1e1e1e',
   surface: '#252526',
   border: '#3e3e42',
@@ -10,9 +10,22 @@ const COLORS = {
   accentHover: '#005a9e',
   success: '#4ec9b0',
   error: '#f48771',
-}
+})
 
-export default function CopyButton({ textToCopy }: { textToCopy: string }) {
+const getLightColors = () => ({
+  background: '#ffffff',
+  surface: '#f5f5f5',
+  border: '#e0e0e0',
+  text: '#333333',
+  textBright: '#ffffff',
+  accent: '#0078d4',
+  accentHover: '#106ebe',
+  success: '#107c10',
+  error: '#d13438',
+})
+
+export default function CopyButton({ textToCopy, isDark = true }: { textToCopy: string; isDark?: boolean }) {
+  const COLORS = isDark ? getDarkColors() : getLightColors()
   const [status, setStatus] = useState<'idle' | 'copied' | 'empty'>('idle')
 
   const doCopy = async () => {
