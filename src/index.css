@@ -1,107 +1,44 @@
-:root {
-  /* Dark theme colors - VSCode inspired */
-  --text: #cccccc;
-  --text-h: #ffffff;
-  --bg: #1e1e1e;
-  --border: #3e3e42;
-  --code-bg: #252526;
-  --accent: #007acc;
-  --accent-bg: rgba(0, 122, 204, 0.15);
-  --accent-border: rgba(0, 122, 204, 0.5);
-  --social-bg: rgba(37, 37, 38, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+/* =============================================================
+   GLOBAL BASE STYLES
+   ============================================================= */
+@import './styles/theme.css';
+@import './styles/components.css';
 
+:root {
   --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  --heading: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   --mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
 
   font: 16px/1.5 var(--sans);
   letter-spacing: 0.01em;
-  color-scheme: dark;
-  color: var(--text);
-  background: var(--bg);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 15px;
-  }
 }
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-bg);
+  color: var(--color-text);
 }
 
 #root {
   width: 100%;
-  max-width: 100%;
-  margin: 0 auto;
   min-height: 100svh;
   display: flex;
   flex-direction: column;
 }
 
-body {
-  margin: 0;
-  background-color: #1e1e1e;
-}
-
-h1,
-h2,
-h3,
-h4 {
-  font-family: var(--heading);
+h1, h2, h3, h4 {
   font-weight: 600;
-  color: var(--text-h);
   line-height: 1.2;
+  color: var(--color-text-bright);
 }
 
-h1 {
-  font-size: 32px;
-  letter-spacing: -0.02em;
-  margin: 24px 0;
-  @media (max-width: 1024px) {
-    font-size: 28px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  letter-spacing: -0.01em;
-  margin: 20px 0 12px;
-  @media (max-width: 1024px) {
-    font-size: 22px;
-  }
-}
-h3 {
-  font-size: 20px;
-  margin: 16px 0 12px;
-  @media (max-width: 1024px) {
-    font-size: 18px;
-  }
-}
-h4 {
-  font-size: 16px;
-  margin: 12px 0;
-}
-p {
-  margin: 0 0 12px;
-}
-
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
-}
-
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
-}
+p { margin: 0 0 12px; }

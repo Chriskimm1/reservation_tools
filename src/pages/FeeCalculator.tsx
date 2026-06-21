@@ -1,44 +1,11 @@
 import { useState, useMemo, useRef } from 'react'
 
-const getDarkColors = () => ({
-  background: '#1e1e1e',
-  surface: '#252526',
-  surfaceHover: '#2d2d30',
-  border: '#3e3e42',
-  borderFocus: '#007acc',
-  text: '#cccccc',
-  textBright: '#ffffff',
-  textMuted: '#858585',
-  accent: '#007acc',
-  accentHover: '#005a9e',
-  chip: '#0e4f7a',
-  chipText: '#cce5ff',
-  chipX: '#7ab8e8',
-})
-
-const getLightColors = () => ({
-  background: '#ffffff',
-  surface: '#f5f5f5',
-  surfaceHover: '#e8e8e8',
-  border: '#e0e0e0',
-  borderFocus: '#0078d4',
-  text: '#333333',
-  textBright: '#000000',
-  textMuted: '#666666',
-  accent: '#0078d4',
-  accentHover: '#106ebe',
-  chip: '#ddeeff',
-  chipText: '#004e8c',
-  chipX: '#005a9e',
-})
-
 const RESORT_FEE_PER_NIGHT = 55
 const TAX_RATE = 0.1338
 
-export default function FeeCalculator({ isDark }: { isDark: boolean }) {
-  const COLORS = isDark ? getDarkColors() : getLightColors()
+export default function FeeCalculator() {
   const [nightCosts, setNightCosts] = useState<number[]>([])
-  const [inputValue, setInputValue] = useState('')
+  const [inputValue, setInputValue]   = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
 
   const addCost = () => {
@@ -54,55 +21,28 @@ export default function FeeCalculator({ isDark }: { isDark: boolean }) {
     setNightCosts(prev => prev.filter((_, i) => i !== index))
   }
 
-  const calculations = useMemo(() => {
-    const nights = nightCosts.length
-    const stayCost = nightCosts.reduce((sum, c) => sum + c, 0)
-    const resortFeeTotal = RESORT_FEE_PER_NIGHT * nights
-    const subtotal = stayCost + resortFeeTotal
-    const taxAmount = subtotal * TAX_RATE
-    const grandTotal = subtotal + taxAmount
-    return { nights, stayCost, resortFeeTotal, subtotal, taxAmount, grandTotal }
+  const calc = useMemo(() => {
+    const nights      = nightCosts.length
+    const stayCost    = nightCosts.reduce((sum, c) => sum + c, 0)
+    const resortFee   = RESORT_FEE_PER_NIGHT * nights
+    const subtotal    = stayCost + resortFee
+    const tax         = subtotal * TAX_RATE
+    const grandTotal  = subtotal + tax
+    return { nights, stayCost, resortFee, subtotal, tax, grandTotal }
   }, [nightCosts])
 
-  const inputStyle: React.CSSProperties = {
-    flex: 1,
-    padding: '10px 14px',
-    boxSizing: 'border-box',
-    backgroundColor: COLORS.surface,
-    border: `1px solid ${COLORS.border}`,
-    borderRadius: 4,
-    color: COLORS.textBright,
-    fontSize: 15,
-    outline: 'none',
-    appearance: 'auto',
-  }
-
-  const summaryRowStyle: React.CSSProperties = {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'baseline',
-    marginBottom: 16,
-  }
-
   return (
-    <div style={{ display: 'flex', minHeight: '70vh' }}>
+    <div className="page-layout">
 
-      {/* ── LEFT: inputs ── */}
-      <aside style={{
-        width: 480,
-        paddingRight: 40,
-        borderRight: `1px solid ${COLORS.border}`,
-        marginRight: 40,
-        flexShrink: 0,
-      }}>
-        <h3 style={{ color: COLORS.textBright, marginTop: 0, marginBottom: 32, fontSize: 28 }}>Fee Calculator</h3>
+      {/* ── LEFT: input form ── */}
+      <aside className="page-sidebar">
+        <h2 className="page-heading">Fee Calculator</h2>
 
-        {/* Cost input row */}
-        <div style={{ marginBottom: 20 }}>
-          <span style={{ color: COLORS.text, fontSize: 15, fontWeight: 600, display: 'block', marginBottom: 10 }}>
-            Night Cost (per night)
-          </span>
-          <div style={{ display: 'flex', gap: 8 }}>
+        <div className="form-row" style={{ alignItems: 'flex-end', gap: 8 }}>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <label className="form-label" style={{ width: 'auto', textAlign: 'left', display: 'block', marginBottom: 8, marginRight: 0 }}>
+              Night Cost (per night)
+            </label>
             <input
               ref={inputRef}
               type="number"
@@ -110,151 +50,89 @@ export default function FeeCalculator({ isDark }: { isDark: boolean }) {
               step="0.01"
               value={inputValue}
               placeholder="e.g. 345"
-              style={inputStyle}
+              className="field-input field-input--full"
               onChange={e => setInputValue(e.target.value)}
               onKeyDown={e => { if (e.key === 'Enter') addCost() }}
             />
-            <button
-              onClick={addCost}
-              style={{
-                padding: '10px 20px',
-                borderRadius: 4,
-                border: 'none',
-                backgroundColor: COLORS.accent,
-                color: '#ffffff',
-                fontWeight: 600,
-                fontSize: 15,
-                cursor: 'pointer',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              + Add
-            </button>
           </div>
-          <p style={{ margin: '8px 0 0', fontSize: 13, color: COLORS.textMuted }}>
-            Press Enter or click Add — each entry counts as one night.
-          </p>
+          <button className="btn-primary" onClick={addCost} style={{ marginBottom: 1 }}>
+            + Add
+          </button>
         </div>
 
-        {/* Chips */}
+        <p className="field-hint">Press Enter or click Add — each entry counts as one night.</p>
+
         {nightCosts.length > 0 && (
-          <div style={{ marginTop: 8 }}>
-            <span style={{ color: COLORS.text, fontSize: 13, fontWeight: 600, display: 'block', marginBottom: 10 }}>
-              {nightCosts.length} night{nightCosts.length !== 1 ? 's' : ''} added
-            </span>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+          <>
+            <p className="field-hint" style={{ marginTop: 16 }}>
+              <strong style={{ color: 'var(--color-text)' }}>
+                {nightCosts.length} night{nightCosts.length !== 1 ? 's' : ''} added
+              </strong>
+            </p>
+            <div className="chips">
               {nightCosts.map((cost, i) => (
-                <span
-                  key={i}
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: 6,
-                    padding: '5px 10px 5px 12px',
-                    borderRadius: 20,
-                    backgroundColor: COLORS.chip,
-                    color: COLORS.chipText,
-                    fontSize: 14,
-                    fontWeight: 600,
-                  }}
-                >
+                <span key={i} className="chip">
                   ${cost.toFixed(2)}
-                  <button
-                    onClick={() => removeCost(i)}
-                    title="Remove"
-                    style={{
-                      background: 'none',
-                      border: 'none',
-                      color: COLORS.chipX,
-                      cursor: 'pointer',
-                      padding: 0,
-                      fontSize: 15,
-                      lineHeight: 1,
-                      display: 'flex',
-                      alignItems: 'center',
-                    }}
-                  >
-                    ×
-                  </button>
+                  <button className="chip__remove" onClick={() => removeCost(i)} title="Remove">×</button>
                 </span>
               ))}
             </div>
-          </div>
+          </>
         )}
       </aside>
 
       {/* ── RIGHT: summary ── */}
-      <section style={{ flexGrow: 1 }}>
-        <h3 style={{ color: COLORS.textBright, marginTop: 0, marginBottom: 32, fontSize: 28 }}>Summary</h3>
+      <section className="page-content">
+        <h2 className="page-heading">Summary</h2>
 
-        <div style={{
-          border: `1px solid ${COLORS.border}`,
-          borderRadius: 8,
-          padding: 32,
-          backgroundColor: COLORS.surface,
-        }}>
-          <div style={summaryRowStyle}>
-            <span style={{ color: COLORS.text, fontSize: 16 }}>
-              Stay Cost ({calculations.nights} night{calculations.nights !== 1 ? 's' : ''}):
+        <div className="summary-card">
+
+          <div className="summary-row">
+            <span className="summary-row__label">
+              Stay Cost ({calc.nights} night{calc.nights !== 1 ? 's' : ''}):
             </span>
-            <span style={{ color: COLORS.textBright, fontSize: 16, fontWeight: 500 }}>
-              ${calculations.stayCost.toFixed(2)}
-            </span>
+            <span className="summary-row__value">${calc.stayCost.toFixed(2)}</span>
           </div>
 
-          {/* Per-night breakdown */}
           {nightCosts.length > 0 && (
-            <div style={{ marginBottom: 16, paddingLeft: 16, borderLeft: `2px solid ${COLORS.border}` }}>
+            <div className="breakdown">
               {nightCosts.map((cost, i) => (
-                <div key={i} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
-                  <span style={{ color: COLORS.textMuted, fontSize: 14 }}>Night {i + 1}</span>
-                  <span style={{ color: COLORS.textMuted, fontSize: 14 }}>${cost.toFixed(2)}</span>
+                <div key={i} className="breakdown__row">
+                  <span>Night {i + 1}</span>
+                  <span>${cost.toFixed(2)}</span>
                 </div>
               ))}
             </div>
           )}
 
-          <div style={summaryRowStyle}>
-            <span style={{ color: COLORS.text, fontSize: 16 }}>
-              Resort Fee ({calculations.nights} × ${RESORT_FEE_PER_NIGHT}):
+          <div className="summary-row">
+            <span className="summary-row__label">
+              Resort Fee ({calc.nights} × ${RESORT_FEE_PER_NIGHT}):
             </span>
-            <span style={{ color: COLORS.textBright, fontSize: 16, fontWeight: 500 }}>
-              ${calculations.resortFeeTotal.toFixed(2)}
-            </span>
+            <span className="summary-row__value">${calc.resortFee.toFixed(2)}</span>
           </div>
 
-          <div style={{
-            ...summaryRowStyle,
-            borderTop: `1px solid ${COLORS.border}`,
-            paddingTop: 16,
-          }}>
-            <span style={{ color: COLORS.text, fontSize: 16 }}>Subtotal:</span>
-            <span style={{ color: COLORS.textBright, fontSize: 16, fontWeight: 500 }}>
-              ${calculations.subtotal.toFixed(2)}
-            </span>
+          <hr className="summary-divider" />
+
+          <div className="summary-row">
+            <span className="summary-row__label">Subtotal:</span>
+            <span className="summary-row__value">${calc.subtotal.toFixed(2)}</span>
           </div>
 
-          <div style={summaryRowStyle}>
-            <span style={{ color: COLORS.text, fontSize: 16 }}>Tax (13.38%):</span>
-            <span style={{ color: COLORS.textBright, fontSize: 16, fontWeight: 500 }}>
-              ${calculations.taxAmount.toFixed(2)}
-            </span>
+          <div className="summary-row">
+            <span className="summary-row__label">Tax (13.38%):</span>
+            <span className="summary-row__value">${calc.tax.toFixed(2)}</span>
           </div>
 
-          <div style={{
-            borderTop: `2px solid ${COLORS.accent}`,
-            paddingTop: 20,
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'baseline',
-          }}>
-            <span style={{ color: COLORS.textBright, fontSize: 22, fontWeight: 'bold' }}>Grand Total:</span>
-            <span style={{ color: COLORS.accent, fontSize: 22, fontWeight: 'bold' }}>
-              ${calculations.grandTotal.toFixed(2)}
-            </span>
+          <div className="summary-total">
+            <span className="summary-total__label">Grand Total:</span>
+            <span className="summary-total__value">${calc.grandTotal.toFixed(2)}</span>
           </div>
+
         </div>
+
       </section>
+
     </div>
   )
 }

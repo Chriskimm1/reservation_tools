@@ -1,0 +1,241 @@
+/* =============================================================
+   COMPONENTS  —  shared structural + form styles
+   Colors come exclusively from CSS variables in theme.css
+   ============================================================= */
+
+/* ── Page layout ─────────────────────────────────────── */
+.page-layout {
+  display: flex;
+  min-height: 70vh;
+}
+
+.page-sidebar {
+  width: 480px;
+  flex-shrink: 0;
+  padding-right: 40px;
+  margin-right: 40px;
+  border-right: 1px solid var(--color-border);
+}
+.page-content {
+  flex-grow: 1;
+  min-width: 0;
+}
+
+/* ── Section headings ─────────────────────────────────── */
+.page-heading {
+  margin: 0 0 32px;
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--color-text-bright);
+}
+
+/* ── Form rows ────────────────────────────────────────── */
+.form-row {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.form-label {
+  width: 140px;
+  flex-shrink: 0;
+  margin-right: 16px;
+  padding-top: 8px;
+  text-align: right;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  color: var(--color-text);
+}
+
+.form-label--checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  padding-top: 0;
+}
+
+/* ── Inputs, selects, textareas ───────────────────────── */
+.field-input,
+.field-select,
+.field-textarea {
+  padding: 10px 14px;
+  font-size: 15px;
+  font-family: inherit;
+  border-radius: 4px;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  color: var(--color-text-bright);
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+}
+
+.field-input:focus,
+.field-select:focus,
+.field-textarea:focus {
+  outline: none;
+  border-color: var(--color-border-focus);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-border-focus) 25%, transparent);
+}
+
+/* standard widths */
+.field-input--sm  { width: 60px; }
+.field-input--md  { width: 120px; }
+.field-input--lg  { width: 260px; }
+.field-input--full{ width: 100%; }
+
+.field-select--md  { width: 120px; }
+.field-select--lg  { width: 260px; }
+
+.field-textarea {
+  width: 100%;
+  padding: 14px 16px;
+  resize: vertical;
+  line-height: 1.6;
+  border-radius: 6px;
+}
+
+.field-textarea--mono {
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', Consolas, 'Courier New', monospace;
+  font-size: 14px;
+}
+
+/* ── Hint text below inputs ───────────────────────────── */
+.field-hint {
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+/* ── Chip bubbles ─────────────────────────────────────── */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px 5px 12px;
+  border-radius: 20px;
+  background-color: var(--color-chip-bg);
+  color: var(--color-chip-text);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.chip__remove {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 15px;
+  line-height: 1;
+  color: var(--color-chip-x);
+  cursor: pointer;
+}
+
+/* ── Summary card (Fee Calculator right panel) ────────── */
+.summary-card {
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 32px;
+  background-color: var(--color-surface);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 16px;
+}
+
+.summary-row__label { color: var(--color-text);        font-size: 16px; }
+.summary-row__value { color: var(--color-text-bright); font-size: 16px; font-weight: 500; }
+
+.summary-divider {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: 0 0 16px;
+}
+
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-top: 20px;
+  border-top: 2px solid var(--color-accent);
+}
+
+.summary-total__label { color: var(--color-text-bright); font-size: 22px; font-weight: 700; }
+.summary-total__value { color: var(--color-accent);      font-size: 22px; font-weight: 700; }
+
+/* ── Breakdown list (indented per-night rows) ─────────── */
+.breakdown {
+  margin-bottom: 16px;
+  padding-left: 16px;
+  border-left: 2px solid var(--color-border);
+}
+
+.breakdown__row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  font-size: 14px;
+  color: var(--color-text-muted);
+}
+
+/* ── Buttons ──────────────────────────────────────────── */
+.btn-primary {
+  padding: 10px 20px;
+  border-radius: 4px;
+  border: none;
+  background-color: var(--color-accent);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-copy {
+  padding: 12px 28px;
+  border-radius: 6px;
+  border: 1px solid var(--color-accent);
+  background-color: var(--color-accent);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+
+.btn-copy:hover {
+  background-color: var(--color-accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.copy-status {
+  min-width: 120px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.copy-status--copied { color: var(--color-success); }
+.copy-status--empty  { color: var(--color-error);   }
