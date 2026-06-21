@@ -48,12 +48,15 @@ export default function HotelNotesTemplate() {
 
   // Room and costs
   const [roomType, setRoomType] = useState(() => localStorage.getItem('hotelNotes_roomType') || '')
+  const [roomTypeSearch, setRoomTypeSearch] = useState('')
+  const [isRoomTypeDropdownOpen, setIsRoomTypeDropdownOpen] = useState(false)
   const [nightCosts, setNightCosts] = useState<number[]>(() => {
     const saved = localStorage.getItem('hotelNotes_nightCosts')
     return saved ? JSON.parse(saved) : []
   })
   const [costInput, setCostInput] = useState('')
   const costInputRef = useRef<HTMLInputElement>(null)
+  const roomTypeInputRef = useRef<HTMLInputElement>(null)
 
   // Policies and notes
   const [cxlPolicy, setCxlPolicy] = useState(() => localStorage.getItem('hotelNotes_cxlPolicy') || '72 hr')
@@ -134,6 +137,19 @@ export default function HotelNotesTemplate() {
     setNightCosts(prev => prev.filter((_, i) => i !== index))
   }
 
+  // Filter room types based on search
+  const filteredRoomTypes = useMemo(() => {
+    if (!roomTypeSearch.trim()) return ROOM_TYPES
+    const search = roomTypeSearch.toLowerCase()
+    return ROOM_TYPES.filter(t => t.toLowerCase().includes(search))
+  }, [roomTypeSearch])
+
+  const handleRoomTypeSelect = (type: string) => {
+    setRoomType(type)
+    setRoomTypeSearch('')
+    setIsRoomTypeDropdownOpen(false)
+  }
+
   const resetAll = () => {
     // Clear all state
     setArrivalMonth('')
@@ -147,6 +163,8 @@ export default function HotelNotesTemplate() {
     setEtdMin(0)
     setEtdPeriod('AM')
     setRoomType('')
+    setRoomTypeSearch('')
+    setIsRoomTypeDropdownOpen(false)
     setNightCosts([])
     setCostInput('')
     setCxlPolicy('72 hr')
@@ -351,16 +369,78 @@ export default function HotelNotesTemplate() {
         {/* Room Type */}
         <div className="form-row">
           <label className="form-label">Room Type</label>
-          <select 
-            value={roomType} 
-            onChange={e => setRoomType(e.target.value)} 
-            className="field-select field-select--lg"
-          >
-            <option value="" disabled>Select room type</option>
-            {ROOM_TYPES.map(t => (
-              <option key={t} value={t}>{t}</option>
-            ))}
-          </select>
+          <div style={{ position: 'relative', width: 260 }}>
+            <input
+              ref={roomTypeInputRef}
+              type="text"
+              placeholder="Search or select room type"
+              value={roomType || roomTypeSearch}
+              onChange={e => {
+                setRoomTypeSearch(e.target.value)
+                setRoomType('')
+                setIsRoomTypeDropdownOpen(true)
+              }}
+              onFocus={() => setIsRoomTypeDropdownOpen(true)}
+              onBlur={() => setTimeout(() => setIsRoomTypeDropdownOpen(false), 200)}
+              className="field-input field-input--lg"
+              style={{ 
+                paddingRight: 32,
+                width: '100%'
+              }}
+            />
+            <span style={{
+              position: 'absolute',
+              right: 12,
+              top: '50%',
+              transform: 'translateY(-50%)',
+              pointerEvents: 'none',
+              color: 'var(--color-text-muted)'
+            }}>
+              🔍
+            </span>
+            {isRoomTypeDropdownOpen && filteredRoomTypes.length > 0 && (
+              <div style={{
+                position: 'absolute',
+                top: 'calc(100% + 4px)',
+                left: 0,
+                right: 0,
+                maxHeight: 240,
+                overflowY: 'auto',
+                backgroundColor: 'var(--color-bg)',
+                border: '2px solid var(--color-accent)',
+                borderRadius: 6,
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+                zIndex: 100
+              }}>
+                {filteredRoomTypes.map(type => (
+                  <div
+                    key={type}
+                    onClick={() => handleRoomTypeSelect(type)}
+                    style={{
+                      padding: '10px 14px',
+                      cursor: 'pointer',
+                      backgroundColor: roomType === type ? 'var(--color-surface-hover)' : 'transparent',
+                      color: 'var(--color-text-bright)',
+                      fontWeight: roomType === type ? 600 : 400,
+                      transition: 'background-color 0.15s'
+                    }}
+                    onMouseEnter={e => {
+                      if (roomType !== type) {
+                        e.currentTarget.style.backgroundColor = 'var(--color-surface-hover)'
+                      }
+                    }}
+                    onMouseLeave={e => {
+                      if (roomType !== type) {
+                        e.currentTarget.style.backgroundColor = 'transparent'
+                      }
+                    }}
+                  >
+                    {type}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Night Cost — chip input (nights + price derived from chips) */}

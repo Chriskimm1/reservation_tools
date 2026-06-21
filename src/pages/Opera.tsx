@@ -322,6 +322,211 @@ Click OK`,
 **Package Code:**
 - Search "cc" in Package field to find correct code`,
   },
+  {
+    id: 'cc-auth',
+    title: 'Credit Card Authorization',
+    guide: `**Verify Credit Card Type**
+
+Confirm if the credit card is DOMESTIC (US bank card)
+
+International cards: Must be 7+ days prior to arrival
+
+Same day CC Auth cannot be processed
+
+**Domestic Credit Card - Send Link**
+
+If domestic bank card, place trace and link will be sent to guest
+
+No need to call Head Cashier or FD Assistant Manager
+
+Advise guest to:
+- Look for the link email
+- Complete it PRIOR to check-in
+- Ensure CC address matches exactly
+- Maximum 3 submission attempts
+
+**Check for Existing Deposit**
+
+If deposit exists:
+- Refund original CC in Opera (Deposit screen)
+- Change Payment Type to CH
+- Change Res. Type to Due
+- Change deposit rule to 2D (48-hr courtesy hold)
+
+If no deposit:
+- Set Payment Type to CH
+- Set Res. Type to Due
+- Change deposit rule to 2D (48-hr courtesy hold)
+
+**Advise Guest**
+
+"An email will be sent to you within the next 24-48 hours. When it arrives, please click on the link provided. You will be directed to a secured site to complete your credit card authorization form. Once you have entered your information, our team will be notified, and we will be able to complete your request."
+
+If link not completed prior to arrival: Guest must present ID and credit card in their name at Front Desk
+
+**Add Comment**
+
+Enter comment on reservation: "CC auth pending"
+
+**Create Trace Screen**
+
+From reservation, select Options, Traces, New
+
+Fill required fields:
+- From Date: NEXT day from trace entry (tomorrow's date)
+- To Date: NEXT day from trace entry (tomorrow's date)
+- Time: 05:00 AM
+- Dept Code: FOCC (Front Office Credit Card Auth)
+- Trace Text: USE EXACT FORMAT BELOW
+
+Trace Format:
+[Opera Conf #] - [Guest Name]
+CCH [CC Holder Name]
+[Email Address]
+[Phone Number]
+[Coverage Type]
+
+Coverage Options:
+- ROOM/TAX only for 1st night
+- ROOM/TAX only for entire stay
+- ROOM/TAX/RF for 1st night
+- ROOM/TAX/RF for entire stay
+- Resort Fee only for 1st night
+- Resort Fee only for entire stay
+
+Click OK to save trace`,
+    notification: `⚠️ **POLICY REQUIREMENTS:**
+
+**Maximum Rooms:**
+- Call Center: Up to 8 rooms maximum
+- 9+ rooms: Transfer to Specialty Dept ext. 2223
+
+**Credit Card Restrictions:**
+- International CC: 7+ days prior to arrival required
+- Domestic CC ONLY for advance bookings
+- NO same-day CC authorizations accepted
+
+**Link Submission:**
+- Guest has maximum 3 attempts to submit
+- All information must match exactly
+- CC address must match submission address
+- If declined after 3 attempts: Alternate payment required at check-in
+
+**Deposit Handling:**
+- If existing deposit: MUST refund first
+- Entire CC auth payment processes through portal
+- Cannot split between deposit and authorization
+
+**Trace Requirements:**
+- Must use tomorrow's date (not arrival date)
+- Time must be 05:00 AM
+- Use FOCC department code
+- Follow exact trace format
+
+**CONTACT INFORMATION:**
+
+**Head Cashiers:**
+- Wynn ext. 2163 | ResortHeadCashier@wynnlasvegas.com
+- Encore ext. 4019 | EncoreResortHeadCashier@wynnlasvegas.com
+
+**Front Desk Management:**
+- Wynn Resort ext. 2192 | ResortFrontDeskManagement@wynnlasvegas.com
+- Encore Resort ext. 4007 | EncoreFrontDeskManagement@wynnlasvegas.com
+- Wynn Tower Suites ext. 2192 | TowerSuitesManagers@wynnlasvegas.com
+- Encore Tower Suites ext. 4060 | EncoreSuitesManagers@wynnlasvegas.com`,
+  },
+  {
+    id: 'courtesy-hold',
+    title: 'Courtesy Hold Reservations',
+    guide: `**New Reservation Screen**
+
+Begin creating a reservation with all required information:
+- Stay dates
+- Rate code
+- Room/suite type
+- Guest name
+- Origin code
+- Room features
+- Specialty codes
+- Comments
+
+**Payment Screen**
+
+Update Payment Type:
+- Select CH code (Courtesy Hold)
+
+**Res. Type Screen**
+
+Update Reservation Type:
+- Select DUE code (Deposit Due)
+
+**Save Reservation**
+
+Click Save
+
+Opera will provide a Confirmation Number
+
+**Advise Guest - REFERENCE Number Only**
+
+Tell guest they have a "REFERENCE NUMBER" (NOT confirmation number)
+
+Reservation is NOT confirmed until credit card deposit is provided
+
+**Confirmation Screen**
+
+Close screen WITHOUT sending confirmation letter
+
+Do not send confirmation - guest has not provided deposit
+
+**Add Comments to Reservation**
+
+Enter all required comments:
+- Rates quoted
+- Policies disclosed
+- 24-hour courtesy hold
+
+Reservation is now on courtesy hold`,
+    notification: `⚠️ **POLICY RESTRICTIONS:**
+
+**Time Limit:**
+- Maximum 24-hour hold from time of inquiry
+- Guest must provide CC deposit within 24 hours
+
+**Within 14 Days Arrival:**
+- Courtesy Holds within 14 days require MANAGER APPROVAL
+- If manager approves: MUST note which manager in comments
+- Document manager name in reservation comments
+
+**CANNOT Offer Courtesy Hold For:**
+
+**High-End Suites:**
+- FV1 (Fairway Villa 1 Bedroom)
+- FV2 (Fairway Villa 2 Bedroom)
+- APT 2 (Apartment 2 Bedroom)
+- DUP3 (Duplex 3 Bedroom)
+
+**Special Reservations:**
+- Resort Marketing Reservations
+- Non-refundable Reservations
+- Convention Reservations
+
+**CRITICAL REMINDERS:**
+
+**Guest Communication:**
+- ALWAYS say "reference number" NOT "confirmation number"
+- Explain reservation is not confirmed without deposit
+- Guest has 24 hours to provide credit card
+
+**No Confirmation Letter:**
+- Do NOT send confirmation email/letter
+- Reservation not confirmed until deposit received
+
+**Required Comments:**
+- Rates quoted to guest
+- All policies disclosed
+- "24-hour courtesy hold" notation
+- Manager approval (if within 14 days)`,
+  },
 ]
 
 // ── Component ────────────────────────────────────────────────
