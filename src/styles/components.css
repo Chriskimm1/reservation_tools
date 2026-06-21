@@ -79,6 +79,16 @@
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-border-focus) 25%, transparent);
 }
 
+/* Placeholder styling for inputs and selects */
+.field-input::placeholder {
+  color: var(--color-text-muted);
+  opacity: 1;
+}
+
+.field-select option[value=""] {
+  color: var(--color-text-muted);
+}
+
 /* standard widths */
 .field-input--sm  { width: 60px; }
 .field-input--md  { width: 120px; }
@@ -122,8 +132,8 @@
   gap: 6px;
   padding: 5px 10px 5px 12px;
   border-radius: 20px;
-  background-color: var(--color-chip-bg);
-  color: var(--color-chip-text);
+  background-color: var(--color-accent);
+  color: #ffffff;
   font-size: 14px;
   font-weight: 600;
 }
@@ -136,8 +146,13 @@
   padding: 0;
   font-size: 15px;
   line-height: 1;
-  color: var(--color-chip-x);
+  color: rgba(255, 255, 255, 0.9);
   cursor: pointer;
+  transition: color 0.15s;
+}
+
+.chip__remove:hover {
+  color: #ffffff;
 }
 
 /* ── Summary card (Fee Calculator right panel) ────────── */
@@ -238,3 +253,295 @@
 
 .copy-status--copied { color: var(--color-success); }
 .copy-status--empty  { color: var(--color-error);   }
+
+/* ── Directory page specific layout ───────────────────── */
+.directory-page {
+  display: flex;
+  gap: 32px;
+}
+
+.directory-table-section {
+  width: 60%;
+  margin-right: 0;
+}
+
+.directory-quick-reference {
+  width: 35%;
+}
+
+/* Directory table styles */
+.directory-table-wrapper {
+  overflow-x: auto;
+  border-radius: 8px;
+  background-color: var(--color-surface);
+}
+
+.directory-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--color-surface);
+}
+
+.directory-table thead tr {
+  background-color: var(--color-background);
+  border-bottom: 2px solid var(--color-border);
+}
+
+.directory-th {
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+  color: var(--color-text-bright);
+  cursor: pointer;
+  user-select: none;
+  font-size: 14px;
+}
+
+.directory-th:hover {
+  background-color: var(--color-border);
+}
+
+.directory-tr {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.directory-tr:hover {
+  background-color: var(--color-background);
+}
+
+.directory-td {
+  padding: 12px 16px;
+  color: var(--color-text);
+  font-size: 14px;
+}
+
+.directory-extension {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.directory-no-results {
+  text-align: center;
+  color: var(--color-text);
+  margin-top: 20px;
+}
+
+/* Static cards */
+.static-card {
+  background-color: var(--color-surface);
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  margin-top: 20px;
+}
+
+.static-card:first-child {
+  margin-top: 0;
+}
+
+.static-heading {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text-bright);
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.static-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.static-entry {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.static-entry__label {
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.static-entry__value {
+  font-weight: 600;
+  color: var(--color-text-bright);
+  font-family: monospace;
+}
+
+.language-line-number {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-accent);
+  margin: 0;
+  font-family: monospace;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RESPONSIVE DESIGN
+   ═══════════════════════════════════════════════════════════ */
+
+/* Tablet: 768px - 1024px */
+@media (max-width: 1024px) {
+  .page-sidebar {
+    width: 380px;
+    padding-right: 40px;
+    margin-right: 40px;
+  }
+
+  .form-label {
+    width: 120px;
+  }
+
+  .field-input--lg,
+  .field-select--lg {
+    width: 220px;
+  }
+
+  .page-heading {
+    font-size: 24px;
+    margin-bottom: 24px;
+  }
+
+  /* Directory: stack layout on tablet */
+  .directory-page {
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .directory-table-section,
+  .directory-quick-reference {
+    width: 100%;
+  }
+}
+
+/* Mobile: below 768px */
+@media (max-width: 768px) {
+  .page-layout {
+    flex-direction: column;
+  }
+
+  .page-sidebar {
+    width: 100%;
+    padding-right: 0;
+    margin-right: 0;
+    margin-bottom: 40px;
+    border-bottom: 2px solid var(--color-border);
+    padding-bottom: 40px;
+  }
+
+  .page-content {
+    width: 100%;
+  }
+
+  .form-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .form-label {
+    width: 100%;
+    text-align: left;
+    margin-right: 0;
+    margin-bottom: 8px;
+    padding-top: 0;
+  }
+
+  .form-label--checkbox {
+    justify-content: flex-start;
+  }
+
+  .field-input--lg,
+  .field-select--lg {
+    width: 100%;
+  }
+
+  .field-input--md,
+  .field-select--md {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* Remove left padding from chips on mobile */
+  .chips {
+    padding-left: 0 !important;
+  }
+
+  .field-hint {
+    padding-left: 0 !important;
+  }
+
+  .page-heading {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+
+  .summary-card {
+    padding: 24px 20px;
+  }
+
+  .summary-total__label,
+  .summary-total__value {
+    font-size: 20px;
+  }
+
+  /* Directory: stack layout and adjust spacing */
+  .directory-page {
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .directory-table-section,
+  .directory-quick-reference {
+    width: 100%;
+  }
+
+  /* Make table cells smaller on mobile */
+  .directory-th,
+  .directory-td {
+    padding: 10px 8px !important;
+    font-size: 12px !important;
+  }
+
+  /* Make table scrollable horizontally on mobile */
+  .directory-table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .directory-table {
+    min-width: 600px;
+  }
+
+  /* Adjust static card spacing */
+  .static-card {
+    padding: 16px;
+    margin-top: 16px !important;
+  }
+
+  .static-heading {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+
+  .language-line-number {
+    font-size: 16px;
+  }
+}
+
+/* Opera page responsive grids */
+@media (max-width: 1024px) {
+  /* Room Types: 4 columns -> 2 columns on tablet */
+  .opera-grid[style*="repeat(4"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (max-width: 768px) {
+  /* All Opera grids: single column on mobile */
+  .opera-grid {
+    grid-template-columns: 1fr !important;
+  }
+}

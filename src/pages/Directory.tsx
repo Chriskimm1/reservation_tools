@@ -94,9 +94,9 @@ export default function Directory() {
   }
 
   return (
-    <div className="page-layout">
+    <div className="page-layout directory-page">
       {/* ── LEFT: Searchable Directory ── */}
-      <aside className="page-sidebar" style={{ width: '60%', marginRight: 32 }}>
+      <aside className="page-sidebar directory-table-section">
         <h2 className="page-heading">Directory</h2>
 
         {/* Search */}
@@ -112,49 +112,43 @@ export default function Directory() {
         </div>
 
         {/* Table */}
-        <div style={{ overflowX: 'auto' }}>
-          <table style={{
-            width: '100%',
-            borderCollapse: 'collapse',
-            backgroundColor: 'var(--color-surface)',
-            borderRadius: 8,
-            overflow: 'hidden',
-          }}>
+        <div className="directory-table-wrapper">
+          <table className="directory-table">
             <thead>
-              <tr style={{ backgroundColor: 'var(--color-background)', borderBottom: '2px solid var(--color-border)' }}>
-                <th style={headerStyle} onClick={() => toggleSort('department')}>
+              <tr>
+                <th className="directory-th" onClick={() => toggleSort('department')}>
                   Department {sortBy === 'department' && (sortDir === 'asc' ? '↑' : '↓')}
                 </th>
-                <th style={headerStyle} onClick={() => toggleSort('wynn')}>
+                <th className="directory-th" onClick={() => toggleSort('wynn')}>
                   Wynn {sortBy === 'wynn' && (sortDir === 'asc' ? '↑' : '↓')}
                 </th>
-                <th style={headerStyle} onClick={() => toggleSort('encore')}>
+                <th className="directory-th" onClick={() => toggleSort('encore')}>
                   Encore {sortBy === 'encore' && (sortDir === 'asc' ? '↑' : '↓')}
                 </th>
-                <th style={headerStyle} onClick={() => toggleSort('general')}>
+                <th className="directory-th" onClick={() => toggleSort('general')}>
                   General {sortBy === 'general' && (sortDir === 'asc' ? '↑' : '↓')}
                 </th>
               </tr>
             </thead>
             <tbody>
               {filteredAndSorted.map((entry, i) => (
-                <tr key={i} style={{ borderBottom: '1px solid var(--color-border)' }}>
-                  <td style={cellStyle}>{entry.department}</td>
-                  <td style={cellStyle}>
+                <tr key={i} className="directory-tr">
+                  <td className="directory-td">{entry.department}</td>
+                  <td className="directory-td">
                     {entry.wynn && (
-                      <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <span className="directory-extension">
                         <span style={wynnIconStyle}>W</span> {entry.wynn}
                       </span>
                     )}
                   </td>
-                  <td style={cellStyle}>
+                  <td className="directory-td">
                     {entry.encore && (
-                      <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <span className="directory-extension">
                         <span style={encoreIconStyle}>E</span> {entry.encore}
                       </span>
                     )}
                   </td>
-                  <td style={cellStyle}>{entry.general || '—'}</td>
+                  <td className="directory-td">{entry.general || '—'}</td>
                 </tr>
               ))}
             </tbody>
@@ -162,20 +156,20 @@ export default function Directory() {
         </div>
 
         {filteredAndSorted.length === 0 && (
-          <p style={{ textAlign: 'center', color: 'var(--color-text)', marginTop: 20 }}>
+          <p className="directory-no-results">
             No results found for "{search}"
           </p>
         )}
       </aside>
 
       {/* ── RIGHT: Static Important Numbers ── */}
-      <section className="page-content" style={{ width: '35%' }}>
+      <section className="page-content directory-quick-reference">
         <h2 className="page-heading">Quick Reference</h2>
 
         {/* Internal Call Center */}
-        <div style={staticCardStyle}>
-          <h3 style={staticHeadingStyle}>Internal Call Center</h3>
-          <div style={staticListStyle}>
+        <div className="static-card">
+          <h3 className="static-heading">Internal Call Center</h3>
+          <div className="static-list">
             <StaticEntry label="Manager" value="2259" />
             <StaticEntry label="Rooms" value="7100" />
             <StaticEntry label="Dining" value="3463" />
@@ -188,15 +182,9 @@ export default function Directory() {
         </div>
 
         {/* Language Line */}
-        <div style={{ ...staticCardStyle, marginTop: 20 }}>
-          <h3 style={staticHeadingStyle}>Language Line</h3>
-          <p style={{
-            fontSize: 18,
-            fontWeight: 600,
-            color: 'var(--color-accent)',
-            margin: 0,
-            fontFamily: 'monospace',
-          }}>
+        <div className="static-card">
+          <h3 className="static-heading">Language Line</h3>
+          <p className="language-line-number">
             888-317-4078
           </p>
         </div>
@@ -208,37 +196,14 @@ export default function Directory() {
 // ── Helper Component ─────────────────────────────────────────
 function StaticEntry({ label, value }: { label: string; value: string }) {
   return (
-    <div style={{
-      display: 'flex',
-      justifyContent: 'space-between',
-      padding: '8px 0',
-      borderBottom: '1px solid var(--color-border)',
-    }}>
-      <span style={{ fontWeight: 500, color: 'var(--color-text)' }}>{label}</span>
-      <span style={{ fontWeight: 600, color: 'var(--color-text-bright)', fontFamily: 'monospace' }}>
-        {value}
-      </span>
+    <div className="static-entry">
+      <span className="static-entry__label">{label}</span>
+      <span className="static-entry__value">{value}</span>
     </div>
   )
 }
 
 // ── Styles ───────────────────────────────────────────────────
-const headerStyle: React.CSSProperties = {
-  padding: '12px 16px',
-  textAlign: 'left',
-  fontWeight: 600,
-  color: 'var(--color-text-bright)',
-  cursor: 'pointer',
-  userSelect: 'none',
-  fontSize: 14,
-}
-
-const cellStyle: React.CSSProperties = {
-  padding: '12px 16px',
-  color: 'var(--color-text)',
-  fontSize: 14,
-}
-
 const wynnIconStyle: React.CSSProperties = {
   display: 'inline-flex',
   alignItems: 'center',
@@ -263,24 +228,4 @@ const encoreIconStyle: React.CSSProperties = {
   color: '#fff',
   fontSize: 11,
   fontWeight: 700,
-}
-
-const staticCardStyle: React.CSSProperties = {
-  backgroundColor: 'var(--color-surface)',
-  padding: 20,
-  borderRadius: 8,
-  border: '1px solid var(--color-border)',
-}
-
-const staticHeadingStyle: React.CSSProperties = {
-  fontSize: 18,
-  fontWeight: 600,
-  color: 'var(--color-text-bright)',
-  marginTop: 0,
-  marginBottom: 16,
-}
-
-const staticListStyle: React.CSSProperties = {
-  display: 'flex',
-  flexDirection: 'column',
 }
