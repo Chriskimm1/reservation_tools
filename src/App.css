@@ -34,6 +34,13 @@
   color: var(--color-text-bright);
 }
 
+.app-header__actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.app-header__notepad-btn,
 .app-header__theme-btn {
   padding: 10px 20px;
   border-radius: 6px;
@@ -47,6 +54,7 @@
   box-shadow: var(--shadow-sm);
 }
 
+.app-header__notepad-btn:hover,
 .app-header__theme-btn:hover {
   background-color: var(--color-surface-hover);
   box-shadow: var(--shadow-md);

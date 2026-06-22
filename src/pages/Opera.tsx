@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react'
 import { GUIDES } from '../data/guides'
 
+interface OperaProps {
+  onNavigateToTab?: (target: string) => void
+}
+
 // ── Component ────────────────────────────────────────────────
-export default function Opera() {
+export default function Opera({ onNavigateToTab }: OperaProps) {
   const [search, setSearch] = useState(() => localStorage.getItem('opera_search') || '')
   const [selectedGuide, setSelectedGuide] = useState<string>(() => localStorage.getItem('opera_selectedGuide') || GUIDES[0]?.id || '')
   const [activeTab, setActiveTab] = useState<'guide' | 'notification'>(() => {
@@ -57,6 +61,46 @@ export default function Opera() {
 
   const formatStepContent = (lines: string[]) => {
     return lines.map((line, i) => {
+      // Check for navigation links
+      const linkMatch = line.match(/💡\s*\[([^\]]+)\]\(#?([\w:]+)\)/)
+      if (linkMatch) {
+        const linkText = linkMatch[1]
+        const linkTarget = linkMatch[2]
+        
+        return (
+          <div key={i} style={{ margin: '8px 0' }}>
+            <button
+              onClick={() => onNavigateToTab?.(linkTarget)}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 6,
+                padding: '8px 12px',
+                backgroundColor: 'var(--color-accent)',
+                color: 'white',
+                border: 'none',
+                borderRadius: 6,
+                cursor: 'pointer',
+                fontSize: 12,
+                fontWeight: 600,
+                transition: 'all 0.2s',
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.backgroundColor = 'var(--color-accent-hover)'
+                e.currentTarget.style.transform = 'translateY(-1px)'
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.backgroundColor = 'var(--color-accent)'
+                e.currentTarget.style.transform = 'translateY(0)'
+              }}
+            >
+              <span>💡</span>
+              {linkText}
+            </button>
+          </div>
+        )
+      }
+      
       // Action items (lines starting with -)
       if (line.trim().startsWith('-')) {
         const content = line.trim().substring(1).trim()

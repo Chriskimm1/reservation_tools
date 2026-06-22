@@ -22,6 +22,7 @@
   --color-chip-x:       #60a5fa;   /* blue-400                     */
   --color-success:      #34d399;   /* emerald-400                  */
   --color-error:        #f87171;   /* red-400                      */
+  --color-notepad-border: #d1d5db; /* almost white grey for notepad */
   
   /* Drop shadows for depth (subtle in dark mode) */
   --shadow-sm:   0 1px 2px 0 rgba(0, 0, 0, 0.3);
@@ -50,6 +51,7 @@
   --color-chip-x:       #1976d2;   /* blue x button                */
   --color-success:      #2e7d32;   /* strong green                 */
   --color-error:        #d32f2f;   /* strong red                   */
+  --color-notepad-border: #000000; /* black for notepad            */
   
   /* Drop shadows for depth */
   --shadow-sm:   0 1px 2px 0 rgba(0, 0, 0, 0.05);

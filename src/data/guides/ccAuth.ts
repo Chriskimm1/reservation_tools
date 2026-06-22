@@ -3,7 +3,9 @@ import type { GuideCard } from './types'
 export const ccAuth: GuideCard = {
   id: 'cc-auth',
   title: 'Credit Card Authorization',
-  guide: `**Verify Credit Card Type**
+  guide: `💡 [Click here to open CC Auth Trace generator →](#templates:ccauth)
+
+**Verify Credit Card Type**
 
 Confirm if the credit card is DOMESTIC (US bank card)
 
@@ -72,7 +74,9 @@ Coverage Options:
 - Resort Fee only for 1st night
 - Resort Fee only for entire stay
 
-Click OK to save trace`,
+Click OK to save trace
+
+💡 [Click here to open CC Auth Trace generator →](#templates:ccauth)`,
   notification: `⚠️ **POLICY REQUIREMENTS:**
 
 **Maximum Rooms:**
