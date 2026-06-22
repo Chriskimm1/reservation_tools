@@ -1,544 +1,14 @@
 import { useState, useEffect } from 'react'
-
-// ── Types ────────────────────────────────────────────────────
-interface GuideCard {
-  id: string
-  title: string
-  guide: string
-  notification?: string
-}
-
-// ── Data ─────────────────────────────────────────────────────
-const GUIDES: GuideCard[] = [
-  {
-    id: 'new-reservation',
-    title: 'New Reservation',
-    guide: `**New Reservation Screen**
-
-Select Reservation Tab on top and click New Reservation or press F7
-
-Fill these fields:
-- Arrival Date
-- Number of Nights
-- Adults, Children
-- Default Num Rooms to 1 (Never set this to more than 1)
-
-Select Room Type and Rate Code [Room Type is optional at this point]
-
-Click OK or press ALT + O
-
-**Rate Query Details Screen**
-
-Select Room Type [If you haven't selected room type, this is where you can look at rates for a room by selecting the room type and clicking Rate Info]
-
-Click OK or press ALT + O
-
-**New Reservation Screen**
-
-Attach a Profile to Res by hitting the ellipsis … or press ALT + (.) period
-
-**Profile Search Screen**
-
-Search Guest by Last Name, First Name, select the matching Profile, and click OK (edit any info if needed by clicking Edit before OK). If no Profile match, click New and create an individual profile. You will only ever create individual profiles in Opera.
-
-Collect:
-- First Name
-- Last Name
-- Salutation
-- Address
-- Phone Number
-- Email Address
-
-Click Save or ALT + S and click OK
-
-**New Reservation Screen**
-
-Fill required fields:
-- Origin = Phone (always phone)
-- ETA = Estimated time if available
-- Payment = [CC Type, CC No, Exp Date]
-- Res Type = Due
-- Room Feat = [Any room request]
-- Specials = [Any items, special occasions]
-- Comment = [Template provided in Hotel Note Template page on this site]
-
-Collect Deposit: Click Options, click Deposit/CXL
-
-**Deposit Screen**
-
-Deposit amount highlighted in blue (if reservation is revised/upgraded, this amount is not automatically updated)
-
-Selecting payment will take you to deposit screen
-
-**Cashier Login Screen**
-
-Login
-
-Select Yes to the pop-up
-
-Enter payment amount and click OK
-
-Close the Deposit confirmation, click Close`,
-    notification: `⚠️ **YOU MUST DISCLOSE:**
-- Incidental
-- Resort Fee
-- Deposit
-- Cancellation Policy
-
-**Example Language:**
-
-"I show your reservation is for a Resort Suite King located in the Encore Resort. The arrival date is 02-06-15, Friday, for 3 nights with a departure on 02-09-15 and reserved under the name of Thalia Richardson. Your accommodations are for 1 adult(s) and 0 child(ren).
-
-I appreciate your patience while I complete this transaction. As previously mentioned, a one-night deposit is required today for guarantee. I am charging your card at this time."
-
-**REMEMBER TO:**
-- State the Cancellation Policy after the charge
-- Offer further assistance to complete their stay
-
-**Property Closing w/Caller's Name:**
-
-"Thank you for choosing Wynn Las Vegas! Your confirmation number for this reservation is 18023256. In the event of a cancellation, you must notify us 48 hrs prior to the arrival date for a full refund.
-
-We appreciate your call today and look forward to your visit."`,
-  },
-  {
-    id: 'room-types',
-    title: 'Room Types',
-    guide: `**Wynn Resorts**
-
-- RKD
-- RDD
-- PANVD
-- PANDD
-- PANCD
-
-**Wynn Tower Suites**
-
-- TK
-- TKC
-- TDC
-- EXEC
-- PARL
-- SALN
-- SALC
-- FV1
-- FV2
-- ACCESS
-
-**Encore Resorts**
-
-- EK
-- EQ
-- EPK
-- EPQ
-
-**Encore Tower Suites**
-
-- ESDK
-- ESKC
-- ESQC
-- EPARL
-- ESALN
-- APT 2
-- DUP3
-- EACCESS`,
-  },
-  {
-    id: 'folio-requests',
-    title: 'Folio Requests',
-    guide: `**Verify Primary Guest**
-
-Confirm caller is the primary guest on the Opera reservation
-
-Follow Confidentiality Policy procedures to verify identity
-
-If all information matches, proceed to create trace
-
-**Advise Guest**
-
-"An email with your final folio attached will be sent to you within the next 24 hours."
-
-**Create Trace Screen**
-
-From reservation face, select Options, Traces, New
-
-Fill required fields:
-- From Date/To Date: Leave as today's date
-- Time: Leave as current time
-- Dept Code: FDC (Front Desk Call Center)
-- Trace Text: Email Folio
-
-Click OK to save trace`,
-    notification: `⚠️ **POLICY REMINDERS:**
-
-**Verification Required:**
-- Must confirm caller is PRIMARY guest on reservation
-- Follow all Confidentiality Policy procedures
-- Do NOT process if caller is not primary guest
-
-**Email Restrictions:**
-- Folio sent to email address on profile ONLY
-- Cannot add new email addresses to profile
-- Do not create trace if not primary guest
-
-**Guest Communication:**
-- Always inform guest of 24-hour timeframe
-- Folio will be emailed automatically by Front Desk Cashiers`,
-  },
-  {
-    id: 'eci-lco',
-    title: 'Early Check-in & Late Check-Out',
-    guide: `**Check Item Inventory Screen**
-
-From Reservation, click Item Inventory
-
-Click Item Inv
-
-**Select Item Class**
-
-Select Item Class list of values (LOV)
-
-Select 21 - Housekeeping, click OK
-
-**Select Item Code**
-
-Select appropriate Item Code LOV, place X next to item, click OK
-
-ECI Options:
-- ECIWYNN - Early Check In at Wynn ($75)
-- ECIWYNN100 - Early Check In at Wynn ($100)
-- ECIENCORE - Early Check In at Encore ($75)
-- ECIENCORE100 - Early Check In at Encore ($100)
-
-LCO Options:
-- LCOWYNN - Late Check Out at Wynn ($100)
-- LCOWYNN200 - Late Check Out at Wynn ($200)
-- LCOENCORE - Late Check Out at Encore ($100)
-- LCOENCORE200 - Late Check Out at Encore ($200)
-
-**Item Inventory Availability Screen**
-
-For ECI:
-- Locate reservation arrival date
-- Green column = allotted ECIs for that date
-- Left column = remaining ECIs for that date
-- If no availability at base price ($75), search for $100 option
-- Input "1" in right column if guest agrees
-- Select OK
-
-For LCO:
-- Locate reservation departure date
-- Green column = allotted LCOs for that date
-- Left column = remaining LCOs for that date
-- If no availability at base price ($100), search for $200 option
-- Input "1" in right column if guest agrees
-- Select OK
-
-**Add Specials / ETA / ETD**
-
-In Specials field box, add ECI or LCO
-
-For ECI:
-- In ETA field box, add 11:00 AM if no ETA filled
-- Arrival time may not be before 11:00 AM
-
-For LCO:
-- In ETD field box, add 4:00 PM
-- Departure time may not be after 4:00 PM
-
-**Add Packages**
-
-Click Packages dropdown box, pop-up window appears, click New
-
-Click Package drop-down box, type "cc" in find field, hit Enter
-
-Select appropriate code and click OK
-
-**Add S/C Display**
-
-Click S/C Display open field text box
-
-Manually input notation:
-- For ECI: +Early Arrival @ $75 p/s (or $100 p/s)
-- For LCO: +Late Departure @ $100 p/s (or $200 p/s)
-
-**Add Fixed Charges**
-
-Click Options, select Fixed Charges
-
-Click New, another window appears
-
-Select Once circle (one-time charge)
-
-Fill required fields:
-- Date: For ECI = check-in date, For LCO = one day prior to check-out
-- TRN. Code: Correct package (ECI or LCO)
-- Amount: 75.00 or 100.00 (or 200.00)
-- Quantity: Always 1
-
-Click OK`,
-    notification: `⚠️ **IMPORTANT POLICIES:**
-
-**ECI Timing:**
-- Early Check-in as early as 11:00 AM on check-in date
-- Based on availability upon arrival
-- Guests can check in anytime between 11 AM - 1 PM
-
-**LCO Timing:**
-- Late Check-Out as late as 4:00 PM on check-out date
-
-**Pricing:**
-- ECI: $75 base or $100 increased price (plus tax)
-- LCO: $100 base or $200 increased price (plus tax)
-
-**EXCLUSIONS - Not Eligible:**
-- Tower Suite Reservations
-- Casino Reservations
-- Resort Marketing Reservations (except paid/blended rates)
-- Select Group/Convention Reservations (Passkey, Rooming List, Housing)
-- May not be available Fridays, Saturdays, or Sundays (check Item Inventory)
-- ECI not available for PANCD room type
-- ECI not available for Same Day reservations
-
-**VERIFY BEFORE OFFERING:**
-- Availability updated daily and may change throughout the day
-- Always check Item Inventory before communicating to guest
-
-**CRITICAL REMINDERS:**
-
-**ETA/ETD Times:**
-- ECI: ETA must be 11:00 AM or later (cannot be before 11:00 AM)
-- LCO: ETD must be 4:00 PM (cannot be after 4:00 PM)
-
-**Fixed Charges Date:**
-- ECI: Use check-in date
-- LCO: Use one day PRIOR to check-out date
-
-**S/C Display Format:**
-- Always include pricing in notation
-- ECI: +Early Arrival @ $75 p/s or $100 p/s
-- LCO: +Late Departure @ $100 p/s or $200 p/s
-
-**Package Code:**
-- Search "cc" in Package field to find correct code`,
-  },
-  {
-    id: 'cc-auth',
-    title: 'Credit Card Authorization',
-    guide: `**Verify Credit Card Type**
-
-Confirm if the credit card is DOMESTIC (US bank card)
-
-International cards: Must be 7+ days prior to arrival
-
-Same day CC Auth cannot be processed
-
-**Domestic Credit Card - Send Link**
-
-If domestic bank card, place trace and link will be sent to guest
-
-No need to call Head Cashier or FD Assistant Manager
-
-Advise guest to:
-- Look for the link email
-- Complete it PRIOR to check-in
-- Ensure CC address matches exactly
-- Maximum 3 submission attempts
-
-**Check for Existing Deposit**
-
-If deposit exists:
-- Refund original CC in Opera (Deposit screen)
-- Change Payment Type to CH
-- Change Res. Type to Due
-- Change deposit rule to 2D (48-hr courtesy hold)
-
-If no deposit:
-- Set Payment Type to CH
-- Set Res. Type to Due
-- Change deposit rule to 2D (48-hr courtesy hold)
-
-**Advise Guest**
-
-"An email will be sent to you within the next 24-48 hours. When it arrives, please click on the link provided. You will be directed to a secured site to complete your credit card authorization form. Once you have entered your information, our team will be notified, and we will be able to complete your request."
-
-If link not completed prior to arrival: Guest must present ID and credit card in their name at Front Desk
-
-**Add Comment**
-
-Enter comment on reservation: "CC auth pending"
-
-**Create Trace Screen**
-
-From reservation, select Options, Traces, New
-
-Fill required fields:
-- From Date: NEXT day from trace entry (tomorrow's date)
-- To Date: NEXT day from trace entry (tomorrow's date)
-- Time: 05:00 AM
-- Dept Code: FOCC (Front Office Credit Card Auth)
-- Trace Text: USE EXACT FORMAT BELOW
-
-Trace Format:
-[Opera Conf #] - [Guest Name]
-CCH [CC Holder Name]
-[Email Address]
-[Phone Number]
-[Coverage Type]
-
-Coverage Options:
-- ROOM/TAX only for 1st night
-- ROOM/TAX only for entire stay
-- ROOM/TAX/RF for 1st night
-- ROOM/TAX/RF for entire stay
-- Resort Fee only for 1st night
-- Resort Fee only for entire stay
-
-Click OK to save trace`,
-    notification: `⚠️ **POLICY REQUIREMENTS:**
-
-**Maximum Rooms:**
-- Call Center: Up to 8 rooms maximum
-- 9+ rooms: Transfer to Specialty Dept ext. 2223
-
-**Credit Card Restrictions:**
-- International CC: 7+ days prior to arrival required
-- Domestic CC ONLY for advance bookings
-- NO same-day CC authorizations accepted
-
-**Link Submission:**
-- Guest has maximum 3 attempts to submit
-- All information must match exactly
-- CC address must match submission address
-- If declined after 3 attempts: Alternate payment required at check-in
-
-**Deposit Handling:**
-- If existing deposit: MUST refund first
-- Entire CC auth payment processes through portal
-- Cannot split between deposit and authorization
-
-**Trace Requirements:**
-- Must use tomorrow's date (not arrival date)
-- Time must be 05:00 AM
-- Use FOCC department code
-- Follow exact trace format
-
-**CONTACT INFORMATION:**
-
-**Head Cashiers:**
-- Wynn ext. 2163 | ResortHeadCashier@wynnlasvegas.com
-- Encore ext. 4019 | EncoreResortHeadCashier@wynnlasvegas.com
-
-**Front Desk Management:**
-- Wynn Resort ext. 2192 | ResortFrontDeskManagement@wynnlasvegas.com
-- Encore Resort ext. 4007 | EncoreFrontDeskManagement@wynnlasvegas.com
-- Wynn Tower Suites ext. 2192 | TowerSuitesManagers@wynnlasvegas.com
-- Encore Tower Suites ext. 4060 | EncoreSuitesManagers@wynnlasvegas.com`,
-  },
-  {
-    id: 'courtesy-hold',
-    title: 'Courtesy Hold Reservations',
-    guide: `**New Reservation Screen**
-
-Begin creating a reservation with all required information:
-- Stay dates
-- Rate code
-- Room/suite type
-- Guest name
-- Origin code
-- Room features
-- Specialty codes
-- Comments
-
-**Payment Screen**
-
-Update Payment Type:
-- Select CH code (Courtesy Hold)
-
-**Res. Type Screen**
-
-Update Reservation Type:
-- Select DUE code (Deposit Due)
-
-**Save Reservation**
-
-Click Save
-
-Opera will provide a Confirmation Number
-
-**Advise Guest - REFERENCE Number Only**
-
-Tell guest they have a "REFERENCE NUMBER" (NOT confirmation number)
-
-Reservation is NOT confirmed until credit card deposit is provided
-
-**Confirmation Screen**
-
-Close screen WITHOUT sending confirmation letter
-
-Do not send confirmation - guest has not provided deposit
-
-**Add Comments to Reservation**
-
-Enter all required comments:
-- Rates quoted
-- Policies disclosed
-- 24-hour courtesy hold
-
-Reservation is now on courtesy hold`,
-    notification: `⚠️ **POLICY RESTRICTIONS:**
-
-**Time Limit:**
-- Maximum 24-hour hold from time of inquiry
-- Guest must provide CC deposit within 24 hours
-
-**Within 14 Days Arrival:**
-- Courtesy Holds within 14 days require MANAGER APPROVAL
-- If manager approves: MUST note which manager in comments
-- Document manager name in reservation comments
-
-**CANNOT Offer Courtesy Hold For:**
-
-**High-End Suites:**
-- FV1 (Fairway Villa 1 Bedroom)
-- FV2 (Fairway Villa 2 Bedroom)
-- APT 2 (Apartment 2 Bedroom)
-- DUP3 (Duplex 3 Bedroom)
-
-**Special Reservations:**
-- Resort Marketing Reservations
-- Non-refundable Reservations
-- Convention Reservations
-
-**CRITICAL REMINDERS:**
-
-**Guest Communication:**
-- ALWAYS say "reference number" NOT "confirmation number"
-- Explain reservation is not confirmed without deposit
-- Guest has 24 hours to provide credit card
-
-**No Confirmation Letter:**
-- Do NOT send confirmation email/letter
-- Reservation not confirmed until deposit received
-
-**Required Comments:**
-- Rates quoted to guest
-- All policies disclosed
-- "24-hour courtesy hold" notation
-- Manager approval (if within 14 days)`,
-  },
-]
+import { GUIDES } from '../data/guides'
 
 // ── Component ────────────────────────────────────────────────
 export default function Opera() {
   const [search, setSearch] = useState(() => localStorage.getItem('opera_search') || '')
-  const [selectedGuide, setSelectedGuide] = useState<string>(() => localStorage.getItem('opera_selectedGuide') || '')
-  const [expandedCard, setExpandedCard] = useState<string | null>(() => localStorage.getItem('opera_expandedCard') || null)
-  const [activeTab, setActiveTab] = useState<Record<string, 'guide' | 'notification'>>(() => {
+  const [selectedGuide, setSelectedGuide] = useState<string>(() => localStorage.getItem('opera_selectedGuide') || GUIDES[0]?.id || '')
+  const [activeTab, setActiveTab] = useState<'guide' | 'notification'>(() => {
     const saved = localStorage.getItem('opera_activeTab')
-    return saved ? JSON.parse(saved) : {}
+    return (saved as 'guide' | 'notification') || 'guide'
   })
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
   // Save to localStorage
   useEffect(() => {
@@ -550,46 +20,20 @@ export default function Opera() {
   }, [selectedGuide])
 
   useEffect(() => {
-    localStorage.setItem('opera_expandedCard', expandedCard || '')
-  }, [expandedCard])
-
-  useEffect(() => {
-    localStorage.setItem('opera_activeTab', JSON.stringify(activeTab))
+    localStorage.setItem('opera_activeTab', activeTab)
   }, [activeTab])
 
   const filteredGuides = GUIDES.filter(guide => {
     const searchLower = search.toLowerCase()
-    
-    // Search only in title (partial match)
     return guide.title.toLowerCase().includes(searchLower)
   })
 
   const handleGuideSelect = (guideId: string) => {
     setSelectedGuide(guideId)
-    setExpandedCard(guideId)
-    if (!activeTab[guideId]) {
-      setActiveTab(prev => ({ ...prev, [guideId]: 'guide' }))
-    }
-    setSearch('')
-    setIsDropdownOpen(false)
+    setActiveTab('guide')
   }
 
-  const toggleCard = (id: string) => {
-    if (expandedCard === id) {
-      setExpandedCard(null)
-      setSelectedGuide('')
-    } else {
-      setExpandedCard(id)
-      setSelectedGuide(id)
-      if (!activeTab[id]) {
-        setActiveTab(prev => ({ ...prev, [id]: 'guide' }))
-      }
-    }
-  }
-
-  const setTab = (id: string, tab: 'guide' | 'notification') => {
-    setActiveTab(prev => ({ ...prev, [id]: tab }))
-  }
+  const currentGuide = GUIDES.find(g => g.id === selectedGuide)
 
   // Parse guide text into structured steps
   const parseGuideSteps = (text: string) => {
@@ -719,286 +163,245 @@ export default function Opera() {
   }
 
   return (
-    <div style={{ maxWidth: 900, margin: '0 auto' }}>
-      <h2 className="page-heading">Opera Guides</h2>
-
-      {/* Searchable Dropdown */}
-      <div style={{ marginBottom: 24, position: 'relative' }}>
-        <input
-          type="text"
-          placeholder="Search or select a guide..."
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-          onFocus={() => setIsDropdownOpen(true)}
-          onBlur={() => setTimeout(() => setIsDropdownOpen(false), 200)}
-          className="field-input field-input--full"
-          style={{ paddingRight: 40 }}
-        />
-        <span style={{
-          position: 'absolute',
-          right: 12,
-          top: '50%',
-          transform: 'translateY(-50%)',
-          pointerEvents: 'none',
-          color: 'var(--color-text)',
-          fontSize: 18,
-        }}>
-          🔍
-        </span>
+    <div className="page-layout">
+      {/* ── LEFT: sidebar with search and guide list ── */}
+      <aside className="page-sidebar">
+        <h2 className="page-heading">Opera Guides</h2>
         
-        {/* Dropdown List */}
-        {isDropdownOpen && (
-          <div style={{
+        {/* Search Bar */}
+        <div style={{ marginBottom: 16, position: 'relative' }}>
+          <input
+            type="text"
+            placeholder="Search guides..."
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            className="field-input field-input--full"
+            style={{ paddingRight: 40 }}
+          />
+          <span style={{
             position: 'absolute',
-            top: '100%',
-            left: 0,
-            right: 0,
-            backgroundColor: 'var(--color-bg)',
-            border: '2px solid var(--color-accent)',
-            borderRadius: 8,
-            marginTop: 8,
-            maxHeight: 300,
-            overflowY: 'auto',
-            zIndex: 100,
-            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.1)',
+            right: 12,
+            top: '50%',
+            transform: 'translateY(-50%)',
+            pointerEvents: 'none',
+            color: 'var(--color-text-muted)',
+            fontSize: 16,
           }}>
-            {filteredGuides.length > 0 ? (
-              filteredGuides.map(guide => (
-                <button
-                  key={guide.id}
-                  onClick={() => handleGuideSelect(guide.id)}
-                  style={{
-                    width: '100%',
-                    padding: '14px 18px',
-                    border: 'none',
-                    backgroundColor: selectedGuide === guide.id ? 'var(--color-accent)' : 'transparent',
-                    textAlign: 'left',
-                    cursor: 'pointer',
-                    color: selectedGuide === guide.id ? '#ffffff' : 'var(--color-text-bright)',
-                    fontSize: 15,
-                    fontWeight: selectedGuide === guide.id ? 600 : 500,
-                    transition: 'all 0.15s',
-                    borderBottom: '1px solid var(--color-border)',
-                  }}
-                  onMouseEnter={e => {
-                    if (selectedGuide !== guide.id) {
-                      e.currentTarget.style.backgroundColor = 'var(--color-surface)'
-                      e.currentTarget.style.color = 'var(--color-text-bright)'
-                    }
-                  }}
-                  onMouseLeave={e => {
-                    if (selectedGuide !== guide.id) {
-                      e.currentTarget.style.backgroundColor = 'transparent'
-                    }
-                  }}
-                >
-                  {guide.title}
-                </button>
-              ))
-            ) : (
-              <div style={{
-                padding: '14px 18px',
-                color: 'var(--color-text)',
-                fontSize: 14,
-                textAlign: 'center',
-              }}>
-                No guides found
-              </div>
-            )}
-          </div>
-        )}
-      </div>
+            🔍
+          </span>
+        </div>
 
-      {/* Cards */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-        {GUIDES.map(guide => {
-          const isExpanded = expandedCard === guide.id
-          const currentTab = activeTab[guide.id] || 'guide'
-
-          return (
-            <div
-              key={guide.id}
-              style={{
-                backgroundColor: 'var(--color-surface)',
-                border: '1px solid var(--color-border)',
-                borderRadius: 8,
-                overflow: 'hidden',
-              }}
-            >
-              {/* Card Header */}
+        {/* Guide List */}
+        <div style={{ 
+          display: 'flex', 
+          flexDirection: 'column', 
+          gap: 4,
+        }}>
+          {filteredGuides.length > 0 ? (
+            filteredGuides.map(guide => (
               <button
-                onClick={() => toggleCard(guide.id)}
+                key={guide.id}
+                onClick={() => handleGuideSelect(guide.id)}
                 style={{
                   width: '100%',
                   padding: '12px 16px',
-                  backgroundColor: isExpanded ? 'var(--color-background)' : 'transparent',
                   border: 'none',
+                  backgroundColor: selectedGuide === guide.id ? 'var(--color-accent)' : 'var(--color-surface)',
                   textAlign: 'left',
                   cursor: 'pointer',
+                  color: selectedGuide === guide.id ? '#ffffff' : 'var(--color-text-bright)',
+                  fontSize: 14,
+                  fontWeight: selectedGuide === guide.id ? 600 : 500,
+                  transition: 'all 0.15s',
+                  borderRadius: 6,
                   display: 'flex',
-                  justifyContent: 'space-between',
                   alignItems: 'center',
-                  color: 'var(--color-text-bright)',
-                  fontWeight: 600,
-                  fontSize: 16,
-                  transition: 'background-color 0.15s',
+                  justifyContent: 'space-between',
+                }}
+                onMouseEnter={e => {
+                  if (selectedGuide !== guide.id) {
+                    e.currentTarget.style.backgroundColor = 'var(--color-surface-hover)'
+                  }
+                }}
+                onMouseLeave={e => {
+                  if (selectedGuide !== guide.id) {
+                    e.currentTarget.style.backgroundColor = 'var(--color-surface)'
+                  }
                 }}
               >
                 <span>{guide.title}</span>
-                <span style={{ fontSize: 18 }}>{isExpanded ? '−' : '+'}</span>
+                {guide.notification && (
+                  <span style={{ fontSize: 13 }}>⚠️</span>
+                )}
               </button>
+            ))
+          ) : (
+            <div style={{
+              padding: '16px',
+              color: 'var(--color-text)',
+              fontSize: 14,
+              textAlign: 'center',
+            }}>
+              No guides found
+            </div>
+          )}
+        </div>
+      </aside>
 
-              {/* Card Content */}
-              {isExpanded && (
-                <div>
-                  {/* Tabs */}
-                  <div style={{
+      {/* ── RIGHT: selected guide content ── */}
+      <section className="page-content">
+        {currentGuide ? (
+          <>
+            <h2 className="page-heading">{currentGuide.title}</h2>
+
+            {/* Tabs */}
+            <div style={{
+              display: 'flex',
+              gap: 8,
+              marginBottom: 20,
+              borderBottom: '2px solid var(--color-border)',
+            }}>
+              <button
+                onClick={() => setActiveTab('guide')}
+                style={{
+                  padding: '10px 20px',
+                  backgroundColor: 'transparent',
+                  border: 'none',
+                  borderBottom: activeTab === 'guide' ? '2px solid var(--color-accent)' : '2px solid transparent',
+                  color: activeTab === 'guide' ? 'var(--color-text-bright)' : 'var(--color-text)',
+                  fontWeight: activeTab === 'guide' ? 600 : 400,
+                  fontSize: 14,
+                  cursor: 'pointer',
+                  transition: 'all 0.15s',
+                  marginBottom: -2,
+                }}
+              >
+                Guide
+              </button>
+              {currentGuide.notification && (
+                <button
+                  onClick={() => setActiveTab('notification')}
+                  style={{
+                    padding: '10px 20px',
+                    backgroundColor: 'transparent',
+                    border: 'none',
+                    borderBottom: activeTab === 'notification' ? '2px solid var(--color-accent)' : '2px solid transparent',
+                    color: activeTab === 'notification' ? 'var(--color-text-bright)' : 'var(--color-text)',
+                    fontWeight: activeTab === 'notification' ? 600 : 400,
+                    fontSize: 14,
+                    cursor: 'pointer',
                     display: 'flex',
-                    borderBottom: '1px solid var(--color-border)',
-                    backgroundColor: 'var(--color-background)',
-                  }}>
-                    <button
-                      onClick={() => setTab(guide.id, 'guide')}
-                      style={{
-                        padding: '10px 20px',
-                        backgroundColor: currentTab === 'guide' ? 'var(--color-surface)' : 'transparent',
-                        border: 'none',
-                        borderBottom: currentTab === 'guide' ? '2px solid var(--color-accent)' : '2px solid transparent',
-                        color: currentTab === 'guide' ? 'var(--color-text-bright)' : 'var(--color-text)',
-                        fontWeight: currentTab === 'guide' ? 600 : 400,
-                        fontSize: 13,
-                        cursor: 'pointer',
-                        transition: 'all 0.15s',
-                      }}
-                    >
-                      Guide
-                    </button>
-                    {guide.notification && (
-                      <button
-                        onClick={() => setTab(guide.id, 'notification')}
-                        style={{
-                          padding: '10px 20px',
-                          backgroundColor: currentTab === 'notification' ? 'var(--color-surface)' : 'transparent',
-                          border: 'none',
-                          borderBottom: currentTab === 'notification' ? '2px solid var(--color-accent)' : '2px solid transparent',
-                          color: currentTab === 'notification' ? 'var(--color-text-bright)' : 'var(--color-text)',
-                          fontWeight: currentTab === 'notification' ? 600 : 400,
-                          fontSize: 13,
-                          cursor: 'pointer',
+                    alignItems: 'center',
+                    gap: 6,
+                    transition: 'all 0.15s',
+                    marginBottom: -2,
+                  }}
+                >
+                  <span style={{ fontSize: 14 }}>⚠️</span>
+                  Important
+                </button>
+              )}
+            </div>
+
+            {/* Tab Content */}
+            <div>
+              {activeTab === 'guide' && (
+                <div 
+                  className="opera-grid"
+                  style={{ 
+                    display: 'grid', 
+                    gridTemplateColumns: currentGuide.id === 'room-types' ? 'repeat(4, 1fr)' : 'repeat(2, 1fr)', 
+                    gap: '16px 20px',
+                  }}
+                >
+                  {parseGuideSteps(currentGuide.guide).map((step, idx) => {
+                    let badgeContent = idx + 1
+                    let badgeIcon = null
+                    
+                    if (currentGuide.id === 'room-types') {
+                      if (step.screen.includes('Tower Suites')) {
+                        badgeIcon = '🏰'
+                      } else {
+                        badgeIcon = '🏢'
+                      }
+                    }
+                    
+                    return (
+                      <div key={idx} style={{
+                        position: 'relative',
+                        paddingLeft: 40,
+                      }}>
+                        <div style={{
+                          position: 'absolute',
+                          left: 0,
+                          top: 1,
+                          width: 26,
+                          height: 26,
+                          borderRadius: '50%',
+                          backgroundColor: 'var(--color-accent)',
+                          color: '#fff',
                           display: 'flex',
                           alignItems: 'center',
-                          gap: 5,
-                          transition: 'all 0.15s',
-                        }}
-                      >
-                        <span style={{ fontSize: 14 }}>⚠️</span>
-                        Important
-                      </button>
-                    )}
-                  </div>
-
-                  {/* Tab Content */}
-                  <div style={{
-                    padding: '16px',
-                    color: 'var(--color-text)',
-                    backgroundColor: 'var(--color-surface)',
-                  }}>
-                    {currentTab === 'guide' && (
-                      <>
-                        {/* All guides use step format, but Room Types gets 4 columns */}
-                        <div 
-                          className="opera-grid"
-                          style={{ 
-                            display: 'grid', 
-                            gridTemplateColumns: guide.id === 'room-types' ? 'repeat(4, 1fr)' : 'repeat(2, 1fr)', 
-                            gap: '16px 20px',
-                          }}
-                        >
-                          {parseGuideSteps(guide.guide).map((step, idx) => {
-                            // Determine icon based on tower name for Room Types
-                            let badgeContent = idx + 1
-                            let badgeIcon = null
-                            
-                            if (guide.id === 'room-types') {
-                              // Tower Suites get castle icon
-                              if (step.screen.includes('Tower Suites')) {
-                                badgeIcon = '🏰'
-                              } else {
-                                // Regular Resorts get building icon
-                                badgeIcon = '🏢'
-                              }
-                            }
-                            
-                            return (
-                            <div key={idx} style={{
-                              position: 'relative',
-                              paddingLeft: 40,
-                            }}>
-                              {/* Step number badge or tower icon */}
-                              <div style={{
-                                position: 'absolute',
-                                left: 0,
-                                top: 1,
-                                width: 26,
-                                height: 26,
-                                borderRadius: '50%',
-                                backgroundColor: 'var(--color-accent)',
-                                color: '#fff',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                fontWeight: 700,
-                                fontSize: badgeIcon ? 14 : 12,
-                              }}>
-                                {badgeIcon || badgeContent}
-                              </div>
-                              
-                              {/* Screen/Section name */}
-                              <div style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: 6,
-                                marginBottom: 6,
-                              }}>
-                                {/* Only show screen icon if it's not room-types AND contains "Screen" */}
-                                {guide.id !== 'room-types' && step.screen.includes('Screen') && (
-                                  <span style={{ fontSize: 15 }}>🖥️</span>
-                                )}
-                                <h3 style={{
-                                  margin: 0,
-                                  fontSize: 14,
-                                  fontWeight: 700,
-                                  color: 'var(--color-text-bright)',
-                                }}>
-                                  {step.screen}
-                                </h3>
-                              </div>                              {/* Step content */}
-                              <div style={{
-                                backgroundColor: 'var(--color-background)',
-                                padding: '10px 12px',
-                                borderRadius: 6,
-                                border: '1px solid var(--color-border)',
-                              }}>
-                                {formatStepContent(step.content)}
-                              </div>
-                            </div>
-                            )
-                          })}
+                          justifyContent: 'center',
+                          fontWeight: 700,
+                          fontSize: badgeIcon ? 14 : 12,
+                        }}>
+                          {badgeIcon || badgeContent}
                         </div>
-                      </>
-                    )}
-                    {currentTab === 'notification' && guide.notification && (
-                      <div style={{ maxWidth: 700 }}>
-                        {formatNotificationText(guide.notification)}
+                        
+                        <div style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 6,
+                          marginBottom: 6,
+                        }}>
+                          {currentGuide.id !== 'room-types' && step.screen.includes('Screen') && (
+                            <span style={{ fontSize: 15 }}>🖥️</span>
+                          )}
+                          <h3 style={{
+                            margin: 0,
+                            fontSize: 14,
+                            fontWeight: 700,
+                            color: 'var(--color-text-bright)',
+                          }}>
+                            {step.screen}
+                          </h3>
+                        </div>
+                        
+                        <div style={{
+                          backgroundColor: 'var(--color-background)',
+                          padding: '10px 12px',
+                          borderRadius: 6,
+                          border: '1px solid var(--color-border)',
+                        }}>
+                          {formatStepContent(step.content)}
+                        </div>
                       </div>
-                    )}
-                  </div>
+                    )
+                  })}
+                </div>
+              )}
+              
+              {activeTab === 'notification' && currentGuide.notification && (
+                <div style={{ maxWidth: 700 }}>
+                  {formatNotificationText(currentGuide.notification)}
                 </div>
               )}
             </div>
-          )
-        })}
-      </div>
+          </>
+        ) : (
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '400px',
+            color: 'var(--color-text)',
+            fontSize: 16,
+          }}>
+            Select a guide from the list
+          </div>
+        )}
+      </section>
     </div>
   )
 }
