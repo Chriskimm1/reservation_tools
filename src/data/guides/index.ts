@@ -7,16 +7,20 @@ import { eciLco } from './eciLco'
 import { ccAuth } from './ccAuth'
 import { courtesyHold } from './courtesyHold'
 import { connectingRooms } from './connectingRooms'
+import { cancellationPolicy } from './cancellationPolicy'
+import { sendingConfirmation } from './sendingConfirmation'
 
 export const GUIDES: GuideCard[] = [
-  newReservation,
-  rateAvailability,
-  roomTypes,
-  folioRequests,
-  eciLco,
-  ccAuth,
-  courtesyHold,
-  connectingRooms,
+  cancellationPolicy,   // Cancellation Policy
+  connectingRooms,      // Connecting Rooms Policy
+  courtesyHold,         // Courtesy Hold Reservations
+  ccAuth,               // Credit Card Authorization
+  eciLco,               // Early Check-in & Late Check-Out
+  folioRequests,        // Folio Requests
+  newReservation,       // New Reservation
+  rateAvailability,     // Rate & Room Availability
+  roomTypes,            // Room Types
+  sendingConfirmation,  // Sending Confirmation Emails
 ]
 
 export type { GuideCard }

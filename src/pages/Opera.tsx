@@ -163,13 +163,24 @@ export default function Opera() {
   }
 
   return (
-    <div className="page-layout">
+    <div style={{ 
+      display: 'flex',
+      height: 'calc(100vh - 180px)',
+      gap: 60,
+      overflow: 'hidden',
+    }}>
       {/* ── LEFT: sidebar with search and guide list ── */}
-      <aside className="page-sidebar">
+      <aside style={{
+        width: 480,
+        flexShrink: 0,
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+      }}>
         <h2 className="page-heading">Opera Guides</h2>
         
         {/* Search Bar */}
-        <div style={{ marginBottom: 16, position: 'relative' }}>
+        <div style={{ marginBottom: 16, position: 'relative', flexShrink: 0 }}>
           <input
             type="text"
             placeholder="Search guides..."
@@ -191,11 +202,13 @@ export default function Opera() {
           </span>
         </div>
 
-        {/* Guide List */}
+        {/* Guide List - Scrollable */}
         <div style={{ 
           display: 'flex', 
           flexDirection: 'column', 
           gap: 4,
+          overflowY: 'auto',
+          paddingRight: 8,
         }}>
           {filteredGuides.length > 0 ? (
             filteredGuides.map(guide => (
@@ -205,7 +218,7 @@ export default function Opera() {
                 style={{
                   width: '100%',
                   padding: '12px 16px',
-                  border: 'none',
+                  border: '1px solid var(--color-border)',
                   backgroundColor: selectedGuide === guide.id ? 'var(--color-accent)' : 'var(--color-surface)',
                   textAlign: 'left',
                   cursor: 'pointer',
@@ -217,15 +230,18 @@ export default function Opera() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
+                  boxShadow: 'var(--shadow-sm)',
                 }}
                 onMouseEnter={e => {
                   if (selectedGuide !== guide.id) {
                     e.currentTarget.style.backgroundColor = 'var(--color-surface-hover)'
+                    e.currentTarget.style.boxShadow = 'var(--shadow-md)'
                   }
                 }}
                 onMouseLeave={e => {
                   if (selectedGuide !== guide.id) {
                     e.currentTarget.style.backgroundColor = 'var(--color-surface)'
+                    e.currentTarget.style.boxShadow = 'var(--shadow-sm)'
                   }
                 }}
               >
@@ -249,62 +265,74 @@ export default function Opera() {
       </aside>
 
       {/* ── RIGHT: selected guide content ── */}
-      <section className="page-content">
+      <section style={{
+        flex: 1,
+        minWidth: 0,
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+      }}>
         {currentGuide ? (
           <>
-            <h2 className="page-heading">{currentGuide.title}</h2>
+            <div style={{ flexShrink: 0 }}>
+              <h2 className="page-heading">{currentGuide.title}</h2>
 
-            {/* Tabs */}
-            <div style={{
-              display: 'flex',
-              gap: 8,
-              marginBottom: 20,
-              borderBottom: '2px solid var(--color-border)',
-            }}>
-              <button
-                onClick={() => setActiveTab('guide')}
-                style={{
-                  padding: '10px 20px',
-                  backgroundColor: 'transparent',
-                  border: 'none',
-                  borderBottom: activeTab === 'guide' ? '2px solid var(--color-accent)' : '2px solid transparent',
-                  color: activeTab === 'guide' ? 'var(--color-text-bright)' : 'var(--color-text)',
-                  fontWeight: activeTab === 'guide' ? 600 : 400,
-                  fontSize: 14,
-                  cursor: 'pointer',
-                  transition: 'all 0.15s',
-                  marginBottom: -2,
-                }}
-              >
-                Guide
-              </button>
-              {currentGuide.notification && (
+              {/* Tabs */}
+              <div style={{
+                display: 'flex',
+                gap: 8,
+                marginBottom: 20,
+                borderBottom: '2px solid var(--color-border)',
+              }}>
                 <button
-                  onClick={() => setActiveTab('notification')}
+                  onClick={() => setActiveTab('guide')}
                   style={{
                     padding: '10px 20px',
                     backgroundColor: 'transparent',
                     border: 'none',
-                    borderBottom: activeTab === 'notification' ? '2px solid var(--color-accent)' : '2px solid transparent',
-                    color: activeTab === 'notification' ? 'var(--color-text-bright)' : 'var(--color-text)',
-                    fontWeight: activeTab === 'notification' ? 600 : 400,
+                    borderBottom: activeTab === 'guide' ? '2px solid var(--color-accent)' : '2px solid transparent',
+                    color: activeTab === 'guide' ? 'var(--color-text-bright)' : 'var(--color-text)',
+                    fontWeight: activeTab === 'guide' ? 600 : 400,
                     fontSize: 14,
                     cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 6,
                     transition: 'all 0.15s',
                     marginBottom: -2,
                   }}
                 >
-                  <span style={{ fontSize: 14 }}>⚠️</span>
-                  Important
+                  Guide
                 </button>
-              )}
+                {currentGuide.notification && (
+                  <button
+                    onClick={() => setActiveTab('notification')}
+                    style={{
+                      padding: '10px 20px',
+                      backgroundColor: 'transparent',
+                      border: 'none',
+                      borderBottom: activeTab === 'notification' ? '2px solid var(--color-accent)' : '2px solid transparent',
+                      color: activeTab === 'notification' ? 'var(--color-text-bright)' : 'var(--color-text)',
+                      fontWeight: activeTab === 'notification' ? 600 : 400,
+                      fontSize: 14,
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 6,
+                      transition: 'all 0.15s',
+                      marginBottom: -2,
+                    }}
+                  >
+                    <span style={{ fontSize: 14 }}>⚠️</span>
+                    Important
+                  </button>
+                )}
+              </div>
             </div>
 
-            {/* Tab Content */}
-            <div>
+            {/* Tab Content - Scrollable */}
+            <div style={{
+              flex: 1,
+              overflowY: 'auto',
+              paddingRight: 8,
+            }}>
               {activeTab === 'guide' && (
                 <div 
                   className="opera-grid"
@@ -373,6 +401,7 @@ export default function Opera() {
                           padding: '10px 12px',
                           borderRadius: 6,
                           border: '1px solid var(--color-border)',
+                          boxShadow: 'var(--shadow-sm)',
                         }}>
                           {formatStepContent(step.content)}
                         </div>

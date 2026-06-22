@@ -22,27 +22,38 @@
   --color-chip-x:       #60a5fa;   /* blue-400                     */
   --color-success:      #34d399;   /* emerald-400                  */
   --color-error:        #f87171;   /* red-400                      */
+  
+  /* Drop shadows for depth (subtle in dark mode) */
+  --shadow-sm:   0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md:   0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  --shadow-lg:   0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+  --shadow-xl:   0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
 }
 
 /* ── Light ────────────────────────────────────────────────────
-   Wynn Las Vegas inspired: Gold/bronze accents, sophisticated
-   neutrals, luxurious yet modern. Think: champagne, warm metals,
-   elegant simplicity.
+   Modern, fresh palette with vibrant colors and depth.
+   Think: Notion, Linear light mode with better contrast.
    ──────────────────────────────────────────────────────────── */
 [data-theme="light"] {
-  --color-bg:           #fafaf9;   /* stone-50 — warm off-white    */
+  --color-bg:           #f8f9fa;   /* cool light gray              */
   --color-surface:      #ffffff;   /* pure white cards             */
-  --color-surface-hover:#f5f5f4;   /* stone-100 hover              */
-  --color-border:       #e7e5e4;   /* stone-200 — warm border      */
-  --color-border-focus: #ca8a04;   /* yellow-600 — gold focus      */
-  --color-text:         #57534e;   /* stone-600 — warm body text   */
-  --color-text-bright:  #1c1917;   /* stone-900 — headings/values  */
-  --color-text-muted:   #a8a29e;   /* stone-400 — hints/secondary  */
-  --color-accent:       #ca8a04;   /* yellow-600 — Wynn gold       */
-  --color-accent-hover: #a16207;   /* yellow-700 — deeper gold     */
-  --color-chip-bg:      #ca8a04;   /* yellow-600 — gold chips      */
-  --color-chip-text:    #ffffff;   /* white text on gold           */
-  --color-chip-x:       #ffffff;   /* white x on gold              */
-  --color-success:      #16a34a;   /* green-600 — elegant green    */
-  --color-error:        #dc2626;   /* red-600 — refined red        */
+  --color-surface-hover:#f1f3f5;   /* subtle hover                 */
+  --color-border:       #dee2e6;   /* clear visible border         */
+  --color-border-focus: #2196f3;   /* bright blue focus            */
+  --color-text:         #495057;   /* darker readable text         */
+  --color-text-bright:  #212529;   /* near-black headings          */
+  --color-text-muted:   #868e96;   /* muted secondary text         */
+  --color-accent:       #2196f3;   /* vibrant blue                 */
+  --color-accent-hover: #1976d2;   /* deeper blue                  */
+  --color-chip-bg:      #e3f2fd;   /* light blue chip bg           */
+  --color-chip-text:    #1565c0;   /* dark blue chip text          */
+  --color-chip-x:       #1976d2;   /* blue x button                */
+  --color-success:      #2e7d32;   /* strong green                 */
+  --color-error:        #d32f2f;   /* strong red                   */
+  
+  /* Drop shadows for depth */
+  --shadow-sm:   0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md:   0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg:   0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl:   0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }

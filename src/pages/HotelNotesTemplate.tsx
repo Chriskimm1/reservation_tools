@@ -233,26 +233,19 @@ export default function HotelNotesTemplate() {
           <h2 className="page-heading" style={{ margin: 0 }}>Options</h2>
           <button 
             onClick={resetAll}
+            className="btn-primary"
             style={{
-              background: 'none',
-              border: '1px solid var(--color-border)',
-              borderRadius: '4px',
-              padding: '6px 12px',
-              fontSize: '13px',
-              color: 'var(--color-text)',
-              cursor: 'pointer',
-              transition: 'all 0.15s',
+              backgroundColor: '#dc2626',
+              border: 'none',
             }}
             onMouseEnter={e => {
-              e.currentTarget.style.borderColor = 'var(--color-error)'
-              e.currentTarget.style.color = 'var(--color-error)'
+              e.currentTarget.style.backgroundColor = '#b91c1c'
             }}
             onMouseLeave={e => {
-              e.currentTarget.style.borderColor = 'var(--color-border)'
-              e.currentTarget.style.color = 'var(--color-text)'
+              e.currentTarget.style.backgroundColor = '#dc2626'
             }}
           >
-            Clear All
+            🗑️ Clear All
           </button>
         </div>
 

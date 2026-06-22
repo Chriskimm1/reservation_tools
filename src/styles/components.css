@@ -69,8 +69,7 @@
   color: var(--color-text-bright);
   box-sizing: border-box;
   transition: border-color 0.15s, box-shadow 0.15s;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 
-              0 0 0 1px rgba(0, 0, 0, 0.02);
+  box-shadow: var(--shadow-sm);
 }
 
 .field-input:focus,
@@ -79,7 +78,7 @@
   outline: none;
   border-color: var(--color-border-focus);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-border-focus) 20%, transparent),
-              0 1px 3px rgba(0, 0, 0, 0.08);
+              var(--shadow-sm);
 }
 
 /* Placeholder styling for inputs and selects */
@@ -139,8 +138,7 @@
   color: #ffffff;
   font-size: 14px;
   font-weight: 600;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12),
-              0 1px 2px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-sm);
 }
 
 .chip__remove {
@@ -161,16 +159,14 @@
 }
 
 /* ── Summary card (Fee Calculator right panel) ────────── */
+/* ── Summary card (Fee Calculator right panel) ────────── */
 .summary-card {
   border: 1px solid var(--color-border);
   border-radius: 10px;
   padding: 32px;
   background-color: var(--color-surface);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 
-              0 4px 16px rgba(0, 0, 0, 0.08),
-              0 0 0 1px rgba(0, 0, 0, 0.02);
+  box-shadow: var(--shadow-lg);
 }
-
 .summary-row {
   display: flex;
   justify-content: space-between;
@@ -225,15 +221,13 @@
   cursor: pointer;
   white-space: nowrap;
   transition: background-color 0.15s, transform 0.15s, box-shadow 0.15s;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12),
-              0 1px 2px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-primary:hover {
   background-color: var(--color-accent-hover);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15),
-              0 2px 4px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--shadow-md);
 }
 
 .btn-copy {
@@ -245,16 +239,14 @@
   font-weight: 600;
   font-size: 15px;
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12),
-              0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-md);
   transition: background-color 0.15s, transform 0.15s, box-shadow 0.15s;
 }
 
 .btn-copy:hover {
   background-color: var(--color-accent-hover);
   transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15),
-              0 3px 6px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--shadow-lg);
 }
 
 .copy-status {
@@ -272,13 +264,25 @@
   gap: 32px;
 }
 
-.directory-table-section {
-  width: 60%;
+.directory-page .page-sidebar {
+  width: 380px;
+  padding-right: 0;
   margin-right: 0;
 }
 
+.directory-page .page-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.directory-table-section {
+  flex: 1;
+  min-width: 0;
+}
+
 .directory-quick-reference {
-  width: 35%;
+  width: 380px;
+  flex-shrink: 0;
 }
 
 /* Directory table styles */
@@ -346,6 +350,7 @@
   border-radius: 8px;
   border: 1px solid var(--color-border);
   margin-top: 20px;
+  box-shadow: var(--shadow-sm);
 }
 
 .static-card:first-child {

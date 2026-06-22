@@ -108,8 +108,36 @@ export default function Directory() {
 
   return (
     <div className="page-layout directory-page">
-      {/* ── LEFT: Searchable Directory ── */}
-      <aside className="page-sidebar directory-table-section">
+      {/* ── LEFT: Quick Reference ── */}
+      <aside className="page-sidebar directory-quick-reference">
+        <h2 className="page-heading">Quick Reference</h2>
+
+        {/* Internal Call Center */}
+        <div className="static-card">
+          <h3 className="static-heading">Internal Call Center</h3>
+          <div className="static-list">
+            <StaticEntry label="Manager" value="2259" />
+            <StaticEntry label="Rooms" value="7100" />
+            <StaticEntry label="Dining" value="3463" />
+            <StaticEntry label="Show" value="7469" />
+            <StaticEntry label="F1 Line" value="7112" />
+            <StaticEntry label="RM" value="7777" />
+            <StaticEntry label="W SPA" value="3900" />
+            <StaticEntry label="E SPA" value="4772" />
+          </div>
+        </div>
+
+        {/* Language Line */}
+        <div className="static-card">
+          <h3 className="static-heading">Language Line</h3>
+          <p className="language-line-number">
+            888-317-4078
+          </p>
+        </div>
+      </aside>
+
+      {/* ── RIGHT: Searchable Directory ── */}
+      <section className="page-content directory-table-section">
         <h2 className="page-heading">Directory</h2>
 
         {/* Search */}
@@ -124,8 +152,13 @@ export default function Directory() {
           />
         </div>
 
-        {/* Table */}
-        <div className="directory-table-wrapper">
+        {/* Table - Scrollable */}
+        <div className="directory-table-wrapper" style={{
+          maxHeight: 'calc(100vh - 280px)',
+          overflowY: 'auto',
+          border: '1px solid var(--color-border)',
+          borderRadius: '8px',
+        }}>
           <table className="directory-table">
             <thead>
               <tr>
@@ -173,34 +206,6 @@ export default function Directory() {
             No results found for "{search}"
           </p>
         )}
-      </aside>
-
-      {/* ── RIGHT: Static Important Numbers ── */}
-      <section className="page-content directory-quick-reference">
-        <h2 className="page-heading">Quick Reference</h2>
-
-        {/* Internal Call Center */}
-        <div className="static-card">
-          <h3 className="static-heading">Internal Call Center</h3>
-          <div className="static-list">
-            <StaticEntry label="Manager" value="2259" />
-            <StaticEntry label="Rooms" value="7100" />
-            <StaticEntry label="Dining" value="3463" />
-            <StaticEntry label="Show" value="7469" />
-            <StaticEntry label="F1 Line" value="7112" />
-            <StaticEntry label="RM" value="7777" />
-            <StaticEntry label="W SPA" value="3900" />
-            <StaticEntry label="E SPA" value="4772" />
-          </div>
-        </div>
-
-        {/* Language Line */}
-        <div className="static-card">
-          <h3 className="static-heading">Language Line</h3>
-          <p className="language-line-number">
-            888-317-4078
-          </p>
-        </div>
       </section>
     </div>
   )

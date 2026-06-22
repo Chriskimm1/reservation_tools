@@ -17,7 +17,7 @@ const TABS = [
 
 export default function App() {
   const [tab,    setTab]    = useState<TabId>('hotel')
-  const [isDark, setIsDark] = useState(false)
+  const [isDark, setIsDark] = useState(true) // Default to dark mode
 
   // Sync data-theme on <html> — all CSS variables update automatically.
   // No inline colors or isDark props needed in child components.
