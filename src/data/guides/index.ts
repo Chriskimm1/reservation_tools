@@ -9,8 +9,10 @@ import { courtesyHold } from './courtesyHold'
 import { connectingRooms } from './connectingRooms'
 import { cancellationPolicy } from './cancellationPolicy'
 import { sendingConfirmation } from './sendingConfirmation'
+import { backToBack } from './backToBack'
 
 export const GUIDES: GuideCard[] = [
+  backToBack,           // Back to Back Reservations
   cancellationPolicy,   // Cancellation Policy
   connectingRooms,      // Connecting Rooms Policy
   courtesyHold,         // Courtesy Hold Reservations
