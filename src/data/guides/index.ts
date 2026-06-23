@@ -10,10 +10,14 @@ import { connectingRooms } from './connectingRooms'
 import { cancellationPolicy } from './cancellationPolicy'
 import { sendingConfirmation } from './sendingConfirmation'
 import { backToBack } from './backToBack'
+import { chargingCreditCards } from './chargingCreditCards'
+import { additionalRequests } from './additionalRequests'
 
 export const GUIDES: GuideCard[] = [
+  additionalRequests,   // Additional Requests
   backToBack,           // Back to Back Reservations
   cancellationPolicy,   // Cancellation Policy
+  chargingCreditCards,  // Charging Credit Cards
   connectingRooms,      // Connecting Rooms Policy
   courtesyHold,         // Courtesy Hold Reservations
   ccAuth,               // Credit Card Authorization
