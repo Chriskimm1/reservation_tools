@@ -12,6 +12,7 @@ import { sendingConfirmation } from './sendingConfirmation'
 import { backToBack } from './backToBack'
 import { chargingCreditCards } from './chargingCreditCards'
 import { additionalRequests } from './additionalRequests'
+import { uptower } from './uptower'
 
 export const GUIDES: GuideCard[] = [
   additionalRequests,   // Additional Requests
@@ -27,6 +28,7 @@ export const GUIDES: GuideCard[] = [
   rateAvailability,     // Rate & Room Availability
   roomTypes,            // Room Types
   sendingConfirmation,  // Sending Confirmation Emails
+  uptower,              // Uptower Rate Code
 ]
 
 export type { GuideCard }

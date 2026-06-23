@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { GUIDES } from '../data/guides'
 
 interface OperaProps {
@@ -14,6 +14,9 @@ export default function Opera({ onNavigateToTab }: OperaProps) {
     return (saved as 'guide' | 'notification') || 'guide'
   })
 
+  const contentScrollRef = useRef<HTMLDivElement>(null)
+  const selectedGuideRef = useRef<HTMLButtonElement>(null)
+
   // Save to localStorage
   useEffect(() => {
     localStorage.setItem('opera_search', search)
@@ -26,6 +29,23 @@ export default function Opera({ onNavigateToTab }: OperaProps) {
   useEffect(() => {
     localStorage.setItem('opera_activeTab', activeTab)
   }, [activeTab])
+
+  // Scroll content to top when guide changes
+  useEffect(() => {
+    if (contentScrollRef.current) {
+      contentScrollRef.current.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }, [selectedGuide])
+
+  // Scroll selected guide into view in the sidebar
+  useEffect(() => {
+    if (selectedGuideRef.current) {
+      selectedGuideRef.current.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'nearest' 
+      })
+    }
+  }, [selectedGuide])
 
   const filteredGuides = GUIDES.filter(guide => {
     const searchLower = search.toLowerCase()
@@ -258,6 +278,7 @@ export default function Opera({ onNavigateToTab }: OperaProps) {
             filteredGuides.map(guide => (
               <button
                 key={guide.id}
+                ref={selectedGuide === guide.id ? selectedGuideRef : null}
                 onClick={() => handleGuideSelect(guide.id)}
                 style={{
                   width: '100%',
@@ -372,11 +393,14 @@ export default function Opera({ onNavigateToTab }: OperaProps) {
             </div>
 
             {/* Tab Content - Scrollable */}
-            <div style={{
-              flex: 1,
-              overflowY: 'auto',
-              paddingRight: 8,
-            }}>
+            <div 
+              ref={contentScrollRef}
+              style={{
+                flex: 1,
+                overflowY: 'auto',
+                paddingRight: 8,
+              }}
+            >
               {activeTab === 'guide' && (
                 <div 
                   className="opera-grid"

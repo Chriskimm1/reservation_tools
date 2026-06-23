@@ -63,12 +63,16 @@
 /* ── Tab bar ────────────────────────────────────────────── */
 .app-tabs {
   position: sticky;
-  top: 62px;
-  z-index: 99;
+  top: 63px;
+  z-index: 100;
   padding: 0 40px;
   background-color: var(--color-surface);
   border-bottom: 2px solid var(--color-border);
   box-shadow: var(--shadow-sm);
+  /* Ensure tabs stay visible and don't get cut off */
+  min-height: 52px;
+  display: flex;
+  align-items: flex-end;
 }
 
 /* ── Main content ───────────────────────────────────────── */
@@ -81,6 +85,8 @@
   display: flex;
   gap: 4px;
   align-items: flex-end;
+  padding: 4px 0;
+  width: 100%;
 }
 
 .tab-btn {
@@ -97,6 +103,7 @@
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
   border-bottom: none;
+  flex-shrink: 0;
 }
 
 .tab-btn:hover:not(.active) {

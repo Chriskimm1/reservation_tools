@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import './App.css'
 import Tabs from './components/Tabs'
 import Notepad from './components/Notepad'
+import Logo from './components/Logo'
 import Templates from './pages/Templates'
 import FeeCalculator from './pages/FeeCalculator'
 import Directory from './pages/Directory'
@@ -60,7 +61,7 @@ export default function App() {
       <div className="app-inner">
 
         <header className="app-header">
-          <h1 className="app-header__title">Reservation Tools</h1>
+          <Logo />
           <div className="app-header__actions">
             <button
               className="app-header__notepad-btn"
