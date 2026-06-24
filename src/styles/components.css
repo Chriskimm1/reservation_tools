@@ -68,8 +68,7 @@
   background-color: var(--color-surface);
   color: var(--color-text-bright);
   box-sizing: border-box;
-  transition: border-color 0.15s, box-shadow 0.15s;
-  box-shadow: var(--shadow-sm);
+  transition: border-color 0.15s;
 }
 
 .field-input:focus,
@@ -77,8 +76,7 @@
 .field-textarea:focus {
   outline: none;
   border-color: var(--color-border-focus);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-border-focus) 20%, transparent),
-              var(--shadow-sm);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-border-focus) 20%, transparent);
 }
 
 /* Placeholder styling for inputs and selects */
@@ -138,7 +136,6 @@
   color: #ffffff;
   font-size: 14px;
   font-weight: 600;
-  box-shadow: var(--shadow-sm);
 }
 
 .chip__remove {
@@ -161,11 +158,10 @@
 /* ── Summary card (Fee Calculator right panel) ────────── */
 /* ── Summary card (Fee Calculator right panel) ────────── */
 .summary-card {
-  border: 1px solid var(--color-border);
+  border: 2px solid var(--color-border);
   border-radius: 10px;
   padding: 32px;
   background-color: var(--color-surface);
-  box-shadow: var(--shadow-lg);
 }
 .summary-row {
   display: flex;
@@ -220,14 +216,12 @@
   font-size: 15px;
   cursor: pointer;
   white-space: nowrap;
-  transition: background-color 0.15s, transform 0.15s, box-shadow 0.15s;
-  box-shadow: var(--shadow-sm);
+  transition: background-color 0.15s, transform 0.15s;
 }
 
 .btn-primary:hover {
   background-color: var(--color-accent-hover);
   transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
 }
 
 .btn-copy {
@@ -239,14 +233,12 @@
   font-weight: 600;
   font-size: 15px;
   cursor: pointer;
-  box-shadow: var(--shadow-md);
-  transition: background-color 0.15s, transform 0.15s, box-shadow 0.15s;
+  transition: background-color 0.15s, transform 0.15s;
 }
 
 .btn-copy:hover {
   background-color: var(--color-accent-hover);
   transform: translateY(-1px);
-  box-shadow: var(--shadow-lg);
 }
 
 .copy-status {
@@ -350,7 +342,6 @@
   border-radius: 8px;
   border: 1px solid var(--color-border);
   margin-top: 20px;
-  box-shadow: var(--shadow-sm);
 }
 
 .static-card:first-child {

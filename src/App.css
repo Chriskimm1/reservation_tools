@@ -23,8 +23,7 @@
   align-items: center;
   padding: 18px 40px;
   background-color: var(--color-surface);
-  border-bottom: 1px solid var(--color-border);
-  box-shadow: var(--shadow-md);
+  border-bottom: 2px solid var(--color-border);
 }
 
 .app-header__title {
@@ -50,14 +49,13 @@
   cursor: pointer;
   font-size: 14px;
   font-weight: 500;
-  transition: background-color 0.15s, box-shadow 0.15s;
-  box-shadow: var(--shadow-sm);
+  transition: background-color 0.15s, border-color 0.15s;
 }
 
 .app-header__notepad-btn:hover,
 .app-header__theme-btn:hover {
   background-color: var(--color-surface-hover);
-  box-shadow: var(--shadow-md);
+  border-color: var(--color-accent);
 }
 
 /* ── Tab bar ────────────────────────────────────────────── */
@@ -68,7 +66,6 @@
   padding: 0 40px;
   background-color: var(--color-surface);
   border-bottom: 2px solid var(--color-border);
-  box-shadow: var(--shadow-sm);
   /* Ensure tabs stay visible and don't get cut off */
   min-height: 52px;
   display: flex;
@@ -119,7 +116,6 @@
   font-weight: 600;
   border-color: var(--color-accent);
   border-bottom: none;
-  box-shadow: var(--shadow-md);
 }
 
 /* ═══════════════════════════════════════════════════════════
