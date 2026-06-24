@@ -1,43 +1,39 @@
 import { useState, useEffect, useRef } from 'react'
-import { GUIDES } from '../data/guides'
+import { PASSKEY_GUIDES } from '../data/passkey'
 
-interface OperaProps {
+interface PasskeyProps {
   onNavigateToTab?: (target: string) => void
 }
 
-// ── Component ────────────────────────────────────────────────
-export default function Opera({ onNavigateToTab }: OperaProps) {
-  const [search, setSearch] = useState(() => localStorage.getItem('opera_search') || '')
-  const [selectedGuide, setSelectedGuide] = useState<string>(() => localStorage.getItem('opera_selectedGuide') || GUIDES[0]?.id || '')
+export default function Passkey({ onNavigateToTab }: PasskeyProps) {
+  const [search, setSearch] = useState(() => localStorage.getItem('passkey_search') || '')
+  const [selectedGuide, setSelectedGuide] = useState<string>(() => localStorage.getItem('passkey_selectedGuide') || PASSKEY_GUIDES[0]?.id || '')
   const [activeTab, setActiveTab] = useState<'guide' | 'notification'>(() => {
-    const saved = localStorage.getItem('opera_activeTab')
+    const saved = localStorage.getItem('passkey_activeTab')
     return (saved as 'guide' | 'notification') || 'guide'
   })
 
   const contentScrollRef = useRef<HTMLDivElement>(null)
   const selectedGuideRef = useRef<HTMLButtonElement>(null)
 
-  // Save to localStorage
   useEffect(() => {
-    localStorage.setItem('opera_search', search)
+    localStorage.setItem('passkey_search', search)
   }, [search])
 
   useEffect(() => {
-    localStorage.setItem('opera_selectedGuide', selectedGuide)
+    localStorage.setItem('passkey_selectedGuide', selectedGuide)
   }, [selectedGuide])
 
   useEffect(() => {
-    localStorage.setItem('opera_activeTab', activeTab)
+    localStorage.setItem('passkey_activeTab', activeTab)
   }, [activeTab])
 
-  // Scroll content to top when guide changes
   useEffect(() => {
     if (contentScrollRef.current) {
       contentScrollRef.current.scrollTo({ top: 0, behavior: 'smooth' })
     }
   }, [selectedGuide])
 
-  // Scroll selected guide into view in the sidebar
   useEffect(() => {
     if (selectedGuideRef.current) {
       selectedGuideRef.current.scrollIntoView({ 
@@ -47,7 +43,7 @@ export default function Opera({ onNavigateToTab }: OperaProps) {
     }
   }, [selectedGuide])
 
-  const filteredGuides = GUIDES.filter(guide => {
+  const filteredGuides = PASSKEY_GUIDES.filter(guide => {
     const searchLower = search.toLowerCase()
     return guide.title.toLowerCase().includes(searchLower)
   })
@@ -57,16 +53,14 @@ export default function Opera({ onNavigateToTab }: OperaProps) {
     setActiveTab('guide')
   }
 
-  const currentGuide = GUIDES.find(g => g.id === selectedGuide)
+  const currentGuide = PASSKEY_GUIDES.find(g => g.id === selectedGuide)
 
-  // Parse guide text into structured steps
   const parseGuideSteps = (text: string) => {
     const steps: Array<{ screen: string; content: string[] }> = []
     const lines = text.split('\n')
     let currentStep: { screen: string; content: string[] } | null = null
 
     lines.forEach(line => {
-      // Check for any header in ** ** format
       const headerMatch = line.match(/^\*\*(.*?)\*\*$/)
       if (headerMatch) {
         if (currentStep) steps.push(currentStep)
@@ -81,7 +75,6 @@ export default function Opera({ onNavigateToTab }: OperaProps) {
 
   const formatStepContent = (lines: string[]) => {
     return lines.map((line, i) => {
-      // Check for navigation links
       const linkMatch = line.match(/💡\s*\[([^\]]+)\]\(#?([\w:]+)\)/)
       if (linkMatch) {
         const linkText = linkMatch[1]
@@ -121,7 +114,6 @@ export default function Opera({ onNavigateToTab }: OperaProps) {
         )
       }
       
-      // Action items (lines starting with -)
       if (line.trim().startsWith('-')) {
         const content = line.trim().substring(1).trim()
         return (
@@ -144,9 +136,8 @@ export default function Opera({ onNavigateToTab }: OperaProps) {
           </div>
         )
       }
-      // Regular instruction lines
+
       if (line.trim()) {
-        // Detect keyboard shortcuts like "F7", "ALT + O"
         const hasShortcut = /\b(F\d+|ALT \+ \w+|CTRL \+ \w+)\b/.test(line)
         
         return (
@@ -172,7 +163,6 @@ export default function Opera({ onNavigateToTab }: OperaProps) {
 
   const formatNotificationText = (text: string) => {
     return text.split('\n').map((line, i) => {
-      // Bold warnings and section headers
       if (line.includes('**')) {
         const parts = line.split('**')
         return (
@@ -189,7 +179,6 @@ export default function Opera({ onNavigateToTab }: OperaProps) {
           </div>
         )
       }
-      // Action items (lines starting with -)
       if (line.trim().startsWith('-')) {
         return (
           <div key={i} style={{
@@ -207,11 +196,9 @@ export default function Opera({ onNavigateToTab }: OperaProps) {
           </div>
         )
       }
-      // Empty lines
       if (line.trim() === '') {
         return <div key={i} style={{ height: 4 }} />
       }
-      // Regular lines
       if (line.trim()) {
         return (
           <div key={i} style={{
@@ -235,7 +222,6 @@ export default function Opera({ onNavigateToTab }: OperaProps) {
       gap: 40,
       overflow: 'hidden',
     }}>
-      {/* ── LEFT: sidebar with search and guide list ── */}
       <aside style={{
         width: '40%',
         flexShrink: 0,
@@ -243,9 +229,8 @@ export default function Opera({ onNavigateToTab }: OperaProps) {
         flexDirection: 'column',
         overflow: 'hidden',
       }}>
-        <h2 className="page-heading">Opera Guides</h2>
+        <h2 className="page-heading">PassKey Guides</h2>
         
-        {/* Search Bar */}
         <div style={{ marginBottom: 16, position: 'relative', flexShrink: 0 }}>
           <input
             type="text"
@@ -268,7 +253,6 @@ export default function Opera({ onNavigateToTab }: OperaProps) {
           </span>
         </div>
 
-        {/* Guide List - Scrollable */}
         <div style={{ 
           display: 'flex', 
           flexDirection: 'column', 
@@ -331,7 +315,6 @@ export default function Opera({ onNavigateToTab }: OperaProps) {
         </div>
       </aside>
 
-      {/* ── RIGHT: selected guide content ── */}
       <section style={{
         width: '60%',
         minWidth: 0,
@@ -344,7 +327,6 @@ export default function Opera({ onNavigateToTab }: OperaProps) {
             <div style={{ flexShrink: 0 }}>
               <h2 className="page-heading">{currentGuide.title}</h2>
 
-              {/* Tabs */}
               <div style={{
                 display: 'flex',
                 gap: 8,
@@ -394,7 +376,6 @@ export default function Opera({ onNavigateToTab }: OperaProps) {
               </div>
             </div>
 
-            {/* Tab Content - Scrollable */}
             <div 
               ref={contentScrollRef}
               style={{
@@ -405,24 +386,15 @@ export default function Opera({ onNavigateToTab }: OperaProps) {
             >
               {activeTab === 'guide' && (
                 <div 
-                  className="opera-grid"
+                  className="passkey-grid"
                   style={{ 
                     display: 'grid', 
-                    gridTemplateColumns: currentGuide.id === 'room-types' ? 'repeat(4, 1fr)' : 'repeat(2, 1fr)', 
+                    gridTemplateColumns: 'repeat(2, 1fr)', 
                     gap: '16px 20px',
                   }}
                 >
                   {parseGuideSteps(currentGuide.guide).map((step, idx) => {
-                    let badgeContent = idx + 1
-                    let badgeIcon = null
-                    
-                    if (currentGuide.id === 'room-types') {
-                      if (step.screen.includes('Tower Suites')) {
-                        badgeIcon = '🏰'
-                      } else {
-                        badgeIcon = '🏢'
-                      }
-                    }
+                    const badgeContent = idx + 1
                     
                     return (
                       <div key={idx} style={{
@@ -442,9 +414,9 @@ export default function Opera({ onNavigateToTab }: OperaProps) {
                           alignItems: 'center',
                           justifyContent: 'center',
                           fontWeight: 700,
-                          fontSize: badgeIcon ? 14 : 12,
+                          fontSize: 12,
                         }}>
-                          {badgeIcon || badgeContent}
+                          {badgeContent}
                         </div>
                         
                         <div style={{
@@ -453,8 +425,8 @@ export default function Opera({ onNavigateToTab }: OperaProps) {
                           gap: 6,
                           marginBottom: 6,
                         }}>
-                          {currentGuide.id !== 'room-types' && step.screen.includes('Screen') && (
-                            <span style={{ fontSize: 15 }}>🖥️</span>
+                          {step.screen.toLowerCase().includes('step') && (
+                            <span style={{ fontSize: 15 }}>📋</span>
                           )}
                           <h3 style={{
                             margin: 0,

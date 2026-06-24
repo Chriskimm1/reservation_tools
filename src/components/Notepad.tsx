@@ -8,8 +8,8 @@ interface NotepadProps {
 
 export default function Notepad({ isOpen, onClose }: NotepadProps) {
   const [content, setContent] = useState('')
-  const [position, setPosition] = useState({ x: 100, y: 100 })
-  const [size, setSize] = useState({ width: 500, height: 400 })
+  const [position, setPosition] = useState({ x: 20, y: 80 })
+  const [size, setSize] = useState({ width: 360, height: 600 })
   const [isDragging, setIsDragging] = useState(false)
   const [isResizing, setIsResizing] = useState(false)
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
@@ -47,9 +47,16 @@ export default function Notepad({ isOpen, onClose }: NotepadProps) {
     if (!isDragging) return
 
     const handleMouseMove = (e: MouseEvent) => {
+      const newX = e.clientX - dragStart.x
+      const newY = e.clientY - dragStart.y
+      
+      // Clamp position to keep notepad within viewport
+      const maxX = window.innerWidth - size.width - 10
+      const maxY = window.innerHeight - size.height - 10
+      
       setPosition({
-        x: e.clientX - dragStart.x,
-        y: e.clientY - dragStart.y,
+        x: Math.max(10, Math.min(newX, maxX)),
+        y: Math.max(10, Math.min(newY, maxY)),
       })
     }
 
@@ -64,7 +71,7 @@ export default function Notepad({ isOpen, onClose }: NotepadProps) {
       window.removeEventListener('mousemove', handleMouseMove)
       window.removeEventListener('mouseup', handleMouseUp)
     }
-  }, [isDragging, dragStart])
+  }, [isDragging, dragStart, size])
 
   // Handle resizing
   useEffect(() => {
@@ -74,9 +81,13 @@ export default function Notepad({ isOpen, onClose }: NotepadProps) {
       const deltaX = e.clientX - resizeStart.x
       const deltaY = e.clientY - resizeStart.y
       
+      // Clamp size to keep notepad within viewport
+      const maxWidth = window.innerWidth - position.x - 10
+      const maxHeight = window.innerHeight - position.y - 10
+      
       setSize({
-        width: Math.max(300, resizeStart.width + deltaX),
-        height: Math.max(200, resizeStart.height + deltaY),
+        width: Math.max(280, Math.min(resizeStart.width + deltaX, maxWidth)),
+        height: Math.max(200, Math.min(resizeStart.height + deltaY, maxHeight)),
       })
     }
 

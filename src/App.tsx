@@ -7,14 +7,18 @@ import Templates from './pages/Templates'
 import FeeCalculator from './pages/FeeCalculator'
 import Directory from './pages/Directory'
 import Opera from './pages/Opera'
+import Passkey from './pages/Passkey'
+import ConfidentialityMatrix from './pages/ConfidentialityMatrix'
 
-type TabId = 'templates' | 'fee' | 'directory' | 'opera'
+type TabId = 'templates' | 'fee' | 'directory' | 'opera' | 'passkey' | 'confidentiality'
 
 const TABS = [
-  { id: 'templates',  label: 'Templates'      },
-  { id: 'fee',        label: 'Fee Calculator' },
-  { id: 'directory',  label: 'Directory'      },
-  { id: 'opera',      label: 'Opera'          },
+  { id: 'opera',           label: 'Opera'                  },
+  { id: 'passkey',         label: 'PassKey'                },
+  { id: 'directory',       label: 'Directory'              },
+  { id: 'templates',       label: 'Templates'              },
+  { id: 'fee',             label: 'Fee Calculator'         },
+  { id: 'confidentiality', label: 'Confidentiality Matrix' },
 ]
 
 export default function App() {
@@ -84,10 +88,12 @@ export default function App() {
         </div>
 
         <main className="app-main">
-          {tab === 'templates'  && <Templates key={templateSubTab} initialTemplate={templateSubTab} />}
-          {tab === 'fee'        && <FeeCalculator />}
-          {tab === 'directory'  && <Directory />}
-          {tab === 'opera'      && <Opera onNavigateToTab={handleNavigation} />}
+          {tab === 'templates'       && <Templates key={templateSubTab} initialTemplate={templateSubTab} />}
+          {tab === 'fee'             && <FeeCalculator />}
+          {tab === 'directory'       && <Directory />}
+          {tab === 'opera'           && <Opera onNavigateToTab={handleNavigation} />}
+          {tab === 'passkey'         && <Passkey onNavigateToTab={handleNavigation} />}
+          {tab === 'confidentiality' && <ConfidentialityMatrix />}
         </main>
 
         <Notepad isOpen={notepadOpen} onClose={() => setNotepadOpen(false)} />

@@ -253,11 +253,11 @@
 /* ── Directory page specific layout ───────────────────── */
 .directory-page {
   display: flex;
-  gap: 32px;
+  gap: 40px;
 }
 
 .directory-page .page-sidebar {
-  width: 380px;
+  width: 50%;
   padding-right: 0;
   margin-right: 0;
 }
@@ -273,7 +273,7 @@
 }
 
 .directory-quick-reference {
-  width: 380px;
+  width: 50%;
   flex-shrink: 0;
 }
 

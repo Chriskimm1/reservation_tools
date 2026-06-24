@@ -13,6 +13,9 @@ import { backToBack } from './backToBack'
 import { chargingCreditCards } from './chargingCreditCards'
 import { additionalRequests } from './additionalRequests'
 import { uptower } from './uptower'
+import { sphereView } from './sphereView'
+import { superAccessible } from './superAccessible'
+import { specialsRoomFeatures } from './specialsRoomFeatures'
 
 export const GUIDES: GuideCard[] = [
   additionalRequests,   // Additional Requests
@@ -28,6 +31,9 @@ export const GUIDES: GuideCard[] = [
   rateAvailability,     // Rate & Room Availability
   roomTypes,            // Room Types
   sendingConfirmation,  // Sending Confirmation Emails
+  specialsRoomFeatures, // Specials and Room Features
+  sphereView,           // Sphere View Upgrade Options
+  superAccessible,      // Super Accessible Room Reservations
   uptower,              // Uptower Rate Code
 ]
 

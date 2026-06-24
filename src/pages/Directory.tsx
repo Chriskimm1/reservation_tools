@@ -108,35 +108,7 @@ export default function Directory() {
 
   return (
     <div className="page-layout directory-page">
-      {/* ── LEFT: Quick Reference ── */}
-      <aside className="page-sidebar directory-quick-reference">
-        <h2 className="page-heading">Quick Reference</h2>
-
-        {/* Internal Call Center */}
-        <div className="static-card">
-          <h3 className="static-heading">Internal Call Center</h3>
-          <div className="static-list">
-            <StaticEntry label="Manager" value="2259" />
-            <StaticEntry label="Rooms" value="7100" />
-            <StaticEntry label="Dining" value="3463" />
-            <StaticEntry label="Show" value="7469" />
-            <StaticEntry label="F1 Line" value="7112" />
-            <StaticEntry label="RM" value="7777" />
-            <StaticEntry label="W SPA" value="3900" />
-            <StaticEntry label="E SPA" value="4772" />
-          </div>
-        </div>
-
-        {/* Language Line */}
-        <div className="static-card">
-          <h3 className="static-heading">Language Line</h3>
-          <p className="language-line-number">
-            888-317-4078
-          </p>
-        </div>
-      </aside>
-
-      {/* ── RIGHT: Searchable Directory ── */}
+      {/* ── LEFT: Searchable Directory ── */}
       <section className="page-content directory-table-section">
         <h2 className="page-heading">Directory</h2>
 
@@ -207,6 +179,52 @@ export default function Directory() {
           </p>
         )}
       </section>
+
+      {/* ── RIGHT: Quick Reference ── */}
+      <aside className="page-sidebar directory-quick-reference">
+        <h2 className="page-heading">Quick Reference</h2>
+
+        {/* Internal Call Center + AUX Codes side by side */}
+        <div style={{ display: 'flex', gap: 24 }}>
+          {/* Internal Call Center */}
+          <div className="static-card" style={{ flex: 1 }}>
+            <h3 className="static-heading">Internal Call Center</h3>
+            <div className="static-list">
+              <StaticEntry label="Manager" value="2259" />
+              <StaticEntry label="Rooms" value="7100" />
+              <StaticEntry label="Dining" value="3463" />
+              <StaticEntry label="Show" value="7469" />
+              <StaticEntry label="F1 Line" value="7112" />
+              <StaticEntry label="RM" value="7777" />
+              <StaticEntry label="W SPA" value="3900" />
+              <StaticEntry label="E SPA" value="4772" />
+            </div>
+          </div>
+
+          {/* AUX Codes */}
+          <div className="static-card" style={{ flex: 1 }}>
+            <h3 className="static-heading">AUX Codes</h3>
+            <div className="static-list">
+              <StaticEntry label="1" value="Restroom" />
+              <StaticEntry label="2" value="Break" />
+              <StaticEntry label="3" value="Lunch" />
+              <StaticEntry label="4" value="Copy/Fax/File" />
+              <StaticEntry label="5" value="Meeting" />
+              <StaticEntry label="6" value="Training" />
+              <StaticEntry label="7" value="Special Project" />
+              <StaticEntry label="8" value="Computer Down" />
+            </div>
+          </div>
+        </div>
+
+        {/* Language Line */}
+        <div className="static-card">
+          <h3 className="static-heading">Language Line</h3>
+          <p className="language-line-number">
+            888-317-4078
+          </p>
+        </div>
+      </aside>
     </div>
   )
 }
