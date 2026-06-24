@@ -22,7 +22,7 @@ const TABS = [
 ]
 
 export default function App() {
-  const [tab, setTab] = useState<TabId>('templates')
+  const [tab, setTab] = useState<TabId>('opera')
   const [templateSubTab, setTemplateSubTab] = useState<'newres' | 'ccauth'>('newres')
   const [isDark, setIsDark] = useState(true) // Default to dark mode
   const [notepadOpen, setNotepadOpen] = useState(false)
