@@ -200,6 +200,7 @@ export default function Opera({ onNavigateToTab }: OperaProps) {
             paddingLeft: 2,
             fontSize: 12,
             lineHeight: 1.3,
+            color: 'var(--color-text)',
           }}>
             <span style={{ color: 'var(--color-accent)', fontWeight: 700, fontSize: 11 }}>▸</span>
             <span>{line.trim().substring(1).trim()}</span>
@@ -217,6 +218,7 @@ export default function Opera({ onNavigateToTab }: OperaProps) {
             margin: '4px 0',
             fontSize: 12,
             lineHeight: 1.4,
+            color: 'var(--color-text)',
           }}>
             {line.trim()}
           </div>
