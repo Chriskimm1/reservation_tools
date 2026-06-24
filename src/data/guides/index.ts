@@ -16,6 +16,9 @@ import { uptower } from './uptower'
 import { sphereView } from './sphereView'
 import { superAccessible } from './superAccessible'
 import { specialsRoomFeatures } from './specialsRoomFeatures'
+import { lateArrival } from './lateArrival'
+import { reservationTraces } from './reservationTraces'
+import { reservationAlerts } from './reservationAlerts'
 
 export const GUIDES: GuideCard[] = [
   additionalRequests,   // Additional Requests
@@ -27,8 +30,11 @@ export const GUIDES: GuideCard[] = [
   ccAuth,               // Credit Card Authorization
   eciLco,               // Early Check-in & Late Check-Out
   folioRequests,        // Folio Requests
+  lateArrival,          // Late Arrival Policy
   newReservation,       // New Reservation
   rateAvailability,     // Rate & Room Availability
+  reservationAlerts,    // Reservation Alerts
+  reservationTraces,    // Reservation Traces
   roomTypes,            // Room Types
   sendingConfirmation,  // Sending Confirmation Emails
   specialsRoomFeatures, // Specials and Room Features
