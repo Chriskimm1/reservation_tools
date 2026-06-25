@@ -20,7 +20,7 @@
 
 /* Lighten text colors in Opera page for better readability */
 .opera-page {
-  --color-text: #a1a1aa; /* lighter grey than default */
+  --color-text: #d4d4d8; /* brighter grey for better readability - zinc-300 */
 }
 
 /* Keep bright text as is for emphasis */
