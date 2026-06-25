@@ -266,6 +266,34 @@ input[type="number"]::-moz-outer-spin-button {
   transform: translateY(-1px);
 }
 
+.btn-tertiary {
+  padding: 10px 20px;
+  border-radius: 4px;
+  border: none;
+  background-color: transparent;
+  color: var(--color-text-bright);
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.15s, transform 0.15s, border-color 0.15s;
+}
+
+.btn-tertiary:hover {
+  background-color: var(--color-surface-hover);
+  transform: translateY(-1px);
+}
+
+.btn-tertiary--danger {
+  border: 2px solid var(--color-error);
+  color: var(--color-text-bright);
+}
+
+.btn-tertiary--danger:hover {
+  background-color: color-mix(in srgb, var(--color-error) 15%, transparent);
+  border-color: var(--color-error);
+}
+
 .btn-copy {
   padding: 12px 28px;
   border-radius: 6px;

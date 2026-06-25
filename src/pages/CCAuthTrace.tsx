@@ -95,17 +95,7 @@ ${shortCoverage}`
           <h2 className="page-heading" style={{ margin: 0 }}>CC Auth Trace</h2>
           <button 
             onClick={resetAll}
-            className="btn-primary"
-            style={{
-              backgroundColor: '#dc2626',
-              border: 'none',
-            }}
-            onMouseEnter={e => {
-              e.currentTarget.style.backgroundColor = '#b91c1c'
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.backgroundColor = '#dc2626'
-            }}
+            className="btn-tertiary btn-tertiary--danger"
           >
             🗑️ Clear All
           </button>

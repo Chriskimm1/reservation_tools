@@ -138,6 +138,12 @@ export default function HotelNotesTemplate() {
     setNightCosts(prev => prev.filter((_, i) => i !== index))
   }
 
+  const removeLastCost = () => {
+    if (nightCosts.length > 0) {
+      setNightCosts(prev => prev.slice(0, -1))
+    }
+  }
+
   // Filter room types based on search
   const filteredRoomTypes = useMemo(() => {
     if (!roomTypeSearch.trim()) return ROOM_TYPES
@@ -234,17 +240,7 @@ export default function HotelNotesTemplate() {
           <h2 className="page-heading" style={{ margin: 0 }}>Options</h2>
           <button 
             onClick={resetAll}
-            className="btn-primary"
-            style={{
-              backgroundColor: '#dc2626',
-              border: 'none',
-            }}
-            onMouseEnter={e => {
-              e.currentTarget.style.backgroundColor = '#b91c1c'
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.backgroundColor = '#dc2626'
-            }}
+            className="btn-tertiary btn-tertiary--danger"
           >
             🗑️ Clear All
           </button>
@@ -256,47 +252,197 @@ export default function HotelNotesTemplate() {
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
             <input
               type="number"
-              list="months"
               min="1"
               max="12"
               placeholder="MM"
               value={arrivalMonth}
               onChange={e => {
                 const val = e.target.value
-                if (val === '' || (Number(val) >= 1 && Number(val) <= 12)) {
-                  setArrivalMonth(val ? Number(val).toString().padStart(2, '0') : '')
+                // Allow empty or valid numbers up to 12
+                if (val === '' || (Number(val) >= 0 && Number(val) <= 12)) {
+                  setArrivalMonth(val)
+                }
+              }}
+              onBlur={e => {
+                const val = e.target.value
+                if (val && Number(val) >= 1 && Number(val) <= 12) {
+                  setArrivalMonth(Number(val).toString().padStart(2, '0'))
+                } else if (val && (Number(val) < 1 || Number(val) > 12)) {
+                  setArrivalMonth('')
                 }
               }}
               className="field-input field-input--md"
             />
-            <datalist id="months">
-              {Array.from({ length: 12 }, (_, i) => i + 1).map(month => (
-                <option key={month} value={month.toString().padStart(2, '0')} />
-              ))}
-            </datalist>
             <span style={{ color: 'var(--color-text)' }}>/</span>
             <input
               type="number"
-              list="days"
               min="1"
               max="31"
               placeholder="DD"
               value={arrivalDay}
               onChange={e => {
                 const val = e.target.value
-                if (val === '' || (Number(val) >= 1 && Number(val) <= 31)) {
-                  setArrivalDay(val ? Number(val).toString().padStart(2, '0') : '')
+                // Allow empty or valid numbers up to 31
+                if (val === '' || (Number(val) >= 0 && Number(val) <= 31)) {
+                  setArrivalDay(val)
+                }
+              }}
+              onBlur={e => {
+                const val = e.target.value
+                if (val && Number(val) >= 1 && Number(val) <= 31) {
+                  setArrivalDay(Number(val).toString().padStart(2, '0'))
+                } else if (val && (Number(val) < 1 || Number(val) > 31)) {
+                  setArrivalDay('')
                 }
               }}
               className="field-input field-input--md"
             />
-            <datalist id="days">
-              {Array.from({ length: 31 }, (_, i) => i + 1).map(day => (
-                <option key={day} value={day.toString().padStart(2, '0')} />
-              ))}
-            </datalist>
           </div>
         </div>
+
+        {/* Room Type */}
+        <div className="form-row">
+          <label className="form-label">Room Type</label>
+          <div style={{ position: 'relative', width: 260 }}>
+            <input
+              ref={roomTypeInputRef}
+              type="text"
+              placeholder="Search or select room type"
+              value={roomType || roomTypeSearch}
+              onChange={e => {
+                setRoomTypeSearch(e.target.value)
+                setRoomType('')
+                setIsRoomTypeDropdownOpen(true)
+              }}
+              onFocus={() => setIsRoomTypeDropdownOpen(true)}
+              onBlur={() => setTimeout(() => setIsRoomTypeDropdownOpen(false), 200)}
+              className="field-input field-input--lg"
+              style={{ 
+                paddingRight: 32,
+                width: '100%'
+              }}
+            />
+            <span style={{
+              position: 'absolute',
+              right: 12,
+              top: '50%',
+              transform: 'translateY(-50%)',
+              pointerEvents: 'none',
+              color: 'var(--color-text-muted)'
+            }}>
+              🔍
+            </span>
+            {isRoomTypeDropdownOpen && filteredRoomTypes.length > 0 && (
+              <div style={{
+                position: 'absolute',
+                top: 'calc(100% + 4px)',
+                left: 0,
+                right: 0,
+                maxHeight: 240,
+                overflowY: 'auto',
+                backgroundColor: 'var(--color-bg)',
+                border: '2px solid var(--color-accent)',
+                borderRadius: 6,
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+                zIndex: 100
+              }}>
+                {filteredRoomTypes.map(type => (
+                  <div
+                    key={type}
+                    onClick={() => handleRoomTypeSelect(type)}
+                    style={{
+                      padding: '10px 14px',
+                      cursor: 'pointer',
+                      backgroundColor: roomType === type ? 'var(--color-surface-hover)' : 'transparent',
+                      color: 'var(--color-text-bright)',
+                      fontWeight: roomType === type ? 600 : 400,
+                      transition: 'background-color 0.15s'
+                    }}
+                    onMouseEnter={e => {
+                      if (roomType !== type) {
+                        e.currentTarget.style.backgroundColor = 'var(--color-surface-hover)'
+                      }
+                    }}
+                    onMouseLeave={e => {
+                      if (roomType !== type) {
+                        e.currentTarget.style.backgroundColor = 'transparent'
+                      }
+                    }}
+                  >
+                    {type}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Night Cost — chip input (nights + price derived from chips) */}
+        <div className="form-row" style={{ alignItems: 'center' }}>
+          <label className="form-label">Night Cost</label>
+          <div style={{ display: 'flex', gap: 8, flex: 1 }}>
+            <input
+              ref={costInputRef}
+              type="number"
+              min="0"
+              step="0.01"
+              value={costInput}
+              placeholder="e.g. 345"
+              className="field-input field-input--lg"
+              onChange={e => setCostInput(e.target.value)}
+              onKeyDown={e => { if (e.key === 'Enter') addCost() }}
+            />
+            <button className="btn-primary" onClick={addCost} style={{ padding: '10px 14px' }}>+</button>
+            <button 
+              onClick={removeLastCost} 
+              style={{ 
+                padding: '10px 14px',
+                borderRadius: '4px',
+                border: 'none',
+                backgroundColor: nightCosts.length === 0 ? '#6b7280' : '#dc2626',
+                color: '#ffffff',
+                fontWeight: 600,
+                fontSize: '15px',
+                cursor: nightCosts.length === 0 ? 'not-allowed' : 'pointer',
+                whiteSpace: 'nowrap',
+                transition: 'background-color 0.15s, transform 0.15s'
+              }}
+              onMouseEnter={e => {
+                if (nightCosts.length > 0) {
+                  e.currentTarget.style.backgroundColor = '#b91c1c'
+                  e.currentTarget.style.transform = 'translateY(-1px)'
+                }
+              }}
+              onMouseLeave={e => {
+                if (nightCosts.length > 0) {
+                  e.currentTarget.style.backgroundColor = '#dc2626'
+                  e.currentTarget.style.transform = 'translateY(0)'
+                }
+              }}
+              disabled={nightCosts.length === 0}
+            >
+              −
+            </button>
+          </div>
+        </div>
+
+        {nightCosts.length > 0 && (
+          <>
+            <p className="field-hint" style={{ marginBottom: 8 }}>
+              <strong style={{ color: 'var(--color-text)' }}>
+                {nightCosts.length} night{nightCosts.length !== 1 ? 's' : ''}
+              </strong>
+            </p>
+            <div className="chips" style={{ marginBottom: 16 }}>
+              {nightCosts.map((cost, i) => (
+                <span key={i} className="chip">
+                  ${cost.toFixed(2)}
+                  <button className="chip__remove" onClick={() => removeCost(i)} title="Remove">×</button>
+                </span>
+              ))}
+            </div>
+          </>
+        )}
 
         {/* ETA */}
         <div className="form-row">
@@ -393,120 +539,6 @@ export default function HotelNotesTemplate() {
             </div>
           )}
         </div>
-
-        {/* Room Type */}
-        <div className="form-row">
-          <label className="form-label">Room Type</label>
-          <div style={{ position: 'relative', width: 260 }}>
-            <input
-              ref={roomTypeInputRef}
-              type="text"
-              placeholder="Search or select room type"
-              value={roomType || roomTypeSearch}
-              onChange={e => {
-                setRoomTypeSearch(e.target.value)
-                setRoomType('')
-                setIsRoomTypeDropdownOpen(true)
-              }}
-              onFocus={() => setIsRoomTypeDropdownOpen(true)}
-              onBlur={() => setTimeout(() => setIsRoomTypeDropdownOpen(false), 200)}
-              className="field-input field-input--lg"
-              style={{ 
-                paddingRight: 32,
-                width: '100%'
-              }}
-            />
-            <span style={{
-              position: 'absolute',
-              right: 12,
-              top: '50%',
-              transform: 'translateY(-50%)',
-              pointerEvents: 'none',
-              color: 'var(--color-text-muted)'
-            }}>
-              🔍
-            </span>
-            {isRoomTypeDropdownOpen && filteredRoomTypes.length > 0 && (
-              <div style={{
-                position: 'absolute',
-                top: 'calc(100% + 4px)',
-                left: 0,
-                right: 0,
-                maxHeight: 240,
-                overflowY: 'auto',
-                backgroundColor: 'var(--color-bg)',
-                border: '2px solid var(--color-accent)',
-                borderRadius: 6,
-                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
-                zIndex: 100
-              }}>
-                {filteredRoomTypes.map(type => (
-                  <div
-                    key={type}
-                    onClick={() => handleRoomTypeSelect(type)}
-                    style={{
-                      padding: '10px 14px',
-                      cursor: 'pointer',
-                      backgroundColor: roomType === type ? 'var(--color-surface-hover)' : 'transparent',
-                      color: 'var(--color-text-bright)',
-                      fontWeight: roomType === type ? 600 : 400,
-                      transition: 'background-color 0.15s'
-                    }}
-                    onMouseEnter={e => {
-                      if (roomType !== type) {
-                        e.currentTarget.style.backgroundColor = 'var(--color-surface-hover)'
-                      }
-                    }}
-                    onMouseLeave={e => {
-                      if (roomType !== type) {
-                        e.currentTarget.style.backgroundColor = 'transparent'
-                      }
-                    }}
-                  >
-                    {type}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Night Cost — chip input (nights + price derived from chips) */}
-        <div className="form-row" style={{ alignItems: 'center' }}>
-          <label className="form-label">Night Cost</label>
-          <div style={{ display: 'flex', gap: 8, flex: 1 }}>
-            <input
-              ref={costInputRef}
-              type="number"
-              min="0"
-              step="0.01"
-              value={costInput}
-              placeholder="e.g. 345"
-              className="field-input field-input--lg"
-              onChange={e => setCostInput(e.target.value)}
-              onKeyDown={e => { if (e.key === 'Enter') addCost() }}
-            />
-            <button className="btn-primary" onClick={addCost} style={{ padding: '10px 14px' }}>+</button>
-          </div>
-        </div>
-
-        {nightCosts.length > 0 && (
-          <>
-            <p className="field-hint" style={{ marginBottom: 8 }}>
-              <strong style={{ color: 'var(--color-text)' }}>
-                {nightCosts.length} night{nightCosts.length !== 1 ? 's' : ''}
-              </strong>
-            </p>
-            <div className="chips" style={{ marginBottom: 16 }}>
-              {nightCosts.map((cost, i) => (
-                <span key={i} className="chip">
-                  ${cost.toFixed(2)}
-                  <button className="chip__remove" onClick={() => removeCost(i)} title="Remove">×</button>
-                </span>
-              ))}
-            </div>
-          </>
-        )}
 
         {/* Cancellation */}
         <div className="form-row">
