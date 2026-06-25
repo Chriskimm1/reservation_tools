@@ -84,7 +84,7 @@ function Templates({ initialTemplate = 'newres' }: TemplatesProps) {
       </div>
 
       {/* Template Content */}
-      <div style={{ flex: 1, overflow: 'hidden' }}>
+      <div style={{ flex: 1, overflow: 'auto' }}>
         {activeTemplate === 'newres' && <HotelNotesTemplate />}
         {activeTemplate === 'ccauth' && <CCAuthTrace />}
       </div>

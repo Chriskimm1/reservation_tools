@@ -79,6 +79,43 @@
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-border-focus) 20%, transparent);
 }
 
+/* Modern number input spinner styling */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: var(--color-surface);
+  background-image: 
+    linear-gradient(to top, transparent 50%, var(--color-border) 50%),
+    linear-gradient(to bottom, transparent 50%, var(--color-border) 50%);
+  background-position: center;
+  background-size: 100% 1px;
+  background-repeat: no-repeat;
+  width: 16px;
+  opacity: 0.6;
+  cursor: pointer;
+  position: relative;
+  margin-left: 4px;
+}
+
+input[type="number"]::-webkit-inner-spin-button:hover,
+input[type="number"]::-webkit-outer-spin-button:hover {
+  opacity: 1;
+  background-color: var(--color-border);
+}
+
+/* Firefox number input spinner */
+input[type="number"] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+input[type="number"]::-moz-inner-spin-button,
+input[type="number"]::-moz-outer-spin-button {
+  appearance: none;
+  -moz-appearance: none;
+}
+
 /* Placeholder styling for inputs and selects */
 .field-input::placeholder {
   color: var(--color-text-muted);
@@ -87,6 +124,11 @@
 
 .field-select option[value=""] {
   color: var(--color-text-muted);
+}
+
+.field-select option {
+  font-size: 16px;
+  padding: 8px;
 }
 
 /* standard widths */

@@ -1,0 +1,94 @@
+/* =============================================================
+   FEE CALCULATOR PAGE STYLES
+   ============================================================= */
+
+/* Summary card */
+.summary-card {
+  border: 2px solid var(--color-border);
+  border-radius: 10px;
+  padding: 32px;
+  background-color: var(--color-surface);
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 16px;
+}
+
+.summary-row__label {
+  color: var(--color-text);
+  font-size: 16px;
+}
+
+.summary-row__value {
+  color: var(--color-text-bright);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.summary-divider {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: 0 0 16px;
+}
+
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-top: 20px;
+  border-top: 2px solid var(--color-accent);
+}
+
+.summary-total__label {
+  color: var(--color-text-bright);
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.summary-total__value {
+  color: var(--color-accent);
+  font-size: 22px;
+  font-weight: 700;
+}
+
+/* Breakdown list (indented per-night rows) */
+.breakdown {
+  margin-bottom: 16px;
+  padding-left: 16px;
+  border-left: 2px solid var(--color-border);
+}
+
+.breakdown__row {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  font-size: 13px;
+  color: var(--color-text);
+}
+
+.breakdown__label {
+  color: var(--color-text);
+}
+
+.breakdown__value {
+  font-family: var(--mono);
+  color: var(--color-text-bright);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RESPONSIVE DESIGN
+   ═══════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  .summary-card {
+    padding: 24px 20px;
+  }
+
+  .summary-total__label,
+  .summary-total__value {
+    font-size: 20px;
+  }
+}

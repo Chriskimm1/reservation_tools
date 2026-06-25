@@ -1,0 +1,196 @@
+/* =============================================================
+   DIRECTORY PAGE STYLES
+   ============================================================= */
+
+.directory-page {
+  display: flex;
+  gap: 40px;
+}
+
+.directory-page .page-sidebar {
+  width: 50%;
+  padding-right: 0;
+  margin-right: 0;
+}
+
+.directory-page .page-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.directory-table-section {
+  flex: 1;
+  min-width: 0;
+}
+
+.directory-quick-reference {
+  width: 50%;
+  flex-shrink: 0;
+}
+
+/* Directory table styles */
+.directory-table-wrapper {
+  overflow-x: auto;
+  border-radius: 8px;
+  background-color: var(--color-surface);
+}
+
+.directory-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--color-surface);
+}
+
+.directory-table thead tr {
+  background-color: var(--color-background);
+  border-bottom: 2px solid var(--color-border);
+}
+
+.directory-th {
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+  color: var(--color-text-bright);
+  cursor: pointer;
+  user-select: none;
+  font-size: 14px;
+}
+
+.directory-th:hover {
+  background-color: var(--color-border);
+}
+
+.directory-tr {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.directory-tr:hover {
+  background-color: var(--color-background);
+}
+
+.directory-td {
+  padding: 12px 16px;
+  color: var(--color-text-bright);
+  font-size: 14px;
+}
+
+.directory-extension {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.directory-no-results {
+  text-align: center;
+  color: var(--color-text-bright);
+  margin-top: 20px;
+}
+
+/* Static cards */
+.static-card {
+  background-color: var(--color-surface);
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  margin-top: 20px;
+}
+
+.static-card:first-child {
+  margin-top: 0;
+}
+
+.static-heading {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text-bright);
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.static-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.static-entry {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.static-entry__label {
+  font-weight: 500;
+  color: var(--color-text-bright);
+}
+
+.static-entry__value {
+  font-weight: 600;
+  color: var(--color-text-bright);
+  font-family: var(--mono);
+}
+
+.language-line-number {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-accent);
+  margin: 0;
+  font-family: var(--mono);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RESPONSIVE DESIGN
+   ═══════════════════════════════════════════════════════════ */
+
+@media (max-width: 1024px) {
+  .directory-page {
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .directory-table-section,
+  .directory-quick-reference {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .directory-page {
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .directory-table-section,
+  .directory-quick-reference {
+    width: 100%;
+  }
+
+  .directory-th,
+  .directory-td {
+    padding: 10px 8px !important;
+    font-size: 12px !important;
+  }
+
+  .directory-table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .directory-table {
+    min-width: 600px;
+  }
+
+  .static-card {
+    padding: 16px;
+    margin-top: 16px !important;
+  }
+
+  .static-heading {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+
+  .language-line-number {
+    font-size: 16px;
+  }
+}

@@ -1,0 +1,35 @@
+/* =============================================================
+   PASSKEY PAGE STYLES
+   ============================================================= */
+
+.passkey-page {
+  display: flex;
+  gap: 40px;
+}
+
+.passkey-page .page-sidebar {
+  width: 40%;
+  padding-right: 0;
+  margin-right: 0;
+}
+
+.passkey-page .page-content {
+  width: 60%;
+  flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RESPONSIVE DESIGN
+   ═══════════════════════════════════════════════════════════ */
+
+@media (max-width: 1024px) {
+  .passkey-page {
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .passkey-page .page-sidebar,
+  .passkey-page .page-content {
+    width: 100%;
+  }
+}

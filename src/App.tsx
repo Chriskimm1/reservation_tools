@@ -13,16 +13,16 @@ import ConfidentialityMatrix from './pages/ConfidentialityMatrix'
 type TabId = 'templates' | 'fee' | 'directory' | 'opera' | 'passkey' | 'confidentiality'
 
 const TABS = [
-  { id: 'opera',           label: 'Opera'                  },
-  { id: 'passkey',         label: 'PassKey'                },
-  { id: 'directory',       label: 'Directory'              },
   { id: 'templates',       label: 'Templates'              },
   { id: 'fee',             label: 'Fee Calculator'         },
+  { id: 'directory',       label: 'Directory'              },
+  { id: 'opera',           label: 'Opera'                  },
+  { id: 'passkey',         label: 'PassKey'                },
   { id: 'confidentiality', label: 'Confidentiality Matrix' },
 ]
 
 export default function App() {
-  const [tab, setTab] = useState<TabId>('opera')
+  const [tab, setTab] = useState<TabId>('templates')
   const [templateSubTab, setTemplateSubTab] = useState<'newres' | 'ccauth'>('newres')
   const [isDark, setIsDark] = useState(true) // Default to dark mode
   const [notepadOpen, setNotepadOpen] = useState(false)
@@ -73,6 +73,7 @@ export default function App() {
               title="Toggle Notepad (Option+N or Alt+N)"
             >
               📝 Notepad
+              <kbd className="keyboard-hint">Alt+N</kbd>
             </button>
             <button
               className="app-header__theme-btn"

@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState, type CSSProperties } from 'react'
 
-export default function CopyButton({ textToCopy }: { textToCopy: string }) {
+export default function CopyButton({ textToCopy, style }: { textToCopy: string; style?: CSSProperties }) {
   const [status, setStatus] = useState<'idle' | 'copied' | 'empty'>('idle')
 
   const doCopy = async () => {
@@ -24,12 +24,18 @@ export default function CopyButton({ textToCopy }: { textToCopy: string }) {
     setTimeout(() => setStatus('idle'), 1200)
   }
 
+  const isFullWidth = style?.width === '100%'
+  
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-      <button className="btn-copy" onClick={doCopy}>Copy</button>
-      <span className={`copy-status copy-status--${status}`}>
-        {status === 'copied' ? '✓ Copied!' : status === 'empty' ? 'Nothing to copy' : ''}
-      </span>
+    <div style={{ display: 'flex', alignItems: 'center', gap: 12, ...(isFullWidth ? { width: '100%' } : {}) }}>
+      <button className="btn-copy" style={isFullWidth ? { flex: 1 } : undefined} onClick={doCopy}>
+        {status === 'copied' ? '✓ Copied!' : status === 'empty' ? 'Nothing to copy' : 'Copy'}
+      </button>
+      {!isFullWidth && (
+        <span className={`copy-status copy-status--${status}`}>
+          {status === 'copied' ? '✓ Copied!' : status === 'empty' ? 'Nothing to copy' : ''}
+        </span>
+      )}
     </div>
   )
 }

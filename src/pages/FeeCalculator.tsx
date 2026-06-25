@@ -1,116 +1,103 @@
-import { useState, useMemo, useRef, useEffect } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 
 const RESORT_FEE_PER_NIGHT = 55
 const TAX_RATE = 0.1338
 
 export default function FeeCalculator() {
-  const [nightCosts, setNightCosts] = useState<number[]>(() => {
-    const saved = localStorage.getItem('feeCalc_nightCosts')
-    return saved ? JSON.parse(saved) : []
+  const [stayCost, setStayCost] = useState<string>(() => {
+    return localStorage.getItem('feeCalc_stayCost') || ''
   })
-  const [inputValue, setInputValue] = useState('')
-  const inputRef = useRef<HTMLInputElement>(null)
+  const [nights, setNights] = useState<string>(() => {
+    return localStorage.getItem('feeCalc_nights') || ''
+  })
 
-  // Save to localStorage whenever nightCosts changes
+  // Save to localStorage whenever values change
   useEffect(() => {
-    localStorage.setItem('feeCalc_nightCosts', JSON.stringify(nightCosts))
-  }, [nightCosts])
+    localStorage.setItem('feeCalc_stayCost', stayCost)
+  }, [stayCost])
 
-  const addCost = () => {
-    const val = parseFloat(inputValue)
-    if (!isNaN(val) && val > 0) {
-      setNightCosts(prev => [...prev, val])
-      setInputValue('')
-      inputRef.current?.focus()
-    }
-  }
-
-  const removeCost = (index: number) => {
-    setNightCosts(prev => prev.filter((_, i) => i !== index))
-  }
+  useEffect(() => {
+    localStorage.setItem('feeCalc_nights', nights)
+  }, [nights])
 
   const resetAll = () => {
-    setNightCosts([])
-    setInputValue('')
-    localStorage.removeItem('feeCalc_nightCosts')
+    setStayCost('')
+    setNights('')
+    localStorage.removeItem('feeCalc_stayCost')
+    localStorage.removeItem('feeCalc_nights')
   }
 
   const calc = useMemo(() => {
-    const nights      = nightCosts.length
-    const stayCost    = nightCosts.reduce((sum, c) => sum + c, 0)
-    const resortFee   = RESORT_FEE_PER_NIGHT * nights
-    const subtotal    = stayCost + resortFee
-    const tax         = subtotal * TAX_RATE
-    const grandTotal  = subtotal + tax
-    return { nights, stayCost, resortFee, subtotal, tax, grandTotal }
-  }, [nightCosts])
+    const stayCostNum = parseFloat(stayCost) || 0
+    const nightsNum = parseInt(nights) || 0
+    const resortFee = RESORT_FEE_PER_NIGHT * nightsNum
+    const subtotal = stayCostNum + resortFee
+    const tax = subtotal * TAX_RATE
+    const grandTotal = subtotal + tax
+    return { stayCost: stayCostNum, nights: nightsNum, resortFee, subtotal, tax, grandTotal }
+  }, [stayCost, nights])
 
   return (
     <div className="page-layout">
 
       {/* ── LEFT: input form ── */}
       <aside className="page-sidebar">
-        <h2 className="page-heading">Fee Calculator</h2>
-
-        <div className="form-row" style={{ alignItems: 'flex-end', gap: 8 }}>
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <label className="form-label" style={{ width: 'auto', textAlign: 'left', display: 'block', marginBottom: 8, marginRight: 0 }}>
-              Night Cost (per night)
-            </label>
-            <input
-              ref={inputRef}
-              type="number"
-              min="0"
-              step="0.01"
-              value={inputValue}
-              placeholder="e.g. 345"
-              className="field-input field-input--full"
-              onChange={e => setInputValue(e.target.value)}
-              onKeyDown={e => { if (e.key === 'Enter') addCost() }}
-            />
-          </div>
-          <button className="btn-primary" onClick={addCost} style={{ marginBottom: 1 }}>
-            + Add
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 32 }}>
+          <h2 className="page-heading" style={{ margin: 0 }}>Fee Calculator</h2>
+          <button 
+            onClick={resetAll}
+            className="btn-primary"
+            style={{ backgroundColor: '#dc2626', border: 'none' }}
+            onMouseEnter={e => e.currentTarget.style.backgroundColor = '#b91c1c'}
+            onMouseLeave={e => e.currentTarget.style.backgroundColor = '#dc2626'}
+          >
+            🗑️ Clear
           </button>
         </div>
 
-        <p className="field-hint">Press Enter or click Add — each entry counts as one night.</p>
+        <div className="form-row">
+          <label className="form-label">Stay Cost</label>
+          <div style={{ position: 'relative' }}>
+            <span style={{ 
+              position: 'absolute', 
+              left: 12, 
+              top: '50%', 
+              transform: 'translateY(-50%)',
+              color: 'var(--color-text-muted)',
+              fontWeight: 500
+            }}>$</span>
+            <input
+              type="number"
+              min="0"
+              step="0.01"
+              value={stayCost}
+              placeholder="0.00"
+              className="field-input field-input--lg"
+              style={{ paddingLeft: 28 }}
+              onChange={e => setStayCost(e.target.value)}
+            />
+          </div>
+        </div>
+        <p className="field-hint" style={{ marginLeft: 156, marginTop: -8, marginBottom: 16 }}>
+          Total room cost before taxes/fees
+        </p>
 
-        {nightCosts.length > 0 && (
-          <>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 16 }}>
-              <p className="field-hint" style={{ margin: 0 }}>
-                <strong style={{ color: 'var(--color-text)' }}>
-                  {nightCosts.length} night{nightCosts.length !== 1 ? 's' : ''} added
-                </strong>
-              </p>
-              <button 
-                onClick={resetAll}
-                className="btn-primary"
-                style={{
-                  backgroundColor: '#dc2626',
-                  border: 'none',
-                }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.backgroundColor = '#b91c1c'
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.backgroundColor = '#dc2626'
-                }}
-              >
-                🗑️ Clear All
-              </button>
-            </div>
-            <div className="chips">
-              {nightCosts.map((cost, i) => (
-                <span key={i} className="chip">
-                  ${cost.toFixed(2)}
-                  <button className="chip__remove" onClick={() => removeCost(i)} title="Remove">×</button>
-                </span>
-              ))}
-            </div>
-          </>
-        )}
+        <div className="form-row">
+          <label className="form-label">Nights</label>
+          <input
+            type="number"
+            min="0"
+            step="1"
+            value={nights}
+            placeholder="0"
+            className="field-input field-input--md"
+            onChange={e => setNights(e.target.value)}
+          />
+        </div>
+        <p className="field-hint" style={{ marginLeft: 156, marginTop: -8 }}>
+          Number of nights
+        </p>
+
       </aside>
 
       {/* ── RIGHT: summary ── */}
@@ -120,26 +107,13 @@ export default function FeeCalculator() {
         <div className="summary-card">
 
           <div className="summary-row">
-            <span className="summary-row__label">
-              Stay Cost ({calc.nights} night{calc.nights !== 1 ? 's' : ''}):
-            </span>
+            <span className="summary-row__label">Stay Cost:</span>
             <span className="summary-row__value">${calc.stayCost.toFixed(2)}</span>
           </div>
 
-          {nightCosts.length > 0 && (
-            <div className="breakdown">
-              {nightCosts.map((cost, i) => (
-                <div key={i} className="breakdown__row">
-                  <span>Night {i + 1}</span>
-                  <span>${cost.toFixed(2)}</span>
-                </div>
-              ))}
-            </div>
-          )}
-
           <div className="summary-row">
             <span className="summary-row__label">
-              Resort Fee ({calc.nights} × ${RESORT_FEE_PER_NIGHT}):
+              Resort Fee ({calc.nights} night{calc.nights !== 1 ? 's' : ''} × $55):
             </span>
             <span className="summary-row__value">${calc.resortFee.toFixed(2)}</span>
           </div>

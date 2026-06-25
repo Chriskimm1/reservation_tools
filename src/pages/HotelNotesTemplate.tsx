@@ -1,5 +1,6 @@
 import { useMemo, useRef, useState, useEffect } from 'react'
 import CopyButton from '../components/CopyButton'
+import './Templates.css'
 
 // ── Constants ────────────────────────────────────────────────
 const ROOM_TYPES = [
@@ -225,7 +226,7 @@ export default function HotelNotesTemplate() {
   ])
 
   return (
-    <div className="page-layout">
+    <div className="page-layout templates-page">
 
       {/* ── LEFT: form ── */}
       <aside className="page-sidebar">
@@ -253,44 +254,74 @@ export default function HotelNotesTemplate() {
         <div className="form-row">
           <label className="form-label">Arrival Date</label>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <input 
-              type="text" 
-              placeholder="MM" 
+            <input
+              type="number"
+              list="months"
+              min="1"
+              max="12"
+              placeholder="MM"
               value={arrivalMonth}
-              onChange={e => setArrivalMonth(e.target.value)}
-              className="field-input field-input--sm" 
+              onChange={e => {
+                const val = e.target.value
+                if (val === '' || (Number(val) >= 1 && Number(val) <= 12)) {
+                  setArrivalMonth(val ? Number(val).toString().padStart(2, '0') : '')
+                }
+              }}
+              className="field-input field-input--md"
             />
+            <datalist id="months">
+              {Array.from({ length: 12 }, (_, i) => i + 1).map(month => (
+                <option key={month} value={month.toString().padStart(2, '0')} />
+              ))}
+            </datalist>
             <span style={{ color: 'var(--color-text)' }}>/</span>
-            <input 
-              type="text" 
-              placeholder="DD" 
+            <input
+              type="number"
+              list="days"
+              min="1"
+              max="31"
+              placeholder="DD"
               value={arrivalDay}
-              onChange={e => setArrivalDay(e.target.value)}
-              className="field-input field-input--sm" 
+              onChange={e => {
+                const val = e.target.value
+                if (val === '' || (Number(val) >= 1 && Number(val) <= 31)) {
+                  setArrivalDay(val ? Number(val).toString().padStart(2, '0') : '')
+                }
+              }}
+              className="field-input field-input--md"
             />
+            <datalist id="days">
+              {Array.from({ length: 31 }, (_, i) => i + 1).map(day => (
+                <option key={day} value={day.toString().padStart(2, '0')} />
+              ))}
+            </datalist>
           </div>
         </div>
 
         {/* ETA */}
         <div className="form-row">
-          <label className="form-label form-label--checkbox">
-            <input 
-              type="checkbox" 
-              checked={hasEta} 
-              onChange={e => setHasEta(e.target.checked)} 
-            />
-            ETA
-          </label>
+          <div className="form-label" style={{ paddingTop: 0 }}>
+            <button 
+              type="button"
+              className={`toggle-btn ${hasEta ? 'active' : ''}`}
+              onClick={() => setHasEta(!hasEta)}
+            >
+              ETA
+            </button>
+          </div>
           {hasEta && (
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-              <input 
-                type="number" 
-                min="1" 
-                max="12" 
-                value={etaHour}
-                onChange={e => setEtaHour(Math.max(1, Math.min(12, Number(e.target.value))))}
-                className="field-input field-input--sm" 
-              />
+              <select 
+                value={etaHour.toString()}
+                onChange={e => setEtaHour(Number(e.target.value))}
+                className="field-select field-select--md"
+              >
+                {Array.from({ length: 12 }, (_, i) => i + 1).map(hour => (
+                  <option key={hour} value={hour}>
+                    {hour.toString().padStart(2, '0')}
+                  </option>
+                ))}
+              </select>
               <span style={{ color: 'var(--color-text)' }}>:</span>
               <select 
                 value={etaMin} 
@@ -317,24 +348,28 @@ export default function HotelNotesTemplate() {
 
         {/* ETD */}
         <div className="form-row">
-          <label className="form-label form-label--checkbox">
-            <input 
-              type="checkbox" 
-              checked={hasEtd} 
-              onChange={e => setHasEtd(e.target.checked)} 
-            />
-            ETD
-          </label>
+          <div className="form-label" style={{ paddingTop: 0 }}>
+            <button 
+              type="button"
+              className={`toggle-btn ${hasEtd ? 'active' : ''}`}
+              onClick={() => setHasEtd(!hasEtd)}
+            >
+              ETD
+            </button>
+          </div>
           {hasEtd && (
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-              <input 
-                type="number" 
-                min="1" 
-                max="12" 
-                value={etdHour}
-                onChange={e => setEtdHour(Math.max(1, Math.min(12, Number(e.target.value))))}
-                className="field-input field-input--sm" 
-              />
+              <select 
+                value={etdHour.toString()}
+                onChange={e => setEtdHour(Number(e.target.value))}
+                className="field-select field-select--md"
+              >
+                {Array.from({ length: 12 }, (_, i) => i + 1).map(hour => (
+                  <option key={hour} value={hour}>
+                    {hour.toString().padStart(2, '0')}
+                  </option>
+                ))}
+              </select>
               <span style={{ color: 'var(--color-text)' }}>:</span>
               <select 
                 value={etdMin} 
@@ -451,18 +486,18 @@ export default function HotelNotesTemplate() {
               onChange={e => setCostInput(e.target.value)}
               onKeyDown={e => { if (e.key === 'Enter') addCost() }}
             />
-            <button className="btn-primary" onClick={addCost}>+ Add</button>
+            <button className="btn-primary" onClick={addCost} style={{ padding: '10px 14px' }}>+</button>
           </div>
         </div>
 
         {nightCosts.length > 0 && (
           <>
-            <p className="field-hint" style={{ marginBottom: 8, paddingLeft: 156 }}>
+            <p className="field-hint" style={{ marginBottom: 8 }}>
               <strong style={{ color: 'var(--color-text)' }}>
                 {nightCosts.length} night{nightCosts.length !== 1 ? 's' : ''}
               </strong>
             </p>
-            <div className="chips" style={{ marginBottom: 16, paddingLeft: 156 }}>
+            <div className="chips" style={{ marginBottom: 16 }}>
               {nightCosts.map((cost, i) => (
                 <span key={i} className="chip">
                   ${cost.toFixed(2)}
@@ -527,16 +562,49 @@ export default function HotelNotesTemplate() {
       <section className="page-content">
         <h2 className="page-heading">Generated Text</h2>
         <div style={{ maxWidth: 600 }}>
-          <textarea 
-            readOnly 
-            value={assembledText} 
-            rows={10}
-            className="field-textarea field-textarea--mono"
-            style={{ width: '100%' }} 
-          />
-          <div style={{ marginTop: 12, display: 'flex', justifyContent: 'flex-start' }}>
-            <CopyButton textToCopy={assembledText} />
+          <div style={{ position: 'relative' }}>
+            <textarea 
+              readOnly 
+              value={assembledText} 
+              rows={10}
+              className="field-textarea field-textarea--mono"
+              style={{ width: '100%', paddingBottom: 50 }} 
+            />
+            <div style={{ position: 'absolute', bottom: 12, left: 12, right: 12 }}>
+              <CopyButton textToCopy={assembledText} style={{ width: '100%' }} />
+            </div>
           </div>
+          {nightCosts.length > 0 && (
+            <div style={{ 
+              marginTop: 12,
+              display: 'flex', 
+              flexDirection: 'column', 
+              gap: 4, 
+              padding: '10px 12px', 
+              backgroundColor: 'var(--color-surface)', 
+              border: '1px solid var(--color-border)', 
+              borderRadius: 6,
+              fontSize: 13,
+              minWidth: 0
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
+                <span style={{ color: 'var(--color-text)', whiteSpace: 'nowrap' }}>Stay Cost:</span>
+                <strong style={{ color: 'var(--color-text-bright)' }}>${nightCosts.reduce((a, b) => a + b, 0).toFixed(2)}</strong>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
+                <span style={{ color: 'var(--color-text)', whiteSpace: 'nowrap' }}>Resort Fee:</span>
+                <strong style={{ color: 'var(--color-text-bright)' }}>${(nightCosts.length * 55).toFixed(2)}</strong>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
+                <span style={{ color: 'var(--color-text)', whiteSpace: 'nowrap' }}>Tax:</span>
+                <strong style={{ color: 'var(--color-text-bright)' }}>${((nightCosts.reduce((a, b) => a + b, 0) + nightCosts.length * 55) * 0.1338).toFixed(2)}</strong>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, borderTop: '1px solid var(--color-border)', paddingTop: 4, marginTop: 2 }}>
+                <span style={{ color: 'var(--color-text-bright)', fontWeight: 600, whiteSpace: 'nowrap' }}>Total:</span>
+                <strong style={{ color: 'var(--color-accent)' }}>${((nightCosts.reduce((a, b) => a + b, 0) + nightCosts.length * 55) * 1.1338).toFixed(2)}</strong>
+              </div>
+            </div>
+          )}
         </div>
       </section>
 

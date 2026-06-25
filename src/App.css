@@ -41,6 +41,9 @@
 
 .app-header__notepad-btn,
 .app-header__theme-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   padding: 10px 20px;
   border-radius: 6px;
   border: 1px solid var(--color-border);
@@ -56,6 +59,19 @@
 .app-header__theme-btn:hover {
   background-color: var(--color-surface-hover);
   border-color: var(--color-accent);
+}
+
+/* Keyboard shortcut hint */
+.keyboard-hint {
+  display: inline-block;
+  padding: 2px 6px;
+  font-size: 11px;
+  font-family: var(--mono, 'SF Mono', Monaco, Consolas, monospace);
+  font-weight: 500;
+  color: var(--color-text-muted);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
 }
 
 /* ── Tab bar ────────────────────────────────────────────── */
