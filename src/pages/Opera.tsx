@@ -129,7 +129,7 @@ export default function Opera({ onNavigateToTab }: OperaProps) {
             display: 'flex',
             alignItems: 'flex-start',
             gap: 6,
-            margin: '3px 0',
+            margin: '1px 0',
             paddingLeft: 2,
           }}>
             <span style={{ 
@@ -137,8 +137,9 @@ export default function Opera({ onNavigateToTab }: OperaProps) {
               fontWeight: 700, 
               fontSize: 11,
               marginTop: 1,
+              lineHeight: 1,
             }}>▸</span>
-            <span style={{ fontSize: 12, lineHeight: 1.3, color: 'var(--color-text)' }}>
+            <span style={{ fontSize: 12, lineHeight: 1.2, color: 'var(--color-text)' }}>
               {content}
             </span>
           </div>
@@ -151,9 +152,9 @@ export default function Opera({ onNavigateToTab }: OperaProps) {
         
         return (
           <div key={i} style={{
-            margin: '4px 0',
+            margin: '1px 0',
             fontSize: 12,
-            lineHeight: 1.4,
+            lineHeight: 1.2,
             color: 'var(--color-text)',
             display: 'flex',
             alignItems: 'center',
@@ -407,9 +408,10 @@ export default function Opera({ onNavigateToTab }: OperaProps) {
                 <div 
                   className="opera-grid"
                   style={{ 
-                    display: 'grid', 
-                    gridTemplateColumns: currentGuide.id === 'room-types' ? 'repeat(4, 1fr)' : 'repeat(2, 1fr)', 
-                    gap: '16px 20px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 12,
+                    maxWidth: 800,
                   }}
                 >
                   {parseGuideSteps(currentGuide.guide).map((step, idx) => {
