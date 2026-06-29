@@ -90,4 +90,10 @@ I appreciate your patience while I complete this transaction. As previously ment
 "Thank you for choosing Wynn Las Vegas! Your confirmation number for this reservation is 18023256. In the event of a cancellation, you must notify us 48 hrs prior to the arrival date for a full refund.
 
 We appreciate your call today and look forward to your visit."`,
+  quickCheckmark: `1. Rate Code ➜ Quote Room
+2. Add Profile/New Profile
+3. Add origin = phone | add ETA
+4. Payment (CP, Res TYPE = DUE)
+5. Room feat/specials/comment.
+6. Closing.`,
 }

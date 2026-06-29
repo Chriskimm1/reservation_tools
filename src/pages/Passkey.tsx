@@ -131,7 +131,7 @@ export default function Passkey({ onNavigateToTab }: PasskeyProps) {
               marginTop: 1,
               lineHeight: 1,
             }}>▸</span>
-            <span style={{ fontSize: 12, lineHeight: 1.2, color: 'var(--color-text)' }}>
+            <span style={{ fontSize: 12, lineHeight: 1.2, color: 'var(--color-text-bright)' }}>
               {content}
             </span>
           </div>
@@ -146,7 +146,7 @@ export default function Passkey({ onNavigateToTab }: PasskeyProps) {
             margin: '1px 0',
             fontSize: 12,
             lineHeight: 1.2,
-            color: 'var(--color-text)',
+            color: 'var(--color-text-bright)',
             display: 'flex',
             alignItems: 'center',
             gap: 6,
@@ -190,7 +190,7 @@ export default function Passkey({ onNavigateToTab }: PasskeyProps) {
             paddingLeft: 2,
             fontSize: 12,
             lineHeight: 1.3,
-            color: 'var(--color-text)',
+            color: 'var(--color-text-bright)',
           }}>
             <span style={{ color: 'var(--color-accent)', fontWeight: 700, fontSize: 11 }}>▸</span>
             <span>{line.trim().substring(1).trim()}</span>
@@ -206,7 +206,7 @@ export default function Passkey({ onNavigateToTab }: PasskeyProps) {
             margin: '4px 0',
             fontSize: 12,
             lineHeight: 1.4,
-            color: 'var(--color-text)',
+            color: 'var(--color-text-bright)',
           }}>
             {line.trim()}
           </div>

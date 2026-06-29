@@ -9,9 +9,9 @@ interface OperaProps {
 export default function Opera({ onNavigateToTab }: OperaProps) {
   const [search, setSearch] = useState(() => localStorage.getItem('opera_search') || '')
   const [selectedGuide, setSelectedGuide] = useState<string>(() => localStorage.getItem('opera_selectedGuide') || GUIDES[0]?.id || '')
-  const [activeTab, setActiveTab] = useState<'guide' | 'notification'>(() => {
+  const [activeTab, setActiveTab] = useState<'guide' | 'notification' | 'quickCheckmark'>(() => {
     const saved = localStorage.getItem('opera_activeTab')
-    return (saved as 'guide' | 'notification') || 'guide'
+    return (saved as 'guide' | 'notification' | 'quickCheckmark') || 'guide'
   })
 
   const contentScrollRef = useRef<HTMLDivElement>(null)
@@ -139,7 +139,7 @@ export default function Opera({ onNavigateToTab }: OperaProps) {
               marginTop: 1,
               lineHeight: 1,
             }}>▸</span>
-            <span style={{ fontSize: 12, lineHeight: 1.2, color: 'var(--color-text)' }}>
+            <span style={{ fontSize: 12, lineHeight: 1.2, color: 'var(--color-text-bright)' }}>
               {content}
             </span>
           </div>
@@ -155,7 +155,7 @@ export default function Opera({ onNavigateToTab }: OperaProps) {
             margin: '1px 0',
             fontSize: 12,
             lineHeight: 1.2,
-            color: 'var(--color-text)',
+            color: 'var(--color-text-bright)',
             display: 'flex',
             alignItems: 'center',
             gap: 6,
@@ -201,7 +201,7 @@ export default function Opera({ onNavigateToTab }: OperaProps) {
             paddingLeft: 2,
             fontSize: 12,
             lineHeight: 1.3,
-            color: 'var(--color-text)',
+            color: 'var(--color-text-bright)',
           }}>
             <span style={{ color: 'var(--color-accent)', fontWeight: 700, fontSize: 11 }}>▸</span>
             <span>{line.trim().substring(1).trim()}</span>
@@ -219,7 +219,7 @@ export default function Opera({ onNavigateToTab }: OperaProps) {
             margin: '4px 0',
             fontSize: 12,
             lineHeight: 1.4,
-            color: 'var(--color-text)',
+            color: 'var(--color-text-bright)',
           }}>
             {line.trim()}
           </div>
@@ -392,6 +392,29 @@ export default function Opera({ onNavigateToTab }: OperaProps) {
                     Important
                   </button>
                 )}
+                {currentGuide.quickCheckmark && (
+                  <button
+                    onClick={() => setActiveTab('quickCheckmark')}
+                    style={{
+                      padding: '10px 20px',
+                      backgroundColor: 'transparent',
+                      border: 'none',
+                      borderBottom: activeTab === 'quickCheckmark' ? '2px solid var(--color-accent)' : '2px solid transparent',
+                      color: activeTab === 'quickCheckmark' ? 'var(--color-text-bright)' : 'var(--color-text)',
+                      fontWeight: activeTab === 'quickCheckmark' ? 600 : 400,
+                      fontSize: 14,
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 6,
+                      transition: 'all 0.15s',
+                      marginBottom: -2,
+                    }}
+                  >
+                    Quick
+                    <span style={{ fontSize: 14 }}>✓</span>
+                  </button>
+                )}
               </div>
             </div>
 
@@ -486,6 +509,42 @@ export default function Opera({ onNavigateToTab }: OperaProps) {
               {activeTab === 'notification' && currentGuide.notification && (
                 <div style={{ maxWidth: 700 }}>
                   {formatNotificationText(currentGuide.notification)}
+                </div>
+              )}
+              
+              {activeTab === 'quickCheckmark' && currentGuide.quickCheckmark && (
+                <div style={{ maxWidth: 700 }}>
+                  <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 4,
+                  }}>
+                    {currentGuide.quickCheckmark.split('\n').filter(line => line.trim()).map((line, i) => (
+                      <div key={i} style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 10,
+                        fontSize: 12,
+                        lineHeight: 1.3,
+                        color: 'var(--color-text-bright)',
+                      }}>
+                        <span style={{ 
+                          width: 20,
+                          height: 20,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          backgroundColor: 'var(--color-accent)',
+                          color: 'white',
+                          borderRadius: '50%',
+                          fontSize: 11,
+                          fontWeight: 700,
+                          flexShrink: 0,
+                        }}>{i + 1}</span>
+                        <span>{line.replace(/^\d+\.\s*/, '')}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>

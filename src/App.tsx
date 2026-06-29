@@ -8,9 +8,10 @@ import FeeCalculator from './pages/FeeCalculator'
 import Directory from './pages/Directory'
 import Opera from './pages/Opera'
 import Passkey from './pages/Passkey'
+import General from './pages/General'
 import ConfidentialityMatrix from './pages/ConfidentialityMatrix'
 
-type TabId = 'templates' | 'fee' | 'directory' | 'opera' | 'passkey' | 'confidentiality'
+type TabId = 'templates' | 'fee' | 'directory' | 'opera' | 'passkey' | 'general' | 'confidentiality'
 
 const TABS = [
   { id: 'templates',       label: 'Templates'              },
@@ -18,6 +19,7 @@ const TABS = [
   { id: 'directory',       label: 'Directory'              },
   { id: 'opera',           label: 'Opera'                  },
   { id: 'passkey',         label: 'PassKey'                },
+  { id: 'general',         label: 'General'                },
   { id: 'confidentiality', label: 'Confidentiality Matrix' },
 ]
 
@@ -94,6 +96,7 @@ export default function App() {
           {tab === 'directory'       && <Directory />}
           {tab === 'opera'           && <Opera onNavigateToTab={handleNavigation} />}
           {tab === 'passkey'         && <Passkey onNavigateToTab={handleNavigation} />}
+          {tab === 'general'         && <General />}
           {tab === 'confidentiality' && <ConfidentialityMatrix />}
         </main>
 

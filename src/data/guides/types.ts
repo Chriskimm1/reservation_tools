@@ -4,4 +4,5 @@ export interface GuideCard {
   title: string
   guide: string
   notification?: string
+  quickCheckmark?: string
 }
