@@ -19,6 +19,8 @@ import { specialsRoomFeatures } from './specialsRoomFeatures'
 import { lateArrival } from './lateArrival'
 import { reservationTraces } from './reservationTraces'
 import { reservationAlerts } from './reservationAlerts'
+import { highEndSuitesGuide } from './highEndSuites'
+import { longStayPolicyGuide } from './longStayPolicy'
 
 export const GUIDES: GuideCard[] = [
   additionalRequests,   // Additional Requests
@@ -30,7 +32,9 @@ export const GUIDES: GuideCard[] = [
   ccAuth,               // Credit Card Authorization
   eciLco,               // Early Check-in & Late Check-Out
   folioRequests,        // Folio Requests
+  highEndSuitesGuide,   // High End Suite Reservation Process
   lateArrival,          // Late Arrival Policy
+  longStayPolicyGuide,  // Long Stay Policy
   newReservation,       // New Reservation
   rateAvailability,     // Rate & Room Availability
   reservationAlerts,    // Reservation Alerts
