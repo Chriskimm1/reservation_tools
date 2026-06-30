@@ -4,7 +4,7 @@ import { rateAvailability } from './rateAvailability'
 import { roomTypes } from './roomTypes'
 import { folioRequests } from './folioRequests'
 import { eciLco } from './eciLco'
-import { ccAuth } from './ccAuth'
+import { ccAuthRoomRes } from './ccAuthRoomRes'
 import { courtesyHold } from './courtesyHold'
 import { connectingRooms } from './connectingRooms'
 import { cancellationPolicy } from './cancellationPolicy'
@@ -21,6 +21,7 @@ import { reservationTraces } from './reservationTraces'
 import { reservationAlerts } from './reservationAlerts'
 import { highEndSuitesGuide } from './highEndSuites'
 import { longStayPolicyGuide } from './longStayPolicy'
+import { shareWith } from './shareWith'
 
 export const GUIDES: GuideCard[] = [
   additionalRequests,   // Additional Requests
@@ -29,7 +30,7 @@ export const GUIDES: GuideCard[] = [
   chargingCreditCards,  // Charging Credit Cards
   connectingRooms,      // Connecting Rooms Policy
   courtesyHold,         // Courtesy Hold Reservations
-  ccAuth,               // Credit Card Authorization
+  ccAuthRoomRes,        // Credit Card Authorization - Room Reservations
   eciLco,               // Early Check-in & Late Check-Out
   folioRequests,        // Folio Requests
   highEndSuitesGuide,   // High End Suite Reservation Process
@@ -41,6 +42,7 @@ export const GUIDES: GuideCard[] = [
   reservationTraces,    // Reservation Traces
   roomTypes,            // Room Types
   sendingConfirmation,  // Sending Confirmation Emails
+  shareWith,            // Share With
   specialsRoomFeatures, // Specials and Room Features
   sphereView,           // Sphere View Upgrade Options
   superAccessible,      // Super Accessible Room Reservations

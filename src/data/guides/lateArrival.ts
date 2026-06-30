@@ -51,5 +51,11 @@ In an effort to better accommodate our guests who are arriving **after midnight*
   - Go to **Daily Details**
   - Select **Edit**
   - Select the dropdown next to **Source**
-  - Select **SLEEPOUT**`
+  - Select **SLEEPOUT**`,
+  quickCheckmark: `1. Add ETA
+2. Add comment explaining sleepout/late arrival
+3. Add "LA" alert
+4. Add trace addressed to proper tower
+5. Add "LA"/"KK" specials
+6. Change source code to "sleepout" on arrival date`
 }

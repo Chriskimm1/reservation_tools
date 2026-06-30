@@ -519,31 +519,52 @@ export default function Opera({ onNavigateToTab }: OperaProps) {
                     flexDirection: 'column',
                     gap: 4,
                   }}>
-                    {currentGuide.quickCheckmark.split('\n').filter(line => line.trim()).map((line, i) => (
-                      <div key={i} style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 10,
-                        fontSize: 12,
-                        lineHeight: 1.3,
-                        color: 'var(--color-text-bright)',
-                      }}>
-                        <span style={{ 
-                          width: 20,
-                          height: 20,
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          backgroundColor: 'var(--color-accent)',
-                          color: 'white',
-                          borderRadius: '50%',
-                          fontSize: 11,
-                          fontWeight: 700,
-                          flexShrink: 0,
-                        }}>{i + 1}</span>
-                        <span>{line.replace(/^\d+\.\s*/, '')}</span>
-                      </div>
-                    ))}
+                    {(() => {
+                      const lines = currentGuide.quickCheckmark.split('\n').filter(line => line.trim())
+                      let stepCounter = 0
+                      
+                      return lines.map((line, i) => {
+                        // Check if line is a header (all caps or ends with colon)
+                        const isHeader = line === line.toUpperCase() && line.length > 3 && !line.match(/^\d/)
+                        
+                        // Reset counter when we hit a header
+                        if (isHeader) {
+                          stepCounter = 0
+                        } else {
+                          stepCounter++
+                        }
+                        
+                        return (
+                          <div key={i} style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 10,
+                            fontSize: 12,
+                            lineHeight: 1.3,
+                            color: 'var(--color-text-bright)',
+                            marginTop: isHeader ? '8px' : '0',
+                            fontWeight: isHeader ? 600 : 400,
+                          }}>
+                            {!isHeader && (
+                              <span style={{ 
+                                width: 20,
+                                height: 20,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                backgroundColor: 'var(--color-accent)',
+                                color: 'white',
+                                borderRadius: '50%',
+                                fontSize: 11,
+                                fontWeight: 700,
+                                flexShrink: 0,
+                              }}>{stepCounter}</span>
+                            )}
+                            <span style={{ marginLeft: isHeader ? 0 : 0 }}>{line.replace(/^\d+\.\s*/, '')}</span>
+                          </div>
+                        )
+                      })
+                    })()}
                   </div>
                 </div>
               )}
