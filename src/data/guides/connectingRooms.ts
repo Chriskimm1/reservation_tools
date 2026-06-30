@@ -143,4 +143,11 @@ Inform guest:
 **Follow Up:**
 - If guest calls back, verify both reservations have CN code
 - Check comments are properly cross-referenced`,
+  quickCheckmark: `Add ETA
+Check item inventory/amenities
+Select 22- front desk then proper connecting combo
+If available place "1" in each box of date of stay for entire length
+Add room features
+Add alert
+Add trace`,
 }

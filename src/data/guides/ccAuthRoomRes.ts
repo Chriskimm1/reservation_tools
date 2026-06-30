@@ -157,4 +157,11 @@ Front Desk Management:
 - Encore Resort ext. 4007 | EncoreFrontDeskManagement@wynnlasvegas.com
 - Wynn Tower Suites ext. 2192 | TowerSuitesManagers@wynnlasvegas.com
 - Encore Tower Suites ext. 4060 | EncoreSuitesManagers@wynnlasvegas.com`,
+  quickCheckmark: `Deposit refund if needed
+Tokenize card
+Change payment type to "CH"
+Change res type to "DUE"
+Change deposit rule to 2D in deposit/cxl screen with edit button
+Advise gst spiel "email being sent in 24-48 hrs, fill it out and we will take care of rest. You have 3 attempts or cc auth will be voided"
+Add trace`,
 }

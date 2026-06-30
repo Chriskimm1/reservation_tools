@@ -22,8 +22,11 @@ import { reservationAlerts } from './reservationAlerts'
 import { highEndSuitesGuide } from './highEndSuites'
 import { longStayPolicyGuide } from './longStayPolicy'
 import { shareWith } from './shareWith'
+import { adaGuestAccommodations } from './adaGuestAccommodations'
+import { tokenization } from './tokenization'
 
 export const GUIDES: GuideCard[] = [
+  adaGuestAccommodations, // ADA Guest Accommodations
   additionalRequests,   // Additional Requests
   backToBack,           // Back to Back Reservations
   cancellationPolicy,   // Cancellation Policy
@@ -46,6 +49,7 @@ export const GUIDES: GuideCard[] = [
   specialsRoomFeatures, // Specials and Room Features
   sphereView,           // Sphere View Upgrade Options
   superAccessible,      // Super Accessible Room Reservations
+  tokenization,         // Tokenization
   uptower,              // Uptower Rate Code
 ]
 

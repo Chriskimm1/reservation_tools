@@ -128,5 +128,9 @@ Sales Agents empowered to waive cancellation policy ONLY for:
 - Proper comments prevent guest inconvenience
 - Protect both guest and company
 - Ensure accurate accounting`,
+  quickCheckmark: `Check cancellation policy
+Check if deposit was made/refund if needed
+Options-cancel-give reason and verification method
+Send cancellation email`,
 }
 

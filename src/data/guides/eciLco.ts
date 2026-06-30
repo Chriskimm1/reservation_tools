@@ -136,4 +136,12 @@ Click OK`,
 
 **Package Code:**
 - Search "cc" in Package field to find correct code`,
+  quickCheckmark: `Check item inventory
+Select 21- housekeeping then proper eci/lco option
+If available place "1" on date off arrival (ECI) or date of checkout (LCO)
+Add ETA/ETD
+Click on "packages" dropdown
+Click new and search "%cc" then select proper variation
+Add s/c display
+Add fixed charge for once of day of arrival or day of checkout`,
 }

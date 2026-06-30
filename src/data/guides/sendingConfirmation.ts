@@ -97,4 +97,11 @@ Send confirmation emails for:
 - Let system auto-populate market codes
 - Don't override without manager approval
 - Wrong codes = wrong pricing on confirmation`,
+  quickCheckmark: `EMAIL CONFIRMATION LETTERS
+Options
+Confirmation
+Checkbox in email collum on left side
+Select dropdown of email type
+Select email, customize only on wynn digital
+Push send`,
 }
