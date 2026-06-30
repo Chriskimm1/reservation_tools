@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, Fragment } from 'react'
 import './ConfidentialityMatrix.css'
 
 interface Section {
@@ -144,7 +144,25 @@ export default function ConfidentialityMatrix() {
           </strong>
         )
       }
-      return part
+      // Auto-highlight the words "address" and "name" in remaining plain text
+      return <Fragment key={index}>{highlightWords(part)}</Fragment>
+    })
+  }
+
+  // Highlight specific standalone words (address, name) wherever they appear
+  const highlightWords = (text: string) => {
+    // Note: longer phrases (e.g. "home address") must come first so they
+    // match before the standalone "address" alternative.
+    const wordParts = text.split(/(\bhome address\b|\baddress\b|\bname\b)/gi)
+    return wordParts.map((word, i) => {
+      if (/^(home address|address|name)$/i.test(word)) {
+        return (
+          <span key={i} className="cm-highlight">
+            {word}
+          </span>
+        )
+      }
+      return word
     })
   }
 
