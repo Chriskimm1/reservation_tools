@@ -1,8 +1,10 @@
 import { useState, useEffect, useRef } from 'react'
+import RoomDescriptions from '../components/RoomDescriptions'
 import './General.css'
 
 const SECTIONS = [
-  { id: 'room-reservation-highlights', title: 'Room Reservation Highlights' }
+  { id: 'room-reservation-highlights', title: 'Room Reservation Highlights' },
+  { id: 'room-descriptions', title: 'Room Descriptions' }
 ]
 
 export default function General() {
@@ -83,6 +85,12 @@ export default function General() {
 
         {/* Content */}
         <div className="general-content-body">
+          {/* Room Descriptions Section */}
+          {selectedSection === 'room-descriptions' && <RoomDescriptions />}
+
+          {/* Room Reservation Highlights Section */}
+          {selectedSection === 'room-reservation-highlights' && (
+            <>
           {/* Greeting */}
           <h3 className="general-section-heading">GREETING:</h3>
           <div className="general-section-content">
@@ -196,6 +204,8 @@ export default function General() {
               <li className="general-list-item">COMP, RMO, FC (free credit), PC (promo chips)</li>
             </ul>
           </div>
+            </>
+          )}
         </div>
       </div>
     </div>
